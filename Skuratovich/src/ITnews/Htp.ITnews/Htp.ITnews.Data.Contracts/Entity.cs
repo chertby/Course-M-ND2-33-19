@@ -1,8 +1,8 @@
 ﻿using System;
 namespace Htp.ITnews.Data.Contracts
 {
-    public abstract class Entity
+    public interface IEntity
     {
-        public Guid Id { get; set; }
+        Guid Id { get; set; }
     }
 }
