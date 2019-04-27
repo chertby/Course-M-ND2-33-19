@@ -4,4 +4,11 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Htp.ITnews.Domain.Contracts\Htp.ITnews.Domain.Contracts.csproj" />
+    <ProjectReference Include="..\Htp.ITnews.Data.EntityFramework\Htp.ITnews.Data.EntityFramework.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.1.0" />
+  </ItemGroup>
 </Project>

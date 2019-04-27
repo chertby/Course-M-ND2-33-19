@@ -1,7 +1,12 @@
 ﻿using System;
 using System.IO;
+using AutoMapper;
+using Htp.ITnews.Data.Contracts;
 using Htp.ITnews.Data.Contracts.Entities;
 using Htp.ITnews.Data.EntityFramework;
+using Htp.ITnews.Domain.Contracts;
+using Htp.ITnews.Domain.Contracts.ViewModels;
+using Htp.ITnews.Domain.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
@@ -16,14 +21,25 @@ namespace Htp.ITnews.Infrastructure
             string wanted_path = Path.GetDirectoryName(Directory.GetCurrentDirectory());
 
             services.AddDbContext<ApplicationDbContext>(options => options
-                .UseSqlite($"Filename={wanted_path}/{connectionString}"))
-                .AddDefaultIdentity<AppUser>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .UseSqlite($"Filename={wanted_path}/{connectionString}"));
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<INewsRepository, NewsRepository>();
         }
 
-        public static void ConfigureIdentity(this IServiceCollection services, string connectionString)
+        public static void AppDomainServices(this IServiceCollection services)
         {
+            services.AddScoped<INewsService, NewsService>();
+        }
+
+        public static void ConfigureIdentity(this IServiceCollection services)
+        {
+            //services.AddDefaultIdentity<UserViewModel>()
+            //services.AddIdentity<UserViewModel, IdentityRole<Guid>>()
+            services.AddIdentity<UserViewModel, IdentityRole<Guid>>()
+                .AddDefaultUI(UIFramework.Bootstrap4)
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
             // https://docs.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-2.2&tabs=visual-studio
 
             services.Configure<IdentityOptions>(options =>
@@ -52,7 +68,7 @@ namespace Htp.ITnews.Infrastructure
             });
         }
 
-        public static void ConfigureCookie(this IServiceCollection services, string connectionString)
+        public static void ConfigureCookie(this IServiceCollection services)
         {
             services.ConfigureApplicationCookie(options =>
             {
@@ -64,6 +80,21 @@ namespace Htp.ITnews.Infrastructure
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
                 options.SlidingExpiration = true;
             });
+        }
+
+        public static void AddAutoMapper(this IServiceCollection services)
+        {
+            ////// Auto Mapper Configurations
+            //var mappingConfig = new MapperConfiguration(cfg =>
+            //{
+            //    // Add all profiles in current assembly
+            //    cfg.AddMaps(typeof(ServiceCollectionExtensions).Assembly);
+            //});
+
+            //IMapper mapper = mappingConfig.CreateMapper();
+            //services.AddSingleton(mapper);
+
+            services.AddAutoMapper(typeof(ServiceCollectionExtensions).Assembly);
         }
 
         //FluentValidation.AspNetCore

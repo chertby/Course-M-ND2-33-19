@@ -36,8 +36,17 @@ namespace Htp.ITnews.Web
             });
 
             services.AddDataAccessServices(Configuration.GetConnectionString("DefaultConnection"));
+            services.AppDomainServices();
+            services.ConfigureIdentity();
+            services.ConfigureCookie();
+
+            services.AddAutoMapper();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                 //.AddRazorPagesOptions(options =>
+                 //{
+                 //    options.Conventions.AddPageRoute("/News", "");
+                 //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

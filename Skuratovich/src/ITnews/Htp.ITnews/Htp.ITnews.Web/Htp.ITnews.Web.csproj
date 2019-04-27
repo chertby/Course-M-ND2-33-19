@@ -8,10 +8,6 @@
 
 
   <ItemGroup>
-    <None Update="app.db" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.4" />
@@ -20,5 +16,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Htp.ITnews.Infrastructure\Htp.ITnews.Infrastructure.csproj" />
+    <ProjectReference Include="..\Htp.ITnews.Domain.Contracts\Htp.ITnews.Domain.Contracts.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Pages\News\" />
   </ItemGroup>
 </Project>
