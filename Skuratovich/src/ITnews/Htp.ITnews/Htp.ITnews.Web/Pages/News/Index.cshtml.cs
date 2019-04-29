@@ -7,15 +7,15 @@ using Htp.ITnews.Domain.Contracts.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Htp.ITnews.Web.Pages
+namespace Htp.ITnews.Web.Pages.News
 {
-    public class NewsModel : PageModel
+    public class IndexModel : PageModel
     {
         private readonly INewsService newsService;
 
         public IList<NewsViewModel> News { get; set; }
 
-        public NewsModel(INewsService newsService)
+        public IndexModel(INewsService newsService)
         {
             this.newsService = newsService;
         }

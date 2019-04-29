@@ -1,10 +1,12 @@
 ﻿@page
-@model NewsModel
+@using System.Globalization
+@model IndexModel
 @{
-    ViewData["Title"] = "News";
+    ViewData["Title"] = Localizer.Text("News");
 }
 
-<h1>News</h1>
+<h2>@Localizer.Text("News")</h2>
+<p>@Localizer.Text("Current culture") : @CultureInfo.CurrentCulture.DisplayName (@CultureInfo.CurrentCulture.NativeName)</p>
 
 <p>
     <a asp-page="Create">Create New</a>
@@ -20,17 +22,17 @@
                 @Html.DisplayNameFor(model => model.News[0].Title)
             </th>
             @*<th>
-            @Html.DisplayNameFor(model => model.News[0])
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Payments[0].CreatedByUserName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Payments[0].Updated)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Payments[0].UpdatedByUserName)
-        </th>*@
+                    @Html.DisplayNameFor(model => model.News[0])
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Payments[0].CreatedByUserName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Payments[0].Updated)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Payments[0].UpdatedByUserName)
+                </th>*@
             <th></th>
         </tr>
     </thead>
@@ -45,8 +47,8 @@
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
                 @*<td>
-                    @Html.DisplayFor(modelItem => item.LastName)
-                </td>*@
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>*@
                 <td>
                     @*<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
                         <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
@@ -56,3 +58,10 @@
         }
     </tbody>
 </table>
+
+// TODO: Delete, just test
+// http://ziyad.info/en/articles/19-Configuring_Client_Side_Validation
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

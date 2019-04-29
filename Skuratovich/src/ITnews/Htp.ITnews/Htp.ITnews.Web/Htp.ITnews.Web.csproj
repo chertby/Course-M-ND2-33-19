@@ -20,5 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Pages\News\" />
+    <Folder Include="Utilities\" />
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Resources\ViewResource.Designer.cs" />
   </ItemGroup>
 </Project>

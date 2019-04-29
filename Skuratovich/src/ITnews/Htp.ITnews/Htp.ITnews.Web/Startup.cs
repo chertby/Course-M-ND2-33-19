@@ -13,6 +13,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Htp.ITnews.Infrastructure;
+using Htp.ITnews.Web.Utilities;
+using Htp.ITnews.Web.Resources;
+using System.Reflection;
+using Microsoft.Extensions.Localization;
 
 namespace Htp.ITnews.Web
 {
@@ -39,14 +43,28 @@ namespace Htp.ITnews.Web
             services.AppDomainServices();
             services.ConfigureIdentity();
             services.ConfigureCookie();
-
             services.AddAutoMapper();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-                 //.AddRazorPagesOptions(options =>
-                 //{
-                 //    options.Conventions.AddPageRoute("/News", "");
-                 //});
+            services.ConfigureRequestLocalization();
+
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddViewLocalization(options => options.ResourcesPath = "Resources")
+                .AddDataAnnotationsLocalization(o =>
+                {
+                    var type = typeof(ViewResource);
+                    var assemblyName = new AssemblyName(type.GetTypeInfo().Assembly.FullName);
+                    var factory = services.BuildServiceProvider().GetService<IStringLocalizerFactory>();
+                    var localizer = factory.Create("ViewResource", assemblyName.Name);
+                    o.DataAnnotationLocalizerProvider = (t, f) => localizer;
+                })
+                .AddRazorPagesOptions(options => {
+                    options.Conventions.Add(new CultureTemplateRouteModelConvention());
+                });
+            //.AddRazorPagesOptions(options =>
+            //{
+            //    options.Conventions.AddPageRoute("/News", "");
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,6 +82,7 @@ namespace Htp.ITnews.Web
                 app.UseHsts();
             }
 
+            app.UseRequestLocalization();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
