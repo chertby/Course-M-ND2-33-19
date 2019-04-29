@@ -50,6 +50,7 @@ namespace Htp.ITnews.Web
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddViewLocalization(options => options.ResourcesPath = "Resources")
+                .AddModelBindingMessagesLocalizer(services)
                 .AddDataAnnotationsLocalization(o =>
                 {
                     var type = typeof(ViewResource);

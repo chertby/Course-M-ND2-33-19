@@ -27,4 +27,7 @@
     <data name="{0}' must be a number" xml:space="preserve">
         <value>{0}' должно быть числом</value>
     </data>
+    <data name="Create New" xml:space="preserve">
+        <value>Создать новость</value>
+    </data>
 </root>

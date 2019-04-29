@@ -50,18 +50,6 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Category",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Title = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Category", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Tag",
                 columns: table => new
                 {
@@ -71,6 +59,18 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tag", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Сategories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Title = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Сategories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -192,7 +192,7 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
                     UpdatedById = table.Column<Guid>(nullable: true),
                     Updated = table.Column<DateTime>(nullable: false),
                     CategoryId = table.Column<Guid>(nullable: false),
-                    Rating = table.Column<float>(nullable: false, defaultValue: 0f),
+                    Rating = table.Column<float>(nullable: false),
                     PostCount = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -205,9 +205,9 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_News_Category_CategoryId",
+                        name: "FK_News_Сategories_CategoryId",
                         column: x => x.CategoryId,
-                        principalTable: "Category",
+                        principalTable: "Сategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -246,7 +246,7 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
                         column: x => x.NewsId,
                         principalTable: "News",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Comments_AspNetUsers_UpdatedById",
                         column: x => x.UpdatedById,
@@ -329,29 +329,29 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Category",
+                table: "Сategories",
                 columns: new[] { "Id", "Title" },
-                values: new object[] { new Guid("837d9f34-9b9c-4e90-bf6c-de8007cf2033"), "Java" });
+                values: new object[] { new Guid("4cf5fdfa-8a41-4e9e-9466-8c06bd42d3fc"), "Java" });
 
             migrationBuilder.InsertData(
-                table: "Category",
+                table: "Сategories",
                 columns: new[] { "Id", "Title" },
-                values: new object[] { new Guid("f1b82eb9-7236-4e05-865e-2172923418d6"), "C#" });
+                values: new object[] { new Guid("8205e48a-8671-48cb-9be6-2cc2ff7c7250"), "C#" });
 
             migrationBuilder.InsertData(
-                table: "Category",
+                table: "Сategories",
                 columns: new[] { "Id", "Title" },
-                values: new object[] { new Guid("c0509410-bc44-4b7d-9b21-18fce2eddb91"), "C++" });
+                values: new object[] { new Guid("33459892-64fa-4a15-a8f7-07275c3077df"), "C++" });
 
             migrationBuilder.InsertData(
-                table: "Category",
+                table: "Сategories",
                 columns: new[] { "Id", "Title" },
-                values: new object[] { new Guid("2c4f31b1-a111-4e74-ac42-68dc59ecb328"), "Algorithms" });
+                values: new object[] { new Guid("0931544e-4fd6-4d76-aff1-4cef34903e8a"), "Algorithms" });
 
             migrationBuilder.InsertData(
-                table: "Category",
+                table: "Сategories",
                 columns: new[] { "Id", "Title" },
-                values: new object[] { new Guid("9d06ed8b-fe39-4ad7-bd18-0e6ed6b65433"), "Machine Learning" });
+                values: new object[] { new Guid("967b30a3-9852-45cb-b33e-efa6876f04d4"), "Machine Learning" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -478,7 +478,7 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Category");
+                name: "Сategories");
         }
     }
 }

@@ -84,32 +84,32 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Сategories");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("837d9f34-9b9c-4e90-bf6c-de8007cf2033"),
+                            Id = new Guid("4cf5fdfa-8a41-4e9e-9466-8c06bd42d3fc"),
                             Title = "Java"
                         },
                         new
                         {
-                            Id = new Guid("f1b82eb9-7236-4e05-865e-2172923418d6"),
+                            Id = new Guid("8205e48a-8671-48cb-9be6-2cc2ff7c7250"),
                             Title = "C#"
                         },
                         new
                         {
-                            Id = new Guid("c0509410-bc44-4b7d-9b21-18fce2eddb91"),
+                            Id = new Guid("33459892-64fa-4a15-a8f7-07275c3077df"),
                             Title = "C++"
                         },
                         new
                         {
-                            Id = new Guid("2c4f31b1-a111-4e74-ac42-68dc59ecb328"),
+                            Id = new Guid("0931544e-4fd6-4d76-aff1-4cef34903e8a"),
                             Title = "Algorithms"
                         },
                         new
                         {
-                            Id = new Guid("9d06ed8b-fe39-4ad7-bd18-0e6ed6b65433"),
+                            Id = new Guid("967b30a3-9852-45cb-b33e-efa6876f04d4"),
                             Title = "Machine Learning"
                         });
                 });
@@ -179,9 +179,7 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
 
                     b.Property<int>("PostCount");
 
-                    b.Property<float>("Rating")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(0f);
+                    b.Property<float>("Rating");
 
                     b.Property<string>("Title")
                         .IsRequired();
@@ -354,8 +352,7 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
 
                     b.HasOne("Htp.ITnews.Data.Contracts.Entities.News", "News")
                         .WithMany("Comments")
-                        .HasForeignKey("NewsId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("NewsId");
 
                     b.HasOne("Htp.ITnews.Data.Contracts.Entities.AppUser", "UpdatedBy")
                         .WithMany("UpdatedComments")

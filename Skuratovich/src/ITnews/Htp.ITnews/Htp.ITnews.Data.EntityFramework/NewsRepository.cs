@@ -23,5 +23,21 @@ namespace Htp.ITnews.Data.EntityFramework
 
             return result;
         }
+
+        public new async Task<News> GetAsync(Guid id)
+        {
+            var dbSet = dbContext.News;
+            var result = await dbSet.FindAsync(id);
+
+            await dbContext.Entry(result)
+                .Reference(b => b.Category)
+                .LoadAsync();
+
+            //await DbContext.Entry(book)
+                //.Reference(b => b.UpdatedBy)
+                //.LoadAsync();
+
+            return result;
+        }
     }
 }

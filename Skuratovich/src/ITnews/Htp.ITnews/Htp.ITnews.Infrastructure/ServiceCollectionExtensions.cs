@@ -24,7 +24,8 @@ namespace Htp.ITnews.Infrastructure
                 .UseSqlite($"Filename={wanted_path}/{connectionString}"));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<INewsRepository, NewsRepository>();
+            //services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            //services.AddScoped<INewsRepository, NewsRepository>();
         }
 
         public static void AppDomainServices(this IServiceCollection services)

@@ -15,7 +15,7 @@ namespace Htp.ITnews.Data.EntityFramework
 
         // cd Projects/Course-M-ND2-33-19/Skuratovich/src/ITnews/Htp.ITnews/Htp.ITnews.Data.EntityFramework/
         //
-        // dotnet ef migrations add InitialCreate --startup-project ...ITnews/Htp.ITnews/Htp.ITnews.Web/Htp.ITnews.Web.csproj
+        // dotnet ef migrations add InitialCreate --startup-project /users/user/Projects/Course-M-ND2-33-19/Skuratovich/src/ITnews/Htp.ITnews/Htp.ITnews.Web/Htp.ITnews.Web.csproj
         // dotnet ef migrations add InitialCreate
         //
         // dotnet ef database update
@@ -23,6 +23,7 @@ namespace Htp.ITnews.Data.EntityFramework
 
         public DbSet<News> News { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<Category> Сategories { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

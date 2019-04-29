@@ -22,6 +22,13 @@ namespace Htp.ITnews.Data.EntityFramework
             return entity;
         }
 
+        public Task<TEntity> EditAsync(TEntity entity)
+        {
+            var dbSet = dbContext.Set<TEntity>();
+            dbSet.Update(entity);
+            return Task.FromResult(entity);
+        }
+
         public bool EntityExists(Guid id)
         {
             throw new NotImplementedException();
