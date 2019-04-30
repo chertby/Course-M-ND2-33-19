@@ -7,6 +7,6 @@ namespace Htp.ITnews.Data.Contracts.Entities
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
-        public IEnumerable<NewsTag> NewsTags { get; set; }
+        public ICollection<NewsTag> NewsTags { get; set; }
     }
 }

@@ -13,6 +13,6 @@ namespace Htp.ITnews.Data.Contracts.Entities
         public AppUser UpdatedBy { get; set; }
         public DateTime Updated { get; set; }
         public int LikesCount { get; set; }
-        public IEnumerable<Like> Likes { get; set; }
+        public ICollection<Like> Likes { get; set; }
     }
 }

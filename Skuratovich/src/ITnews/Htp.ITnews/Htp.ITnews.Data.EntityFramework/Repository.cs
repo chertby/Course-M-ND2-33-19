@@ -24,6 +24,12 @@ namespace Htp.ITnews.Data.EntityFramework
             return entity;
         }
 
+        public Task DeleteAsync(TEntity entity)
+        {
+            dbSet.Remove(entity);
+            return Task.CompletedTask;
+        }
+
         public Task<TEntity> EditAsync(TEntity entity)
         {
             dbSet.Update(entity);

@@ -21,18 +21,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.News[0].CategoryTitle)
             </th>
-            @*<th>
-            @Html.DisplayNameFor(model => model.News[0])
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Payments[0].CreatedByUserName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Payments[0].Updated)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Payments[0].UpdatedByUserName)
-        </th>*@
             <th></th>
         </tr>
     </thead>
@@ -46,13 +34,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.CategoryTitle)
             </td>
-            @*<td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>*@
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-page="./Edit" asp-route-id="@item.Id">@Localizer.Text("Edit")</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">@Localizer.Text("Details")</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">@Localizer.Text("Delete")</a>
             </td>
         </tr>
         }

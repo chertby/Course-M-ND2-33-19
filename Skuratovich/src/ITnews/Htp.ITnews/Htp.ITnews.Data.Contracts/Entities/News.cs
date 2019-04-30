@@ -16,8 +16,8 @@ namespace Htp.ITnews.Data.Contracts.Entities
         public Category Category { get; set; }
         public float Rating { get; set; }
         public int PostCount { get; set; }
-        public IEnumerable<Comment> Comments { get; set; }
+        public ICollection<Comment> Comments { get; set; }
         public ICollection<Rating> Ratings { get; set; }
-        public IEnumerable<NewsTag> NewsTags { get; set; }
+        public ICollection<NewsTag> NewsTags { get; set; }
     }
 }

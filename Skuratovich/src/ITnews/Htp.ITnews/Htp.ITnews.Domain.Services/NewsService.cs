@@ -45,7 +45,7 @@ namespace Htp.ITnews.Domain.Services
             {
                 try
                 {
-                    news.Category = await unitOfWork.Repository<Category>().GetAsync(news.Category.Id);
+                    news.Category = await unitOfWork.Repository<Category>().GetAsync(newsViewModel.CategoryId);
                     await newsRepository.AddAsync(news);
                     await unitOfWork.SaveChangesAsync();
                     transaction.Commit();
@@ -70,38 +70,30 @@ namespace Htp.ITnews.Domain.Services
                 {
                     var news = await newsRepository.GetAsync(newsViewModel.Id);
                     mapper.Map(newsViewModel, news);
-                    //        if (book.UpdatedBy != null)
-                    //        {
-                    //            var updatedBefore = unitOfWork.Repository<AppUser>().Get(book.UpdatedBy.Id);
-                    //            updatedBefore.UpdatedBooks.Remove(book);
-                    //            unitOfWork.Repository<AppUser>().Update(updatedBefore);
-                    //            var x = await unitOfWork.SaveChangesAsync();
-                    //        }
-
-                    //        var UpdatedBy = unitOfWork.Repository<AppUser>().Get(bookViewModel.UpdatedByUserID);
-                    //        book.UpdatedBy = UpdatedBy;
-
-                    //        unitOfWork.BookRepository.Update(book);
-                    //        var y = await unitOfWork.SaveChangesAsync();
-                    //        transaction.Commit();
-                    //        return true;
-
-                    news.Category = await unitOfWork.Repository<Category>().GetAsync(news.Category.Id);
+                    var categoryDbSet = unitOfWork.Repository<Category>();
+                    if (news.Category.Id != newsViewModel.CategoryId)
+                    {
+                        if (news.Category != null)
+                        {
+                            var category = await categoryDbSet.GetAsync(news.Category.Id);
+                            category.News.Remove(news);
+                            await categoryDbSet.EditAsync(category);
+                        }
+                        var currentCategory = await categoryDbSet.GetAsync(newsViewModel.CategoryId);
+                        news.Category = currentCategory;
+                    }
 
                     await newsRepository.EditAsync(news);
                     await unitOfWork.SaveChangesAsync();
                     transaction.Commit();
 
                     newsViewModel = mapper.Map<NewsViewModel>(news);
-
                     return newsViewModel;
-
                 }
                 catch (Exception ex)
                 {
                     transaction.Rollback();
                     throw ex;
-                    //return false;
                 }
             }
         }
@@ -115,6 +107,26 @@ namespace Htp.ITnews.Domain.Services
                 categories.Add(new SelectListItem() { Value = category.Id.ToString(), Text = category.Title });
             }
             return categories;
+        }
+
+        public async Task DeleteAsync(Guid id)
+        {
+            using (var transaction = unitOfWork.BeginTransaction())
+            {
+                try
+                {
+                    var news = await newsRepository.GetAsync(id);
+
+                    await newsRepository.DeleteAsync(news);
+                    var x = await unitOfWork.SaveChangesAsync();
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
         }
     }
 }

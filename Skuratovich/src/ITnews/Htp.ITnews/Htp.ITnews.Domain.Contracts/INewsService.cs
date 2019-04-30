@@ -12,6 +12,7 @@ namespace Htp.ITnews.Domain.Contracts
         Task<NewsViewModel> GetAsync(Guid id);
         Task<NewsViewModel> AddAsync(NewsViewModel newsViewModel);
         Task<NewsViewModel> EditAsync(NewsViewModel newsViewModel);
+        Task DeleteAsync(Guid id);
 
         Task<List<SelectListItem>> GetСategoriesAsync();
     }

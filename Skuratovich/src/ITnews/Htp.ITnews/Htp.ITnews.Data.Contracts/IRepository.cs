@@ -12,5 +12,6 @@ namespace Htp.ITnews.Data.Contracts
         Task<TEntity> GetAsync(Guid id);
         Task<TEntity> AddAsync(TEntity entity);
         Task<TEntity> EditAsync(TEntity entity);
+        Task DeleteAsync(TEntity entity);
     }
 }
