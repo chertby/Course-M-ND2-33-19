@@ -10,8 +10,6 @@ namespace Htp.ITnews.Data.EntityFramework
     {
         private readonly ApplicationDbContext dbContext;
 
-        private INewsRepository newsRepository;
-
         private readonly Dictionary<Type, object> repositories = new Dictionary<Type, object>();
 
         public Dictionary<Type, object> Repositories
@@ -46,19 +44,6 @@ namespace Htp.ITnews.Data.EntityFramework
             IRepository<TEntity> repository = new Repository<TEntity>(dbContext);
             Repositories.Add(typeof(TEntity), repository);
             return repository;
-        }
-
-        public INewsRepository NewsRepository
-        {
-            get
-            {
-                if (newsRepository == null)
-                {
-                    newsRepository = new NewsRepository(dbContext);
-                }
-
-                return newsRepository;
-            }
         }
     }
 }

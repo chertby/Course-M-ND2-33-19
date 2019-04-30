@@ -20,6 +20,7 @@ namespace Htp.ITnews.Infrastructure.MappingProfiles
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dest => dest.Content, opt => opt.MapFrom(src => src.Content))
                 .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.Category.Id))
+                .ForMember(dest => dest.CategoryTitle, opt => opt.MapFrom(src => src.Category.Title))
                 .ForAllOtherMembers(opt => opt.Ignore());
         }
 

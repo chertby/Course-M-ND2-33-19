@@ -15,7 +15,6 @@ namespace Htp.ITnews.Data.EntityFramework
 
         public new async Task<IEnumerable<News>> GetAllAsync()
         {
-            var dbSet = dbContext.News;
             var result = await dbSet
                 .AsNoTracking()
                 .Include(x => x.Category)
@@ -26,16 +25,15 @@ namespace Htp.ITnews.Data.EntityFramework
 
         public new async Task<News> GetAsync(Guid id)
         {
-            var dbSet = dbContext.News;
             var result = await dbSet.FindAsync(id);
 
             await dbContext.Entry(result)
                 .Reference(b => b.Category)
                 .LoadAsync();
 
-            //await DbContext.Entry(book)
-                //.Reference(b => b.UpdatedBy)
-                //.LoadAsync();
+            //await dbContext.Entry(book)
+            //.Reference(b => b.UpdatedBy)
+            //.LoadAsync();
 
             return result;
         }

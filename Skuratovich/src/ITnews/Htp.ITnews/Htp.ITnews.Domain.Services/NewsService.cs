@@ -12,30 +12,27 @@ namespace Htp.ITnews.Domain.Services
 {
     public class NewsService : INewsService
     {
-        //private readonly INewsRepository newsRepository;
+        private readonly INewsRepository newsRepository;
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
 
-        //public NewsService(INewsRepository newsRepository, IUnitOfWork unitOfWork, IMapper mapper)
-        public NewsService(IUnitOfWork unitOfWork, IMapper mapper)
+        public NewsService(INewsRepository newsRepository, IUnitOfWork unitOfWork, IMapper mapper)
         {
-            //this.newsRepository = newsRepository;
+            this.newsRepository = newsRepository;
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
         }
 
         public async Task<IEnumerable<NewsViewModel>> GetAllAsync()
         {
-            //var news = await newsRepository.GetAllAsync();
-            var news = await unitOfWork.NewsRepository.GetAllAsync();
+            var news = await newsRepository.GetAllAsync();
             var result = mapper.Map<IEnumerable<NewsViewModel>>(news);
             return result;
         }
 
         public async Task<NewsViewModel> GetAsync(Guid id)
         {
-            //var news = await newsRepository.GetAsync(id);
-            var news = await unitOfWork.NewsRepository.GetAsync(id);
+            var news = await newsRepository.GetAsync(id);
             var result = mapper.Map<NewsViewModel>(news);
             return result;
         }
@@ -49,8 +46,7 @@ namespace Htp.ITnews.Domain.Services
                 try
                 {
                     news.Category = await unitOfWork.Repository<Category>().GetAsync(news.Category.Id);
-                    //await newsRepository.AddAsync(news);
-                    await unitOfWork.NewsRepository.AddAsync(news);
+                    await newsRepository.AddAsync(news);
                     await unitOfWork.SaveChangesAsync();
                     transaction.Commit();
 
@@ -72,9 +68,8 @@ namespace Htp.ITnews.Domain.Services
             {
                 try
                 {
-                    //var news = await newsRepository.GetAsync(newsViewModel.Id);
-                    var news = await unitOfWork.NewsRepository.GetAsync(newsViewModel.Id);
-                    news = mapper.Map<News>(newsViewModel);
+                    var news = await newsRepository.GetAsync(newsViewModel.Id);
+                    mapper.Map(newsViewModel, news);
                     //        if (book.UpdatedBy != null)
                     //        {
                     //            var updatedBefore = unitOfWork.Repository<AppUser>().Get(book.UpdatedBy.Id);
@@ -91,10 +86,9 @@ namespace Htp.ITnews.Domain.Services
                     //        transaction.Commit();
                     //        return true;
 
-                    //news.Category = await unitOfWork.Repository<Category>().GetAsync(news.Category.Id);
+                    news.Category = await unitOfWork.Repository<Category>().GetAsync(news.Category.Id);
 
-                    //await newsRepository.EditAsync(news);
-                    //await unitOfWork.NewsRepository.EditAsync(news);
+                    await newsRepository.EditAsync(news);
                     await unitOfWork.SaveChangesAsync();
                     transaction.Commit();
 

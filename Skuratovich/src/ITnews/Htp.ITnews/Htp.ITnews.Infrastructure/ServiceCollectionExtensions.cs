@@ -24,8 +24,7 @@ namespace Htp.ITnews.Infrastructure
                 .UseSqlite($"Filename={wanted_path}/{connectionString}"));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            //services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            //services.AddScoped<INewsRepository, NewsRepository>();
+            services.AddScoped<INewsRepository, NewsRepository>();
         }
 
         public static void AppDomainServices(this IServiceCollection services)
@@ -35,8 +34,6 @@ namespace Htp.ITnews.Infrastructure
 
         public static void ConfigureIdentity(this IServiceCollection services)
         {
-            //services.AddDefaultIdentity<UserViewModel>()
-            //services.AddIdentity<UserViewModel, IdentityRole<Guid>>()
             services.AddIdentity<UserViewModel, IdentityRole<Guid>>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();

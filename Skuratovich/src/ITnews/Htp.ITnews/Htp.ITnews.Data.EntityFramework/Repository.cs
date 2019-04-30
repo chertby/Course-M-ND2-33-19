@@ -10,21 +10,22 @@ namespace Htp.ITnews.Data.EntityFramework
     {
         protected ApplicationDbContext dbContext;
 
+        protected DbSet<TEntity> dbSet;
+
         public Repository(ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;
+            dbSet = dbContext.Set<TEntity>();
         }
 
         public async Task<TEntity> AddAsync(TEntity entity)
         {
-            var dbSet = dbContext.Set<TEntity>();
             await dbSet.AddAsync(entity);
             return entity;
         }
 
         public Task<TEntity> EditAsync(TEntity entity)
         {
-            var dbSet = dbContext.Set<TEntity>();
             dbSet.Update(entity);
             return Task.FromResult(entity);
         }
@@ -36,14 +37,12 @@ namespace Htp.ITnews.Data.EntityFramework
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            var dbSet = dbContext.Set<TEntity>();
             var result = await dbSet.ToListAsync();
             return result;
         }
 
         public async Task<TEntity> GetAsync(Guid id)
         {
-            var dbSet = dbContext.Set<TEntity>();
             var result = await dbSet.FindAsync(id);
             return result;
         }
