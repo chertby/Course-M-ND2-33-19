@@ -44,7 +44,7 @@ namespace Htp.ITnews.Web
             services.ConfigureIdentity();
             services.ConfigureCookie();
             services.AddAutoMapper();
-
+           
             services.ConfigureRequestLocalization();
 
             services.AddMvc()

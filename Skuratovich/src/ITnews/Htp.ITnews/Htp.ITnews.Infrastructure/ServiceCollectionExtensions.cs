@@ -30,13 +30,17 @@ namespace Htp.ITnews.Infrastructure
         public static void AppDomainServices(this IServiceCollection services)
         {
             services.AddScoped<INewsService, NewsService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ISignInService, SignInService>();
         }
 
         public static void ConfigureIdentity(this IServiceCollection services)
         {
-            services.AddIdentity<UserViewModel, IdentityRole<Guid>>()
+            //services.AddIdentity<UserViewModel, IdentityRole<Guid>>()
+            services.AddIdentity<AppUser, IdentityRole<Guid>>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             // https://docs.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-2.2&tabs=visual-studio
 
