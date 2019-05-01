@@ -9,7 +9,9 @@ using Htp.ITnews.Domain.Contracts.ViewModels;
 using Htp.ITnews.Domain.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Htp.ITnews.Infrastructure
@@ -27,11 +29,20 @@ namespace Htp.ITnews.Infrastructure
             services.AddScoped<INewsRepository, NewsRepository>();
         }
 
-        public static void AppDomainServices(this IServiceCollection services)
+        public static void AppDomainServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<INewsService, NewsService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ISignInService, SignInService>();
+            services.AddTransient<IEmailSender, EmailSender>(x => 
+                new EmailSender(
+                    configuration["EmailSender:Host"],
+                    configuration.GetValue<int>("EmailSender:Port"),
+                    configuration.GetValue<bool>("EmailSender:EnableSSL"),
+                    configuration["EmailSender:UserName"],
+                    configuration["EmailSender:Password"]
+                )
+            );
         }
 
         public static void ConfigureIdentity(this IServiceCollection services)
@@ -65,7 +76,7 @@ namespace Htp.ITnews.Infrastructure
                 options.User.RequireUniqueEmail = true;
 
                 // SignIn settings.
-                //options.SignIn.RequireConfirmedEmail = true;
+                options.SignIn.RequireConfirmedEmail = true;
                 // https://docs.microsoft.com/en-us/aspnet/core/security/authentication/accconfirm?view=aspnetcore-2.2&tabs=visual-studio
             });
         }

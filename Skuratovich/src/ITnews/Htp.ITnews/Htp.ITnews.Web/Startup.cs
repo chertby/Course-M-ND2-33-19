@@ -40,7 +40,7 @@ namespace Htp.ITnews.Web
             });
 
             services.AddDataAccessServices(Configuration.GetConnectionString("DefaultConnection"));
-            services.AppDomainServices();
+            services.AppDomainServices(Configuration);
             services.ConfigureIdentity();
             services.ConfigureCookie();
             services.AddAutoMapper();

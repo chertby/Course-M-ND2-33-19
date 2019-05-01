@@ -15,6 +15,10 @@ namespace Htp.ITnews.Domain.Contracts
         Task<String> GetUserNameAsync(UserViewModel userViewModel);
         Task<String> GetEmailAsync(UserViewModel userViewModel);
         Task<String> GetPhoneNumberAsync(UserViewModel userViewModel);
-        Task<Boolean> IsEmailConfirmedAsync(UserViewModel userViewModel)
+        Task<Boolean> IsEmailConfirmedAsync(UserViewModel userViewModel);
+        Task<IdentityResult> SetEmailAsync(UserViewModel userViewModel, String emai);
+        Task<String> GetUserIdAsync(UserViewModel userViewModel);
+        Task<IdentityResult> SetPhoneNumberAsync(UserViewModel userViewModel, String phoneNumber);
+        Task<IdentityResult> UpdateAsync(UserViewModel userViewModel);
     }
 }

@@ -35,7 +35,6 @@ namespace Htp.ITnews.Domain.Services
 
         public async Task<string> GenerateEmailConfirmationTokenAsync(UserViewModel userViewModel)
         {
-            // TODO: get user from db by Id
             var user = await userManager.FindByIdAsync(userViewModel.Id.ToString());
             //var user = mapper.Map<AppUser>(userViewModel);
             var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -84,6 +83,35 @@ namespace Htp.ITnews.Domain.Services
             // TODO: get user from database
             var user = mapper.Map<AppUser>(userViewModel);
             var result = await userManager.IsEmailConfirmedAsync(user);
+            return result;
+        }
+
+        public async Task<IdentityResult> SetEmailAsync(UserViewModel userViewModel, String emai)
+        {
+            var user = mapper.Map<AppUser>(userViewModel);
+            var result = await userManager.SetEmailAsync(user, emai);
+            return result;
+        }
+
+        public async Task<String> GetUserIdAsync(UserViewModel userViewModel)
+        {
+            var user = mapper.Map<AppUser>(userViewModel);
+            var result = await userManager.GetUserIdAsync(user);
+            return result;
+        }
+
+        public async Task<IdentityResult> SetPhoneNumberAsync(UserViewModel userViewModel, String phoneNumber)
+        {
+            var user = mapper.Map<AppUser>(userViewModel);
+            var result = await userManager.SetPhoneNumberAsync(user, phoneNumber);
+            return result;
+        }
+
+        public async Task<IdentityResult> UpdateAsync(UserViewModel userViewModel)
+        {
+            var user = await userManager.FindByIdAsync(userViewModel.Id.ToString());
+            mapper.Map(userViewModel, user);
+            var result = await userManager.UpdateAsync(user);
             return result;
         }
     }

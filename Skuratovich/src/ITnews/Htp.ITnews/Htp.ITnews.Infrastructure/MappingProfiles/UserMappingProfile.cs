@@ -30,6 +30,8 @@ namespace Htp.ITnews.Infrastructure.MappingProfiles
                 .ForMember(dest => dest.SecurityStamp, c => c.MapFrom(src => src.SecurityStamp))
                 .ForMember(dest => dest.TwoFactorEnabled, c => c.MapFrom(src => src.TwoFactorEnabled))
                 .ForMember(dest => dest.UserName, c => c.MapFrom(src => src.UserName))
+                .ForMember(dest => dest.FirstName, c => c.MapFrom(src => src.FirstName))
+                .ForMember(dest => dest.LastName, c => c.MapFrom(src => src.LastName))
                 .ForAllOtherMembers(c => c.Ignore());
         }
 
@@ -51,6 +53,8 @@ namespace Htp.ITnews.Infrastructure.MappingProfiles
                 .ForMember(dest => dest.SecurityStamp, c => c.MapFrom(src => src.SecurityStamp))
                 .ForMember(dest => dest.TwoFactorEnabled, c => c.MapFrom(src => src.TwoFactorEnabled))
                 .ForMember(dest => dest.UserName, c => c.MapFrom(src => src.UserName))
+                .ForMember(dest => dest.FirstName, c => c.MapFrom(src => src.FirstName))
+                .ForMember(dest => dest.LastName, c => c.MapFrom(src => src.LastName))
                 .ForAllOtherMembers(c => c.Ignore());
         }
     }

@@ -39,5 +39,22 @@ namespace Htp.ITnews.Domain.Services
             var result = signInManager.IsSignedIn(principal);
             return result;
         }
+
+        public async Task RefreshSignInAsync(UserViewModel userViewModel)
+        {
+            var user = mapper.Map<AppUser>(userViewModel);
+            await signInManager.RefreshSignInAsync(user);
+        }
+
+        public async Task<SignInResult> PasswordSignInAsync(String userName, String password, Boolean isPersistent, Boolean lockoutOnFailure)
+        {
+            var result = await signInManager.PasswordSignInAsync(userName, password, isPersistent, lockoutOnFailure);
+            return result;
+        }
+
+        public async Task SignOutAsync()
+        {
+            await signInManager.SignOutAsync();
+        }
     }
 }
