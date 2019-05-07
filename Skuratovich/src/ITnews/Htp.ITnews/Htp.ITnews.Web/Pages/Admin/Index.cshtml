@@ -1,0 +1,28 @@
+﻿@page
+@using System.Globalization
+@using Microsoft.AspNetCore.Authorization
+@using Htp.ITnews.Web.Authorization.Requirements
+@inject IAuthorizationService AuthorizationService
+@model IndexModel
+@{
+    ViewData["Title"] = Localizer.Text("Admin page");
+}
+
+<h2>@Localizer.Text("Users")</h2>
+<hr />
+
+<table class="table">
+    @foreach (var user in Model.Users)
+    {
+        <tr>
+            <td>@user.Email</td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@user.Id">@Localizer.Text("Edit")</a>
+            </td>
+        </tr>
+    }
+</table>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

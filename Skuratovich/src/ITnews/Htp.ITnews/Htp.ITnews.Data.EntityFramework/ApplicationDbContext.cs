@@ -15,11 +15,11 @@ namespace Htp.ITnews.Data.EntityFramework
 
         // cd Projects/Course-M-ND2-33-19/Skuratovich/src/ITnews/Htp.ITnews/Htp.ITnews.Data.EntityFramework/
         //
-        // dotnet ef migrations add InitialCreate --startup-project /users/user/Projects/Course-M-ND2-33-19/Skuratovich/src/ITnews/Htp.ITnews/Htp.ITnews.Web/Htp.ITnews.Web.csproj
+        // dotnet ef migrations add InitialCreate --startup-project /users/user/Projects/Course-M-ND2-33-19/Skuratovich/src/ITnews/Htp.ITnews/Htp.ITnews.Web/Htp.ITnews.Web.csproj -v
         // dotnet ef migrations add InitialCreate
         //
         // dotnet ef database update
-        // dotnet ef database update --startup-project /users/user/Projects/Course-M-ND2-33-19/Skuratovich/src/ITnews/Htp.ITnews/Htp.ITnews.Web/Htp.ITnews.Web.csproj
+        // dotnet ef database update --startup-project /users/user/Projects/Course-M-ND2-33-19/Skuratovich/src/ITnews/Htp.ITnews/Htp.ITnews.Web/Htp.ITnews.Web.csproj -v
 
         public DbSet<News> News { get; set; }
         public DbSet<Comment> Comments { get; set; }

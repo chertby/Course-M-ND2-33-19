@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -36,7 +39,6 @@ namespace Htp.ITnews.Domain.Services
         public async Task<string> GenerateEmailConfirmationTokenAsync(UserViewModel userViewModel)
         {
             var user = await userManager.FindByIdAsync(userViewModel.Id.ToString());
-            //var user = mapper.Map<AppUser>(userViewModel);
             var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
             return code;
         }
@@ -112,6 +114,41 @@ namespace Htp.ITnews.Domain.Services
             var user = await userManager.FindByIdAsync(userViewModel.Id.ToString());
             mapper.Map(userViewModel, user);
             var result = await userManager.UpdateAsync(user);
+            return result;
+        }
+
+        public Task<IEnumerable<UserViewModel>> GetAllUsersAsync()
+        {
+            var users = userManager.Users.ToList();
+            var result = mapper.Map<IEnumerable<UserViewModel>>(users);
+            return Task.FromResult(result);
+        }
+
+        public async Task<UserViewModel> FindByIdAsync(Guid id)
+        {
+            var user = await userManager.FindByIdAsync(id.ToString());
+            var result = mapper.Map<UserViewModel>(user);
+            return result;
+        }
+
+        public async Task<IEnumerable<string>> GetRolesAsync(UserViewModel userViewModel)
+        {
+            var user = await userManager.FindByIdAsync(userViewModel.Id.ToString());
+            var result = await userManager.GetRolesAsync(user);
+            return result;
+        }
+
+        public async Task<IdentityResult> AddToRolesAsync(UserViewModel userViewModel, IEnumerable<string> roles)
+        {
+            var user = await userManager.FindByIdAsync(userViewModel.Id.ToString());
+            var result = await userManager.AddToRolesAsync(user, roles);
+            return result;
+        }
+
+        public async Task<IdentityResult> RemoveFromRolesAsync(UserViewModel userViewModel, IEnumerable<string> roles)
+        {
+            var user = await userManager.FindByIdAsync(userViewModel.Id.ToString());
+            var result = await userManager.RemoveFromRolesAsync(user, roles);
             return result;
         }
     }

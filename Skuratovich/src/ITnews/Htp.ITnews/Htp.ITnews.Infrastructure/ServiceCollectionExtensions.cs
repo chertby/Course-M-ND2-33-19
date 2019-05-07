@@ -33,6 +33,7 @@ namespace Htp.ITnews.Infrastructure
         {
             services.AddScoped<INewsService, NewsService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<ISignInService, SignInService>();
             services.AddTransient<IEmailSender, EmailSender>(x => 
                 new EmailSender(
@@ -87,7 +88,7 @@ namespace Htp.ITnews.Infrastructure
             {
                 // Cookie settings
                 options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+                options.ExpireTimeSpan = TimeSpan.FromHours(2);
 
                 options.LoginPath = "/Identity/Account/Login";
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
@@ -97,16 +98,6 @@ namespace Htp.ITnews.Infrastructure
 
         public static void AddAutoMapper(this IServiceCollection services)
         {
-            ////// Auto Mapper Configurations
-            //var mappingConfig = new MapperConfiguration(cfg =>
-            //{
-            //    // Add all profiles in current assembly
-            //    cfg.AddMaps(typeof(ServiceCollectionExtensions).Assembly);
-            //});
-
-            //IMapper mapper = mappingConfig.CreateMapper();
-            //services.AddSingleton(mapper);
-
             services.AddAutoMapper(typeof(ServiceCollectionExtensions).Assembly);
         }
 

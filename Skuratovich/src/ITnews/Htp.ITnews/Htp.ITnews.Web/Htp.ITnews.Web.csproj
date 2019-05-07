@@ -22,6 +22,10 @@
     <Folder Include="Pages\News\" />
     <Folder Include="Utilities\" />
     <Folder Include="Resources\" />
+    <Folder Include="Authorization\" />
+    <Folder Include="Authorization\Requirements\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Pages\Admin\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Resources\ViewResource.Designer.cs" />

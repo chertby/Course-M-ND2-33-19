@@ -168,5 +168,30 @@ namespace Htp.ITnews.Web.Areas.Identity.Pages.Account.Manage
             StatusMessage = "Verification email sent. Please check your email.";
             return RedirectToPage();
         }
+
+        public async Task<IActionResult> OnPostUpdateValue(string name, string value)
+        {
+            var success = false;
+            var msg = "";
+
+            var user = await userService.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{userService.GetUserId(User)}'.");
+            }
+
+            try
+            {
+                user.GetType().GetProperty(name).SetValue(user, value);
+                await userService.UpdateAsync(user);
+                success = true;
+            }
+            catch
+            {
+                msg = "server error";
+            }
+            var response = new { value = value, success = success, msg = msg };
+            return new JsonResult(response);
+        }
     }
 }

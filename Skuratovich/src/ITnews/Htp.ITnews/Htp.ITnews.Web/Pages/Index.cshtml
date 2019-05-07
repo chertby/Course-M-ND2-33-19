@@ -1,4 +1,11 @@
 ﻿@page
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Model.HttpContext).RequestToken;
+    }
+}
 @model IndexModel
 @{
     ViewData["Title"] = "News";
@@ -8,3 +15,79 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<div class="text-center">
+    <a href="#" id="firstname" data-title="Enter First Name">123</a>
+    @*<p class="editable-text-full card-text example" data-test="yep" data-id="123" data-propertyname="FirstName">Click this text to edit it.</p>*@
+    <form method="post"></form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    @*<script src="https://www.appelsiini.net/download/jquery.jeditable.js"></script>
+            <script>
+        $(document).ready(function () {
+                    var oldValue = '';
+                    $('.editable-text-full').editable('Index?handler=SaveFirstName', {
+                        ajaxoptions: {
+                            headers: { "RequestVerificationToken": '@GetAntiXsrfRequestToken()' }},
+                                cssclass: 'jeditForm',
+                            tooltip: 'click to edit me...',
+                            width: 'none',
+                            height: 'none',
+                            onsubmit: function (settings, original) {
+                                oldValue = original.revert;
+                            },
+                            submitdata: function () {
+                                return {
+                                    id: $(this).data('id'),
+                                    PropertyName: $(this).data('propertyname')
+                                }
+                            },
+                            callback: function (value, settings) {
+                                var jsonData = $.parseJSON(value);
+                                if (jsonData.status) {
+                                    $(this).text(jsonData.value);
+                                }
+                                else {
+                                    $(this).text(oldValue);
+                                }
+                            }
+                        })
+                })</script>*@
+
+    <!-- x-editable (bootstrap version) -->
+    <link href="~/lib/bootstrap4-editable/css/bootstrap-editable.css" rel="stylesheet" />
+    <script src="~/lib/bootstrap4-editable/js/bootstrap-editable.min.js"></script>
+
+    <script>
+$(document).ready(function () {
+                //turn to inline mode
+                $.fn.editable.defaults.mode = 'inline';
+                $('#firstname').editable({
+                    ajaxOptions: {
+                        type: 'post',
+                        headers: { "RequestVerificationToken": '@GetAntiXsrfRequestToken()' }
+                    },
+                    type: 'text',
+                    pk: 1,
+                    url: 'Index?handler=UpdateValue',
+                    success: function (response, newValue) {
+                        if (response.success) {
+                            return {newValue: response.value};
+                        }
+                        else {
+                            return response.msg; //msg will be shown in editable form
+                        }
+                    },
+                    error: function(response, newValue) {
+                        if(response.status === 500) {
+                            return 'Service unavailable. Please try later.';
+                        } else {
+                            return response.responseText;
+                         }
+                    }
+                });
+            });</script>
+}

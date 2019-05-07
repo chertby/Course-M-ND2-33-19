@@ -17,6 +17,10 @@ using Htp.ITnews.Web.Utilities;
 using Htp.ITnews.Web.Resources;
 using System.Reflection;
 using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Authorization;
+using Htp.ITnews.Web.Authorization.Requirements;
+using Htp.ITnews.Web.Authorization;
 
 namespace Htp.ITnews.Web
 {
@@ -47,7 +51,30 @@ namespace Htp.ITnews.Web
            
             services.ConfigureRequestLocalization();
 
-            services.AddMvc()
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RequireAdministratorRole",
+                    policy => policy.RequireRole("Administrator"));
+                //options.AddPolicy("EditDelete", policy =>
+                //{
+                //    //policy.RequireRole("Writer");
+                //    policy.Requirements.Add(new EditPermission());
+                //    //policy.Requirements.Add(new DeletePermission());
+                //});
+                options.AddPolicy("EditPolicy", policy =>
+                    policy.Requirements.Add(new SameAuthorRequirement()));
+            });
+
+            services.AddSingleton<IAuthorizationHandler, IsAuthorAuthorizationHandler>();
+            //services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
+
+            services.AddMvc(config =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                         .RequireAuthenticatedUser()
+                         .Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddViewLocalization(options => options.ResourcesPath = "Resources")
                 .AddModelBindingMessagesLocalizer(services)
@@ -61,11 +88,15 @@ namespace Htp.ITnews.Web
                 })
                 .AddRazorPagesOptions(options => {
                     options.Conventions.Add(new CultureTemplateRouteModelConvention());
+                })
+                .AddRazorPagesOptions(options =>
+                {
+                    //options.Conventions.AddPageRoute("/News", "");
+                    //options.Conventions.AuthorizeFolder("/Admin", "RequireAdministratorRole");
+                    options.Conventions.AllowAnonymousToPage("/Index");
+                    options.Conventions.AllowAnonymousToPage("/Identity/Account/Login");
+                    options.Conventions.AllowAnonymousToPage("/Identity/Account/Register");
                 });
-            //.AddRazorPagesOptions(options =>
-            //{
-            //    options.Conventions.AddPageRoute("/News", "");
-            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

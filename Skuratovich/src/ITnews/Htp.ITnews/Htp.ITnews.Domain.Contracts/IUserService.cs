@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Htp.ITnews.Domain.Contracts.ViewModels;
@@ -20,5 +21,10 @@ namespace Htp.ITnews.Domain.Contracts
         Task<String> GetUserIdAsync(UserViewModel userViewModel);
         Task<IdentityResult> SetPhoneNumberAsync(UserViewModel userViewModel, String phoneNumber);
         Task<IdentityResult> UpdateAsync(UserViewModel userViewModel);
+        Task<IEnumerable<UserViewModel>> GetAllUsersAsync();
+        Task<UserViewModel> FindByIdAsync(Guid id);
+        Task<IEnumerable<string>> GetRolesAsync(UserViewModel userViewModel);
+        Task<IdentityResult> AddToRolesAsync(UserViewModel userViewModel, IEnumerable<string> roles);
+        Task<IdentityResult> RemoveFromRolesAsync(UserViewModel userViewModel, IEnumerable<string> roles);
     }
 }

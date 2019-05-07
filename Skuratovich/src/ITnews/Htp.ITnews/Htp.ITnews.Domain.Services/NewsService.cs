@@ -100,13 +100,9 @@ namespace Htp.ITnews.Domain.Services
 
         public async Task<List<SelectListItem>> GetСategoriesAsync()
         {
-            var categories = new List<SelectListItem>();
-
-            foreach (var category in await unitOfWork.Repository<Category>().GetAllAsync())
-            {
-                categories.Add(new SelectListItem() { Value = category.Id.ToString(), Text = category.Title });
-            }
-            return categories;
+            var categories = await unitOfWork.Repository<Category>().GetAllAsync();
+            var result = mapper.Map<List<SelectListItem>>(categories);
+            return result;
         }
 
         public async Task DeleteAsync(Guid id)

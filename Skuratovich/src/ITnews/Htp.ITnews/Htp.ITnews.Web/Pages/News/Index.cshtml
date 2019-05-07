@@ -1,5 +1,8 @@
 ﻿@page
 @using System.Globalization
+@using Microsoft.AspNetCore.Authorization
+@using Htp.ITnews.Web.Authorization.Requirements
+@inject IAuthorizationService AuthorizationService
 @model IndexModel
 @{
     ViewData["Title"] = Localizer.Text("News");
@@ -27,19 +30,22 @@
     <tbody>
         @foreach (var item in Model.News)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryTitle)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">@Localizer.Text("Edit")</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">@Localizer.Text("Details")</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">@Localizer.Text("Delete")</a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryTitle)
+                </td>
+                <td>
+                    @*@if ((await AuthorizationService.AuthorizeAsync(User, item, new SameAuthorRequirement())).Succeeded)
+        {*@
+                    <a asp-page="./Edit" asp-route-id="@item.Id">@Localizer.Text("Edit")</a>
+                    @*}*@
+                    <a asp-page="./Details" asp-route-id="@item.Id">@Localizer.Text("Details")</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Id">@Localizer.Text("Delete")</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
