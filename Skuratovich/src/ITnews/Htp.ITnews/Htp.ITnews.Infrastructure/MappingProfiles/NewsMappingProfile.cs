@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
 using Htp.ITnews.Data.Contracts.Entities;
 using Htp.ITnews.Domain.Contracts.ViewModels;
 
@@ -21,8 +23,25 @@ namespace Htp.ITnews.Infrastructure.MappingProfiles
                 .ForMember(dest => dest.Content, opt => opt.MapFrom(src => src.Content))
                 .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.Category.Id))
                 .ForMember(dest => dest.CategoryTitle, opt => opt.MapFrom(src => src.Category.Title))
+                .ForMember(dest => dest.AuthorId, opt => opt.MapFrom(src => src.Author.Id))
+                .ForMember(dest => dest.AuthorUserName, opt => opt.MapFrom(src => src.Author.UserName))
+                .ForMember(dest => dest.Created, opt => opt.MapFrom(src => src.Created))
+                .ForMember(dest => dest.UpdatedById, opt => opt.MapFrom(src => src.UpdatedBy.Id))
+                .ForMember(dest => dest.UpdatedByUserName, opt => opt.MapFrom(src => src.UpdatedBy.UserName))
+                .ForMember(dest => dest.Updated, opt => opt.MapFrom(src => src.Updated))
+                //.ForMember(dest => dest.Tags, opt => opt.MapFrom(src => GetTagsString(src.NewsTags)))
+
                 .ForAllOtherMembers(opt => opt.Ignore());
         }
+
+        //private string GetTagsString(IEnumerable<string> tags)
+        //{
+        //    //if ((tags == null) || (!tags.Any()))
+        //        //return "";
+
+        //    var result = string.Join(",", tags);
+        //    return result;
+        //}
 
         private void MapNewsViewModelToNews()
         {
@@ -31,6 +50,8 @@ namespace Htp.ITnews.Infrastructure.MappingProfiles
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dest => dest.Content, opt => opt.MapFrom(src => src.Content))
                 //.ForPath(dest => dest.Category.Id, opt => opt.MapFrom(src => src.CategoryId))
+                //.ForMember(dest => dest.Created, opt => opt.MapFrom(src => src.Created))
+                //.ForMember(dest => dest.Updated, opt => opt.MapFrom(src => src.Updated))
                 .ForAllOtherMembers(opt => opt.Ignore());
         }
     }

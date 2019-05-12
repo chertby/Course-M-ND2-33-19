@@ -15,5 +15,9 @@ namespace Htp.ITnews.Domain.Contracts
         Task DeleteAsync(Guid id);
 
         Task<List<SelectListItem>> GetСategoriesAsync();
+
+        Task<IList<string>> GetTagsAsync(Guid newsId);
+        Task AddToTagsAsync(Guid newsId, params string[] tags);
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using AutoMapper;
 using Htp.ITnews.Data.Contracts;
@@ -46,8 +47,19 @@ namespace Htp.ITnews.Domain.Services
                 try
                 {
                     news.Category = await unitOfWork.Repository<Category>().GetAsync(newsViewModel.CategoryId);
+                    news.Author = await unitOfWork.Repository<AppUser>().GetAsync(newsViewModel.AuthorId);
+                    news.Created = DateTime.Now;
                     await newsRepository.AddAsync(news);
+
                     await unitOfWork.SaveChangesAsync();
+
+                    if (!string.IsNullOrEmpty(newsViewModel.Tags))
+                    {
+                        var addedTags = newsViewModel.Tags.Split(",");
+                        await AddToTagsAsync(news.Id, addedTags);
+                        await unitOfWork.SaveChangesAsync();
+                    }
+
                     transaction.Commit();
 
                     newsViewModel = mapper.Map<NewsViewModel>(news);
@@ -71,7 +83,7 @@ namespace Htp.ITnews.Domain.Services
                     var news = await newsRepository.GetAsync(newsViewModel.Id);
                     mapper.Map(newsViewModel, news);
                     var categoryDbSet = unitOfWork.Repository<Category>();
-                    if (news.Category.Id != newsViewModel.CategoryId)
+                    if ((news.Category == null) || (news.Category.Id != newsViewModel.CategoryId))
                     {
                         if (news.Category != null)
                         {
@@ -81,6 +93,19 @@ namespace Htp.ITnews.Domain.Services
                         }
                         var currentCategory = await categoryDbSet.GetAsync(newsViewModel.CategoryId);
                         news.Category = currentCategory;
+                    }
+                    if ((news.UpdatedBy == null) || (news.UpdatedBy.Id != newsViewModel.UpdatedById))
+                    {
+                        var appUserReporitory = unitOfWork.Repository<AppUser>();
+                        if (news.UpdatedBy != null)
+                        {
+                            var updatedBy = await appUserReporitory.GetAsync(news.UpdatedBy.Id);
+                            updatedBy.UpdatedNews.Remove(news);
+                            await appUserReporitory.EditAsync(updatedBy);
+                        }
+                        var newUpdatedBy = await appUserReporitory.GetAsync(newsViewModel.UpdatedById);
+                        news.UpdatedBy = newUpdatedBy;
+                        news.Updated = DateTime.Now;
                     }
 
                     await newsRepository.EditAsync(news);
@@ -123,6 +148,52 @@ namespace Htp.ITnews.Domain.Services
                     throw ex;
                 }
             }
+        }
+
+        /// <summary>
+        ///     Returns the tags for the news
+        /// </summary>
+        /// <param name="newsId"></param>
+        /// <returns></returns>
+        public async Task<IList<string>> GetTagsAsync(Guid newsId)
+        {
+            var news = await newsRepository.GetAsync(newsId);
+            if (news == null)
+            {
+                throw new InvalidOperationException($"UserId not found. No user with this id found {newsId}.");
+            }
+            return await newsRepository.GetTagsAsync(news);
+        }
+
+        /// <summary>
+        /// Method to add news to multiple tags
+        /// </summary>
+        /// <param name="newsId">news id</param>
+        /// <param name="tags">list of tag names</param>
+        /// <returns></returns>
+        public async Task AddToTagsAsync(Guid newsId, params string[] tags)
+        {
+            if (tags == null)
+            {
+                throw new ArgumentNullException(nameof(tags));
+            }
+            var news = await newsRepository.GetAsync(newsId);
+            if (news == null)
+            {
+                throw new InvalidOperationException($"UserId not found. No user with this id found {newsId}.");
+            }
+
+            var newsTags = await newsRepository.GetTagsAsync(news);
+
+            foreach (var t in tags)
+            {
+                if (newsTags.Contains(t))
+                {
+                    throw new ArgumentException("News already has tag. Error when a news is already has a tag");
+                }
+                await newsRepository.AddToTagAsync(news, t);
+            }
+            await newsRepository.EditAsync(news);
         }
     }
 }

@@ -35,6 +35,11 @@ namespace Htp.ITnews.Web.Pages.News
             {
                 return NotFound();
             }
+
+            var newsTags = await newsService.GetTagsAsync(id.GetValueOrDefault());
+
+            NewsViewModel.Tags = string.Join(",", newsTags);
+
             return Page();
         }
     }

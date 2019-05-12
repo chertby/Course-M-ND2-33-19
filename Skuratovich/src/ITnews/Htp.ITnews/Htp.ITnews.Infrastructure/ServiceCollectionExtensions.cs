@@ -27,10 +27,12 @@ namespace Htp.ITnews.Infrastructure
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<INewsRepository, NewsRepository>();
+            services.AddScoped<ITagRepository, TagRepository>();
         }
 
         public static void AppDomainServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddScoped<ITagService, TagService>();
             services.AddScoped<INewsService, NewsService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRoleService, RoleService>();

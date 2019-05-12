@@ -19,12 +19,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="NewsViewModel.Description" class="control-label"></label>
-                <textarea asp-for="NewsViewModel.Description" class="form-control" ></textarea>
+                <textarea asp-for="NewsViewModel.Description" class="form-control"></textarea>
                 <span asp-validation-for="NewsViewModel.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="NewsViewModel.Content" class="control-label"></label>
-                <textarea asp-for="NewsViewModel.Content" class="form-control" ></textarea>
+                <textarea asp-for="NewsViewModel.Content" class="form-control"></textarea>
                 <span asp-validation-for="NewsViewModel.Content" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -36,6 +36,11 @@
                     <span asp-validation-for="NewsViewModel.CategoryId" class="text-danger"></span>
                 </div>
             </div>
+
+            <div style="margin:0 0 1.2em">
+                <textarea asp-for="NewsViewModel.Tags"></textarea>
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -49,4 +54,28 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    @* tagEditor *@
+    @* https://goodies.pixabay.com/jquery/tag-editor/demo.html *@
+    <link href="~/lib/jquery-tageditor/css/jquery.tag-editor.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="~/lib/jquery-tageditor/js/jquery.caret.min.js"></script>
+    <script src="~/lib/jquery-tageditor/js/jquery.tag-editor.js"></script>
+    @*<script src="~/lib/jquery-tageditor/js/jquery.tag-editor.min.js"></script>*@
+
+    <script>
+        $(document).ready(function () {
+            @*$('#demo2').tagEditor({*@
+            $('#NewsViewModel_Tags').tagEditor({
+                autocomplete: {
+                    delay: 0,
+                    position: { collision: 'flip' },
+                    @*source: ['ActionScript', 'AppleScript', 'Asp', 'BASIC', 'C', 'C++', 'CSS'] },*@
+                    @*source: '@Url.Action("Create","News")',*@
+                    source: 'Create?handler=Tags'
+                },
+                forceLowercase: false,
+                placeholder: 'Tags ...'
+            });
+        });</script>
 }

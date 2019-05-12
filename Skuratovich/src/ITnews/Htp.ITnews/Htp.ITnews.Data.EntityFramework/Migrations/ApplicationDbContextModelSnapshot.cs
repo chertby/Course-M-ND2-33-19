@@ -89,27 +89,27 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("6cddc33a-15e6-4b13-b77e-b233b10873cc"),
+                            Id = new Guid("05c9a13f-946a-4ec0-9d8b-95f3a18ad961"),
                             Title = "Java"
                         },
                         new
                         {
-                            Id = new Guid("4256ce51-1d63-4c87-92cb-606cb8617107"),
+                            Id = new Guid("5090278b-c414-4856-8da2-3c845e68a1df"),
                             Title = "C#"
                         },
                         new
                         {
-                            Id = new Guid("5ee9a6b0-c820-440c-b4ba-864f6b983ccf"),
+                            Id = new Guid("3b93c40a-07e1-4988-a563-70bce485086d"),
                             Title = "C++"
                         },
                         new
                         {
-                            Id = new Guid("edfef407-8855-49f5-b80e-495fedad1d16"),
+                            Id = new Guid("612efff5-3883-496f-ad5d-6dbd500f5efa"),
                             Title = "Algorithms"
                         },
                         new
                         {
-                            Id = new Guid("8c4a6d65-f60b-49e7-b18f-e24f4652d488"),
+                            Id = new Guid("0fe2e7bd-556f-4fcf-a9c0-9ddbdd761b19"),
                             Title = "Machine Learning"
                         });
                 });
@@ -232,12 +232,31 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Title")
-                        .IsRequired();
+                    b.Property<string>("Title");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tag");
+                    b.HasIndex("Title")
+                        .IsUnique();
+
+                    b.ToTable("Tags");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("7db4f65c-ff90-492f-ae41-8781c95ce890"),
+                            Title = "C"
+                        },
+                        new
+                        {
+                            Id = new Guid("f0e59075-aa98-4ee7-abd8-e32ff862ca45"),
+                            Title = "C++"
+                        },
+                        new
+                        {
+                            Id = new Guid("b5423bf7-3ee9-40c4-b9d7-45433081f70c"),
+                            Title = "C#"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -265,24 +284,24 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("82756cea-53a4-4be6-90f8-776c028bd05f"),
-                            ConcurrencyStamp = "e270c5c2-bdaf-438a-833c-a19336d9c64a",
+                            Id = new Guid("d5871ab0-8cab-4419-b200-843eeb090290"),
+                            ConcurrencyStamp = "c36b6d3d-1784-45c4-bcc7-cff7b92522af",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = new Guid("984d76af-82dc-4f56-9a8a-034dcb5baa35"),
-                            ConcurrencyStamp = "e49388fc-93ec-4c8c-845a-4726c0663aa1",
+                            Id = new Guid("c0f27d03-e207-4cbd-a181-c8bbf69b6165"),
+                            ConcurrencyStamp = "8966083c-0945-475d-9516-201900af7631",
                             Name = "Writer",
                             NormalizedName = "WRITER"
                         },
                         new
                         {
-                            Id = new Guid("8a707444-f904-4ba6-88e8-0a9b7b2dca36"),
-                            ConcurrencyStamp = "dbdc357d-c958-4a9f-8148-d1df47f6d1b3",
+                            Id = new Guid("6f0ffe9f-c359-40d7-8f4f-0502f2ff33ba"),
+                            ConcurrencyStamp = "24d1e940-dcdd-4882-8517-bd5245fd1d77",
                             Name = "Reader",
-                            NormalizedName = "Reader"
+                            NormalizedName = "READER"
                         });
                 });
 

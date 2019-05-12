@@ -13,11 +13,15 @@ namespace Htp.ITnews.Domain.Contracts.ViewModels
         public string Description { get; set; }
         public string Content { get; set; }
         public Guid AuthorId { get; set; }
+        [Display(Name = "Author")]
+        public string AuthorUserName { get; set; }
         public DateTime Created { get; set; }
-        //public AppUser UpdatedBy { get; set; }
-        //public DateTime Updated { get; set; }
+        public Guid UpdatedById { get; set; }
+        public string UpdatedByUserName { get; set; }
+        public DateTime Updated { get; set; }
         public Guid CategoryId { get; set; }
         [Display(Name = "Category")]
         public string CategoryTitle { get; set; }
+        public string Tags { get; set; }
     }
 }

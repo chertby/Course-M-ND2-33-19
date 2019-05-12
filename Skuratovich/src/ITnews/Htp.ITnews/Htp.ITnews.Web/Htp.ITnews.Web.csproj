@@ -26,8 +26,17 @@
     <Folder Include="Authorization\Requirements\" />
     <Folder Include="Helpers\" />
     <Folder Include="Pages\Admin\" />
+    <Folder Include="Authorization\Handlers\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Resources\ViewResource.Designer.cs" />
+    <Compile Remove="Authorization\Requirements\EditPermission.cs" />
+    <Compile Remove="Authorization\Requirements\Operations.cs" />
+    <Compile Remove="Authorization\PermissionHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\lib\jquery-tageditor\.DS_Store" />
+    <Content Remove="wwwroot\lib\jquery-tageditor\css\.DS_Store" />
+    <Content Remove="wwwroot\lib\jquery-tageditor\js\.DS_Store" />
   </ItemGroup>
 </Project>
