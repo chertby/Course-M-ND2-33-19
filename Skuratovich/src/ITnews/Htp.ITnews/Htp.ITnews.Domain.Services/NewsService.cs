@@ -34,7 +34,6 @@ namespace Htp.ITnews.Domain.Services
             return result;
         }
 
-
         public async Task<NewsViewModel> GetAsync(Guid id)
         {
             var news = await newsRepository.GetAsync(id);
