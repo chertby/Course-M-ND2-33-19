@@ -4,12 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Htp.ITnews.Domain.Contracts;
 using Htp.ITnews.Domain.Contracts.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Htp.ITnews.Web.Pages.News
 {
+    [Authorize(Policy = "EditPolicy")]
     public class DeleteModel : PageModel
     {
         private readonly INewsService newsService;

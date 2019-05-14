@@ -16,4 +16,11 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="2.2.0" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Migrations — копия\20190429112845_InitialCreate.cs" />
+    <Compile Remove="Migrations — копия\20190511093618_EditTags.cs" />
+    <Compile Remove="Migrations — копия\ApplicationDbContextModelSnapshot.cs" />
+    <Compile Remove="Migrations — копия\20190504112320_AddRoles.Designer.cs" />
+    <Compile Remove="Migrations — копия\20190511093618_EditTags.Designer.cs" />
+  </ItemGroup>
 </Project>

@@ -5,7 +5,6 @@ using Htp.ITnews.Data.Contracts;
 using Htp.ITnews.Data.Contracts.Entities;
 using Htp.ITnews.Data.EntityFramework;
 using Htp.ITnews.Domain.Contracts;
-using Htp.ITnews.Domain.Contracts.ViewModels;
 using Htp.ITnews.Domain.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -27,10 +26,12 @@ namespace Htp.ITnews.Infrastructure
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<INewsRepository, NewsRepository>();
+            services.AddScoped<ITagRepository, TagRepository>();
         }
 
         public static void AppDomainServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddScoped<ITagService, TagService>();
             services.AddScoped<INewsService, NewsService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRoleService, RoleService>();
@@ -96,7 +97,7 @@ namespace Htp.ITnews.Infrastructure
             });
         }
 
-        public static void AddAutoMapper(this IServiceCollection services)
+        public static void ConfigureAutoMapper(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(ServiceCollectionExtensions).Assembly);
         }

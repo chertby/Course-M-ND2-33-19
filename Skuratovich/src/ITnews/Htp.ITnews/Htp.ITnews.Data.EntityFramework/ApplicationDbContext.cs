@@ -24,6 +24,8 @@ namespace Htp.ITnews.Data.EntityFramework
         public DbSet<News> News { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Category> Сategories { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<NewsTag> NewsTag { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

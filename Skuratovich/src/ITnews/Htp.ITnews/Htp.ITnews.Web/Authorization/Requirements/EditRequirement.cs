@@ -2,7 +2,7 @@
 
 namespace Htp.ITnews.Web.Authorization.Requirements
 {
-    public class SameAuthorRequirement : IAuthorizationRequirement
+    public class EditRequirement : IAuthorizationRequirement
     {
     }
 }

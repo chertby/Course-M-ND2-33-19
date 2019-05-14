@@ -11,9 +11,22 @@
 <h2>@Localizer.Text("News")</h2>
 <p>@Localizer.Text("Current culture") : @CultureInfo.CurrentCulture.DisplayName (@CultureInfo.CurrentCulture.NativeName)</p>
 
-<p>
-    <a asp-page="Create">@Localizer.Text("Create New")</a>
-</p>
+@if (User.Identity.IsAuthenticated && (User.IsInRole("Administrator") || User.IsInRole("Writer")))
+{
+    <p>
+        <a asp-page="Create">@Localizer.Text("Create New")</a>
+    </p>
+}
+
+@*<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            @Localizer.Text("Find by name"): <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-page="./Index">@Localizer.Text("Back to full List")</a>
+        </p>
+    </div>
+</form>*@
 
 <table class="table">
     <thead>
@@ -23,6 +36,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.News[0].CategoryTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.News[0].AuthorUserName)
             </th>
             <th></th>
         </tr>
@@ -38,17 +54,43 @@
                     @Html.DisplayFor(modelItem => item.CategoryTitle)
                 </td>
                 <td>
-                    @*@if ((await AuthorizationService.AuthorizeAsync(User, item, new SameAuthorRequirement())).Succeeded)
-        {*@
-                    <a asp-page="./Edit" asp-route-id="@item.Id">@Localizer.Text("Edit")</a>
-                    @*}*@
-                    <a asp-page="./Details" asp-route-id="@item.Id">@Localizer.Text("Details")</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.Id">@Localizer.Text("Delete")</a>
+                    @Html.DisplayFor(modelItem => item.AuthorUserName)
+                </td>
+                <td>
+                    @if ((await AuthorizationService.AuthorizeAsync(User, item, new EditRequirement())).Succeeded)
+                    {
+                        <span><a asp-page="./Edit" asp-route-id="@item.Id">@Localizer.Text("Edit")</a> |</span>
+                    }
+                    <a asp-page="./Details" asp-route-id="@item.Id">@Localizer.Text("Details")</a>
+                    @if ((await AuthorizationService.AuthorizeAsync(User, item, new EditRequirement())).Succeeded)
+                    {
+                        <span> | <a asp-page="./Delete" asp-route-id="@item.Id">@Localizer.Text("Delete")</a></span>
+                    }
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+@{
+    var prevDisabled = !Model.News.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.News.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Index"
+   @*asp-route-sortOrder="@Model.CurrentSort"*@
+   asp-route-pageIndex="@(Model.News.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-page="./Index"
+   @*asp-route-sortOrder="@Model.CurrentSort"*@
+   asp-route-pageIndex="@(Model.News.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
 
 @* TODO: Delete, just test
     http://ziyad.info/en/articles/19-Configuring_Client_Side_Validation *@

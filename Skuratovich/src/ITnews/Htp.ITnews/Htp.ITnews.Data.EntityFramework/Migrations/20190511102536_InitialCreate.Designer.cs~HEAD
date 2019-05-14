@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Htp.ITnews.Data.EntityFramework.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190429112845_InitialCreate")]
+    [Migration("20190511102536_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -91,27 +91,27 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4cf5fdfa-8a41-4e9e-9466-8c06bd42d3fc"),
+                            Id = new Guid("05c9a13f-946a-4ec0-9d8b-95f3a18ad961"),
                             Title = "Java"
                         },
                         new
                         {
-                            Id = new Guid("8205e48a-8671-48cb-9be6-2cc2ff7c7250"),
+                            Id = new Guid("5090278b-c414-4856-8da2-3c845e68a1df"),
                             Title = "C#"
                         },
                         new
                         {
-                            Id = new Guid("33459892-64fa-4a15-a8f7-07275c3077df"),
+                            Id = new Guid("3b93c40a-07e1-4988-a563-70bce485086d"),
                             Title = "C++"
                         },
                         new
                         {
-                            Id = new Guid("0931544e-4fd6-4d76-aff1-4cef34903e8a"),
+                            Id = new Guid("612efff5-3883-496f-ad5d-6dbd500f5efa"),
                             Title = "Algorithms"
                         },
                         new
                         {
-                            Id = new Guid("967b30a3-9852-45cb-b33e-efa6876f04d4"),
+                            Id = new Guid("0fe2e7bd-556f-4fcf-a9c0-9ddbdd761b19"),
                             Title = "Machine Learning"
                         });
                 });
@@ -234,12 +234,31 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Title")
-                        .IsRequired();
+                    b.Property<string>("Title");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tag");
+                    b.HasIndex("Title")
+                        .IsUnique();
+
+                    b.ToTable("Tags");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("7db4f65c-ff90-492f-ae41-8781c95ce890"),
+                            Title = "C"
+                        },
+                        new
+                        {
+                            Id = new Guid("f0e59075-aa98-4ee7-abd8-e32ff862ca45"),
+                            Title = "C++"
+                        },
+                        new
+                        {
+                            Id = new Guid("b5423bf7-3ee9-40c4-b9d7-45433081f70c"),
+                            Title = "C#"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -263,6 +282,29 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
                         .HasName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("d5871ab0-8cab-4419-b200-843eeb090290"),
+                            ConcurrencyStamp = "c36b6d3d-1784-45c4-bcc7-cff7b92522af",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        },
+                        new
+                        {
+                            Id = new Guid("c0f27d03-e207-4cbd-a181-c8bbf69b6165"),
+                            ConcurrencyStamp = "8966083c-0945-475d-9516-201900af7631",
+                            Name = "Writer",
+                            NormalizedName = "WRITER"
+                        },
+                        new
+                        {
+                            Id = new Guid("6f0ffe9f-c359-40d7-8f4f-0502f2ff33ba"),
+                            ConcurrencyStamp = "24d1e940-dcdd-4882-8517-bd5245fd1d77",
+                            Name = "Reader",
+                            NormalizedName = "READER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

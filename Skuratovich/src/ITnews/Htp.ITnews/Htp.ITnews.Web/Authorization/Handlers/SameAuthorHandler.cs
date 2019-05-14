@@ -4,16 +4,16 @@ using Htp.ITnews.Web.Authorization.Requirements;
 using Htp.ITnews.Web.Helpers;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Htp.ITnews.Web.Authorization
+namespace Htp.ITnews.Web.Authorization.Handlers
 {
-    public class IsAuthorAuthorizationHandler : AuthorizationHandler<SameAuthorRequirement, IResource>
+    public class SameAuthorHandler : AuthorizationHandler<EditRequirement, IResource>
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
-                                            SameAuthorRequirement requirement,
+                                            EditRequirement requirement,
                                             IResource resource)
         {
 
-            if (context.User.GetUserId() == resource.AuthorId.ToString())
+            if (context.User.GetUserId() == resource.AuthorId)
             {
                 context.Succeed(requirement);
             }

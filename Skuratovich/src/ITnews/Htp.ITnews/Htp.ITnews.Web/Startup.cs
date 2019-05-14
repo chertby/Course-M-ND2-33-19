@@ -1,15 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Htp.ITnews.Infrastructure;
@@ -20,7 +12,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Htp.ITnews.Web.Authorization.Requirements;
-using Htp.ITnews.Web.Authorization;
+using Htp.ITnews.Web.Authorization.Handlers;
 
 namespace Htp.ITnews.Web
 {
@@ -47,7 +39,7 @@ namespace Htp.ITnews.Web
             services.AppDomainServices(Configuration);
             services.ConfigureIdentity();
             services.ConfigureCookie();
-            services.AddAutoMapper();
+            services.ConfigureAutoMapper();
            
             services.ConfigureRequestLocalization();
 
@@ -62,11 +54,11 @@ namespace Htp.ITnews.Web
                 //    //policy.Requirements.Add(new DeletePermission());
                 //});
                 options.AddPolicy("EditPolicy", policy =>
-                    policy.Requirements.Add(new SameAuthorRequirement()));
+                    policy.Requirements.Add(new EditRequirement()));
             });
 
-            services.AddSingleton<IAuthorizationHandler, IsAuthorAuthorizationHandler>();
-            //services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
+            services.AddSingleton<IAuthorizationHandler, SameAuthorHandler>();
+            //services.AddSingleton<IAuthorizationHandler, AdministratorHandler>();
 
             services.AddMvc(config =>
             {
@@ -92,7 +84,7 @@ namespace Htp.ITnews.Web
                 .AddRazorPagesOptions(options =>
                 {
                     //options.Conventions.AddPageRoute("/News", "");
-                    //options.Conventions.AuthorizeFolder("/Admin", "RequireAdministratorRole");
+                    options.Conventions.AuthorizeFolder("/Admin", "RequireAdministratorRole");
                     options.Conventions.AllowAnonymousToPage("/Index");
                     options.Conventions.AllowAnonymousToPage("/Identity/Account/Login");
                     options.Conventions.AllowAnonymousToPage("/Identity/Account/Register");

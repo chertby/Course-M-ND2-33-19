@@ -50,15 +50,15 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tag",
+                name: "Tags",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Title = table.Column<string>(nullable: false)
+                    Title = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tag", x => x.Id);
+                    table.PrimaryKey("PK_Tags", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -272,9 +272,9 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_NewsTag_Tag_TagId",
+                        name: "FK_NewsTag_Tags_TagId",
                         column: x => x.TagId,
-                        principalTable: "Tag",
+                        principalTable: "Tags",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -329,29 +329,59 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Сategories",
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { new Guid("d5871ab0-8cab-4419-b200-843eeb090290"), "c36b6d3d-1784-45c4-bcc7-cff7b92522af", "Administrator", "ADMINISTRATOR" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { new Guid("c0f27d03-e207-4cbd-a181-c8bbf69b6165"), "8966083c-0945-475d-9516-201900af7631", "Writer", "WRITER" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { new Guid("6f0ffe9f-c359-40d7-8f4f-0502f2ff33ba"), "24d1e940-dcdd-4882-8517-bd5245fd1d77", "Reader", "READER" });
+
+            migrationBuilder.InsertData(
+                table: "Tags",
                 columns: new[] { "Id", "Title" },
-                values: new object[] { new Guid("4cf5fdfa-8a41-4e9e-9466-8c06bd42d3fc"), "Java" });
+                values: new object[] { new Guid("7db4f65c-ff90-492f-ae41-8781c95ce890"), "C" });
+
+            migrationBuilder.InsertData(
+                table: "Tags",
+                columns: new[] { "Id", "Title" },
+                values: new object[] { new Guid("f0e59075-aa98-4ee7-abd8-e32ff862ca45"), "C++" });
+
+            migrationBuilder.InsertData(
+                table: "Tags",
+                columns: new[] { "Id", "Title" },
+                values: new object[] { new Guid("b5423bf7-3ee9-40c4-b9d7-45433081f70c"), "C#" });
 
             migrationBuilder.InsertData(
                 table: "Сategories",
                 columns: new[] { "Id", "Title" },
-                values: new object[] { new Guid("8205e48a-8671-48cb-9be6-2cc2ff7c7250"), "C#" });
+                values: new object[] { new Guid("05c9a13f-946a-4ec0-9d8b-95f3a18ad961"), "Java" });
 
             migrationBuilder.InsertData(
                 table: "Сategories",
                 columns: new[] { "Id", "Title" },
-                values: new object[] { new Guid("33459892-64fa-4a15-a8f7-07275c3077df"), "C++" });
+                values: new object[] { new Guid("5090278b-c414-4856-8da2-3c845e68a1df"), "C#" });
 
             migrationBuilder.InsertData(
                 table: "Сategories",
                 columns: new[] { "Id", "Title" },
-                values: new object[] { new Guid("0931544e-4fd6-4d76-aff1-4cef34903e8a"), "Algorithms" });
+                values: new object[] { new Guid("3b93c40a-07e1-4988-a563-70bce485086d"), "C++" });
 
             migrationBuilder.InsertData(
                 table: "Сategories",
                 columns: new[] { "Id", "Title" },
-                values: new object[] { new Guid("967b30a3-9852-45cb-b33e-efa6876f04d4"), "Machine Learning" });
+                values: new object[] { new Guid("612efff5-3883-496f-ad5d-6dbd500f5efa"), "Algorithms" });
+
+            migrationBuilder.InsertData(
+                table: "Сategories",
+                columns: new[] { "Id", "Title" },
+                values: new object[] { new Guid("0fe2e7bd-556f-4fcf-a9c0-9ddbdd761b19"), "Machine Learning" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -434,6 +464,12 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
                 name: "IX_Rating_NewsId",
                 table: "Rating",
                 column: "NewsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tags_Title",
+                table: "Tags",
+                column: "Title",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -469,7 +505,7 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "Tag");
+                name: "Tags");
 
             migrationBuilder.DropTable(
                 name: "News");
