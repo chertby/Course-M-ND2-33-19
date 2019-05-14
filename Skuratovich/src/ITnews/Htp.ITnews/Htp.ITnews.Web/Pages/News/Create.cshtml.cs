@@ -16,14 +16,16 @@ namespace Htp.ITnews.Web.Pages.News
     public class CreateModel : PageModel
     {
         private readonly INewsService newsService;
+        private readonly ITagService tagService;
 
         [BindProperty]
         public NewsViewModel NewsViewModel { get; set; }
         public List<SelectListItem> Сategories { get; private set; }
 
-        public CreateModel(INewsService newsService)
+        public CreateModel(INewsService newsService, ITagService tagService)
         {
             this.newsService = newsService;
+            this.tagService = tagService;
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -44,6 +46,12 @@ namespace Htp.ITnews.Web.Pages.News
             await newsService.AddAsync(NewsViewModel);
 
             return RedirectToPage("./Index");
+        }
+
+        public async Task<IActionResult> OnGetTags(string term)
+        {
+            var tags = await tagService.GetTagsByTermAsync(term);
+            return new JsonResult(tags);
         }
 
         private async Task PopulateLists()
