@@ -24,8 +24,8 @@ namespace Htp.ITnews.Web.Pages.News
         public NewsViewModel NewsViewModel { get; set; }
         public List<SelectListItem> Сategories { get; private set; }
 
-        public EditModel(INewsService newsService, 
-            ITagService tagService, 
+        public EditModel(INewsService newsService,
+            ITagService tagService,
             IAuthorizationService authorizationService)
         {
             this.newsService = newsService;
