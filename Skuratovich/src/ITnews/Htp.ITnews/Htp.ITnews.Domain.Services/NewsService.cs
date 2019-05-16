@@ -56,9 +56,9 @@ namespace Htp.ITnews.Domain.Services
 
                     await unitOfWork.SaveChangesAsync();
 
-                    if (!string.IsNullOrEmpty(newsViewModel.Tags))
+                    if (!string.IsNullOrEmpty(newsViewModel.StringTags))
                     {
-                        var addedTags = newsViewModel.Tags.Split(",");
+                        var addedTags = newsViewModel.StringTags.Split(",");
                         await AddToTagsAsync(news.Id, addedTags);
                         await unitOfWork.SaveChangesAsync();
                     }
@@ -114,7 +114,7 @@ namespace Htp.ITnews.Domain.Services
                     await newsRepository.EditAsync(news);
                     await unitOfWork.SaveChangesAsync();
 
-                    var tags = newsViewModel.Tags.Split(",");
+                    var tags = newsViewModel.StringTags.Split(",");
                     var newsTags = await GetTagsAsync(news.Id);
 
                     var addedTags = tags.Except(newsTags);

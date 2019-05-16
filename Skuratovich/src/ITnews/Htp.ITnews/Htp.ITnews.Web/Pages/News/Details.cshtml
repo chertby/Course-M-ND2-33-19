@@ -1,62 +1,44 @@
 ﻿@page
 @using System.Globalization
 @model DetailsModel
-
-<h1>Details</h1>
+@{
+    ViewData["Title"] = Model.NewsViewModel.Title;
+}
 
 <div>
-    <h4>News</h4>
+    <div>
+        <a>@Model.NewsViewModel.CategoryTitle</a>
+    </div>
+    <div class="page-header">
+        <h1>@Model.NewsViewModel.Title</h1>
+    </div>
+    <div>
+        <div>
+            <a><span>@Model.NewsViewModel.AuthorUserName</span></a>
+            <span>@Model.NewsViewModel.Created</span>
+        </div>
+    </div>
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.NewsViewModel.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.NewsViewModel.Title)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.NewsViewModel.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.NewsViewModel.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.NewsViewModel.CategoryTitle)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.NewsViewModel.CategoryTitle)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.NewsViewModel.AuthorUserName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.NewsViewModel.AuthorUserName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.NewsViewModel.Created)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.NewsViewModel.Created)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.NewsViewModel.UpdatedByUserName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.NewsViewModel.UpdatedByUserName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.NewsViewModel.Updated)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.NewsViewModel.Updated)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.NewsViewModel.Tags)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.NewsViewModel.Tags)
-        </dd>
-    </dl>
+    <div>
+        <div>
+            <strong>@Model.NewsViewModel.Description</strong>
+        </div>
+        <div class="form-group">
+            <textarea readonly asp-for="NewsViewModel.Content" class="form-control"></textarea>
+        </div>
+    </div>
+    <div>
+        <p>@Html.DisplayNameFor(model => model.NewsViewModel.Tags)</p>
+        <ul>
+            @foreach (var item in Model.NewsViewModel.Tags)
+            {
+                <li><a>item.Label</a></li>
+            }
+        </ul>
+
+
+        @Html.DisplayFor(model => model.NewsViewModel.Tags)
+</div>
 </div>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.NewsViewModel.Id">Edit</a> |
@@ -64,5 +46,27 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        @*await Html.RenderPartialAsync("_TagEditorScriptsPartial");*@
+        @*await Html.RenderPartialAsync("_MdScriptsPartial");*@
+
+        @*easymde*@
+        <link href="~/lib/easymde/css/easymde.min.css" rel="stylesheet" />
+        <script src="~/lib/easymde/js/easymde.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/highlight.js/latest/highlight.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/highlight.js/latest/styles/github.min.css">
+
+        <script>var easyMDE = new EasyMDE({
+                element: $('#NewsViewModel_Content')[0],
+                renderingConfig: {
+                    singleLineBreaks: false,
+                    codeSyntaxHighlighting: true,
+                },
+                status: false,
+                toolbar: false,
+                toolbarTips: false,
+            });
+            easyMDE.togglePreview();</script>
+    }
 }

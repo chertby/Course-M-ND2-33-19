@@ -59,12 +59,6 @@ namespace Htp.ITnews.Web.Pages.News
             return new JsonResult(tags);
         }
 
-        public IActionResult OnPostTest()
-        {
-            var msg = "Hello";
-            return new JsonResult(msg);
-        }
-
         public async Task<IActionResult> OnPostFileAsync(IFormFile uploadedFile)
         {
             if (uploadedFile == null)

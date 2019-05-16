@@ -32,7 +32,7 @@ namespace Htp.ITnews.Infrastructure.MappingProfiles
                 .ForMember(dest => dest.Updated, opt => opt.MapFrom(src => src.Updated))
 
                 // TODO: check tags
-                //.ForMember(dest => dest.Tags, opt => opt.MapFrom(src => GetTagsString(src.NewsTags)))
+                //.ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.NewsTags))
 
                 .ForAllOtherMembers(opt => opt.Ignore());
         }

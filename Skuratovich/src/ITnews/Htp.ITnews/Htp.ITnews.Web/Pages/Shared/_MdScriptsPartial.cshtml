@@ -1,20 +1,47 @@
-﻿@* tagEditor *@
-@* https://goodies.pixabay.com/jquery/tag-editor/demo.html *@
-<link href="~/lib/jquery-tageditor/css/jquery.tag-editor.css" rel="stylesheet" />
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="~/lib/jquery-tageditor/js/jquery.caret.min.js"></script>
-<script src="~/lib/jquery-tageditor/js/jquery.tag-editor.min.js"></script>
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Model.HttpContext).RequestToken;
+    }
+}
+
+@*easymde*@
+<link href="~/lib/easymde/css/easymde.min.css" rel="stylesheet" />
+<script src="~/lib/easymde/js/easymde.min.js"></script>
+
+@*inline-attachment*@
+<script src="~/lib/inline-attachment/dist/inline-attachment.min.js"></script>
+<script src="~/lib/inline-attachment/dist/codemirror-4.inline-attachment.min.js"></script>
 
 <script>
-$(document).ready(function () {
-            $('#NewsViewModel_Tags').tagEditor({
-                autocomplete: {
-                    delay: 0,
-                    position: { collision: 'flip' },
-                    source: 'Edit?handler=Tags'
-                },
-                forceLowercase: false,
-                placeholder: 'Tags ...'
-            });
+var easyMDE = new EasyMDE({
+    element: $('#NewsViewModel_Content')[0],
+    showIcons: ["code", "table"]
+    });
+
+        inlineAttachment.editors.codemirror4.attach(easyMDE.codemirror, {
+            uploadUrl: 'Create?handler=File',
+            uploadFieldName: 'uploadedFile',
+            jsonFieldName: 'downloadUrl',
+            progressText: '![Uploading file...]()',
+            extraHeaders: { "RequestVerificationToken": '@GetAntiXsrfRequestToken()' },
+            onFileUploadResponse: function (xhr) {
+                var result = JSON.parse(xhr.responseText),
+                    filename = result[this.settings.jsonFieldName];
+
+                if (result && filename) {
+                    var newValue;
+                    if (typeof this.settings.urlText === 'function') {
+                        newValue = this.settings.urlText.call(this, filename, result);
+                    } else {
+                        newValue = this.settings.urlText.replace(this.filenameTag, filename);
+                    }
+                    var text = this.editor.getValue().replace(this.lastValue, newValue);
+                    this.editor.setValue(text);
+                    this.settings.onFileUploaded.call(this, filename);
+                }
+                return false;
+            }
         });</script>
 

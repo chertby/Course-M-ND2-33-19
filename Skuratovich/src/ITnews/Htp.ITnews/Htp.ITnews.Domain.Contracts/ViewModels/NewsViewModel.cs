@@ -22,6 +22,7 @@ namespace Htp.ITnews.Domain.Contracts.ViewModels
         public Guid CategoryId { get; set; }
         [Display(Name = "Category")]
         public string CategoryTitle { get; set; }
-        public string Tags { get; set; }
+        public string StringTags { get; set; }
+        public IEnumerable<TagViewModel> Tags { get; set; }
     }
 }
