@@ -27,6 +27,10 @@
     <Folder Include="Helpers\" />
     <Folder Include="Pages\Admin\" />
     <Folder Include="Authorization\Handlers\" />
+    <Folder Include="wwwroot\lib\inline-attachment\" />
+    <Folder Include="wwwroot\lib\inline-attachment\dist\" />
+    <Folder Include="wwwroot\files\" />
+    <Folder Include="wwwroot\files\img\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Resources\ViewResource.Designer.cs" />
@@ -38,5 +42,8 @@
     <Content Remove="wwwroot\lib\jquery-tageditor\.DS_Store" />
     <Content Remove="wwwroot\lib\jquery-tageditor\css\.DS_Store" />
     <Content Remove="wwwroot\lib\jquery-tageditor\js\.DS_Store" />
+    <Content Remove="wwwroot\files\img\image-1557997339607.jpeg" />
+    <Content Remove="wwwroot\files\img\image-1557997420023.jpeg" />
+    <Content Remove="wwwroot\files\img\image-1557997562593.jpeg" />
   </ItemGroup>
 </Project>

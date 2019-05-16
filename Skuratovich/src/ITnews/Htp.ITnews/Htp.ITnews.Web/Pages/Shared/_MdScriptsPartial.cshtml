@@ -1,0 +1,20 @@
+﻿@* tagEditor *@
+@* https://goodies.pixabay.com/jquery/tag-editor/demo.html *@
+<link href="~/lib/jquery-tageditor/css/jquery.tag-editor.css" rel="stylesheet" />
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="~/lib/jquery-tageditor/js/jquery.caret.min.js"></script>
+<script src="~/lib/jquery-tageditor/js/jquery.tag-editor.min.js"></script>
+
+<script>
+$(document).ready(function () {
+            $('#NewsViewModel_Tags').tagEditor({
+                autocomplete: {
+                    delay: 0,
+                    position: { collision: 'flip' },
+                    source: 'Edit?handler=Tags'
+                },
+                forceLowercase: false,
+                placeholder: 'Tags ...'
+            });
+        });</script>
+

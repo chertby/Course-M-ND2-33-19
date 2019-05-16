@@ -86,6 +86,7 @@ namespace Htp.ITnews.Web
                     //options.Conventions.AddPageRoute("/News", "");
                     options.Conventions.AuthorizeFolder("/Admin", "RequireAdministratorRole");
                     options.Conventions.AllowAnonymousToPage("/Index");
+                    options.Conventions.AllowAnonymousToPage("/News/Create");
                     options.Conventions.AllowAnonymousToPage("/Identity/Account/Login");
                     options.Conventions.AllowAnonymousToPage("/Identity/Account/Register");
                 });
