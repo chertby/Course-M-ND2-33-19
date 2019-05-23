@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Htp.ITnews.Data.Contracts.Entities;
+using Htp.ITnews.Data.Contracts.Extensions;
 
 namespace Htp.ITnews.Data.Contracts
 {

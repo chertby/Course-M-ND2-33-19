@@ -30,21 +30,9 @@ namespace Htp.ITnews.Infrastructure.MappingProfiles
                 .ForMember(dest => dest.UpdatedById, opt => opt.MapFrom(src => src.UpdatedBy == null ? new Guid() : src.UpdatedBy.Id))
                 .ForMember(dest => dest.UpdatedByUserName, opt => opt.MapFrom(src => src.UpdatedBy == null ? "" : src.UpdatedBy.UserName))
                 .ForMember(dest => dest.Updated, opt => opt.MapFrom(src => src.Updated))
-
-                // TODO: check tags
-                //.ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.NewsTags))
-
+                .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.NewsTags))
                 .ForAllOtherMembers(opt => opt.Ignore());
         }
-
-        //private string GetTagsString(IEnumerable<string> tags)
-        //{
-        //    //if ((tags == null) || (!tags.Any()))
-        //        //return "";
-
-        //    var result = string.Join(",", tags);
-        //    return result;
-        //}
 
         private void MapNewsViewModelToNews()
         {

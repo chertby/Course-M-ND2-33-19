@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Folder Include="EntityConfigurations\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Htp.ITnews.Data.Contracts\Htp.ITnews.Data.Contracts.csproj" />

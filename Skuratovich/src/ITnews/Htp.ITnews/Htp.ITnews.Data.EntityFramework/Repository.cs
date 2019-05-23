@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Htp.ITnews.Data.Contracts;
+using Htp.ITnews.Data.Contracts.Extensions;
+using Htp.ITnews.Data.EntityFramework.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Htp.ITnews.Data.EntityFramework
@@ -50,6 +52,15 @@ namespace Htp.ITnews.Data.EntityFramework
         public async Task<TEntity> GetAsync(Guid id)
         {
             var result = await dbSet.FindAsync(id);
+            return result;
+        }
+
+        public async Task<TEntity> GetAsync(Guid id, Func<IIncludable<TEntity>, IIncludable> includes)
+        {
+            var result = await dbSet
+                .IncludeMultiple(includes)
+                .SingleOrDefaultAsync(n => n.Id == id);
+
             return result;
         }
     }

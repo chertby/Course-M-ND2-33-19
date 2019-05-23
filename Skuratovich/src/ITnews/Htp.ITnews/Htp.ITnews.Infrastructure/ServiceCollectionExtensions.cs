@@ -33,6 +33,7 @@ namespace Htp.ITnews.Infrastructure
         {
             services.AddScoped<ITagService, TagService>();
             services.AddScoped<INewsService, NewsService>();
+            services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<ISignInService, SignInService>();

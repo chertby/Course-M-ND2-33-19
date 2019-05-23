@@ -7,6 +7,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Htp.ITnews.Data.Contracts;
 using Htp.ITnews.Data.Contracts.Entities;
+using Htp.ITnews.Data.EntityFramework.Extensions;
 using Htp.ITnews.Domain.Contracts;
 using Htp.ITnews.Domain.Contracts.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -36,7 +37,13 @@ namespace Htp.ITnews.Domain.Services
 
         public async Task<NewsViewModel> GetAsync(Guid id)
         {
-            var news = await newsRepository.GetAsync(id);
+            var news = await newsRepository.GetAsync(id, x => x
+                    .Include(n => n.Category)
+                    .Include(n => n.Author)
+                    .Include(n => n.UpdatedBy)
+                    .Include(n => n.NewsTags)
+                        .ThenInclude(nt => nt.Tag));
+
             var result = mapper.Map<NewsViewModel>(news);
             return result;
         }

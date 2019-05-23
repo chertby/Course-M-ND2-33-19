@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Htp.ITnews.Data.Contracts;
 using Htp.ITnews.Data.Contracts.Entities;
+using Htp.ITnews.Data.Contracts.Extensions;
+using Htp.ITnews.Data.EntityFramework.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Htp.ITnews.Data.EntityFramework
@@ -32,26 +34,6 @@ namespace Htp.ITnews.Data.EntityFramework
                 .Include(x => x.Category)
                 .Include(x => x.Author)
                 .Include(x => x.UpdatedBy);
-
-            return result;
-        }
-
-        // TODO: test collection, collection
-        public new async Task<News> GetAsync(Guid id)
-        {
-            var result = await dbSet.FindAsync(id);
-
-            await dbContext.Entry(result)
-                .Reference(b => b.Category)
-                .LoadAsync();
-
-            await dbContext.Entry(result)
-                .Reference(b => b.Author)
-                .LoadAsync();
-
-            await dbContext.Entry(result)
-                .Reference(b => b.UpdatedBy)
-                .LoadAsync();
 
             return result;
         }

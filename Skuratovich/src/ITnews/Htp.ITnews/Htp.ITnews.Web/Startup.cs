@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Htp.ITnews.Web.Authorization.Requirements;
 using Htp.ITnews.Web.Authorization.Handlers;
+using Htp.ITnews.Web.Hubs;
 
 namespace Htp.ITnews.Web
 {
@@ -90,6 +91,8 @@ namespace Htp.ITnews.Web
                     options.Conventions.AllowAnonymousToPage("/Identity/Account/Login");
                     options.Conventions.AllowAnonymousToPage("/Identity/Account/Register");
                 });
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -113,6 +116,11 @@ namespace Htp.ITnews.Web
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/chatHub");
+            });
 
             app.UseMvc();
         }
