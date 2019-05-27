@@ -1,6 +1,17 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+.layout {
+    position: relative;
+    display: table;
+    min-width: 1024px;
+    width: 100%;
+    height: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+    background: #fff;
+}
+
 .content-list {
     margin: 0;
     padding: 0;
@@ -40,4 +51,36 @@ for details on configuring this project to bundle and minify static web assets. 
     line-height: 1.46;
     overflow: hidden;
     font-family: "-apple-system",BlinkMacSystemFont,Arial,sans-serif;
+}
+
+svg {
+    fill: currentColor;
+    stroke: inherit;
+}
+
+.inline-list_comment-nav {
+    margin-left: 8px;
+}
+
+.inline-bricks, .inline-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.inline-list__item_comment-nav {
+    margin: 0 4px 0 0;
+    line-height: 0;
+}
+
+.icon_comment-edit, .icon_comment-anchor, .icon_comment-bookmark, .icon_comment-branch, .icon_comment-arrow-up, .icon_comment-arrow-down {
+    color: #aac7d6;
+    padding: 0 8px;
+    line-height: 0;
+    display: inline-block;
+    vertical-align: baseline;
+    cursor: pointer;
 }

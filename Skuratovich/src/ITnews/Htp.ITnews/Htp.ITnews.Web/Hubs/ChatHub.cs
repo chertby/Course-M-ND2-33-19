@@ -21,15 +21,12 @@ namespace Htp.ITnews.Web.Hubs
             await Groups.AddToGroupAsync(
                 Context.ConnectionId,
                 newsId.ToString());
+
+            await LoadHistory(newsId);
         }
 
         public async Task SendComment(Guid newsId, string content)
         {
-            if (newsId == null)
-            {
-                throw new ArgumentNullException(nameof(newsId));
-            }
-
             var comment = new CommentViewModel
             {
                 NewsId = newsId,
@@ -37,56 +34,15 @@ namespace Htp.ITnews.Web.Hubs
                 Content = content
             };
 
-            comment = await commentService.AddCommentAsync(comment);
+            comment = await commentService.AddAsync(comment);
 
-            // Broadcast to current news
-            await Clients.Group(newsId.ToString()).ReceiveComment(
-                comment.Id,
-                comment.AuthorUserName,
-                comment.Content,
-                comment.Created);
+            await Clients.Group(newsId.ToString()).ReceiveComment(comment);
         }
 
-
-
-        //public async Task SendComment(Guid newsId, string content)
-        //{
-
-        //    var comment = new CommentViewModel
-        //    {
-        //        NewsId = newsId,
-        //        //AuthorId = Context.User.GetUserId(),
-        //        AuthorId = new Guid(Context.UserIdentifier),
-
-        //        Content = content
-        //        //Created = DateTime.UtcNow
-        //        //    SentAt = DateTimeOffset.UtcNow
-        //    };
-
-        //    //await chatRoomService.AddComment(comment);
-
-        //    //// Broadcast to current news
-        //    /// 
-
-
-        //    await Clients.Group(newsId.ToString()).SendAsync(
-        //        "ReceiveComment",
-        //        comment.AuthorId,
-        //        comment.Content
-        //        );
-
-
-        //    //await Clients.All.SendAsync(
-        //    //"ReceiveMessage",
-        //    //message.SenderName,
-        //    //message.SentAt,
-        //    //message.Text);
-
-        //}
-
-        //public async Task RequestToJoin(string groupName)
-        //{
-
-        //}
+        public async Task LoadHistory(Guid newsId)
+        {
+            var comments = commentService.GetAll(newsId);
+            await Clients.Caller.ReceiveComments(comments);
+        }
     }
 }

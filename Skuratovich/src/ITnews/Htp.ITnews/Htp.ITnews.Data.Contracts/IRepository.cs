@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Htp.ITnews.Data.Contracts.Extensions;
 
@@ -15,5 +17,6 @@ namespace Htp.ITnews.Data.Contracts
         Task<TEntity> AddAsync(TEntity entity);
         Task<TEntity> EditAsync(TEntity entity);
         Task DeleteAsync(TEntity entity);
+        IQueryable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> expression);
     }
 }

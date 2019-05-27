@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Htp.ITnews.Data.Contracts;
 using Htp.ITnews.Data.Contracts.Entities;
 using Htp.ITnews.Domain.Contracts;
@@ -19,7 +21,7 @@ namespace Htp.ITnews.Domain.Services
             this.mapper = mapper;
         }
 
-        public async Task<CommentViewModel> AddCommentAsync(CommentViewModel commentViewModel)
+        public async Task<CommentViewModel> AddAsync(CommentViewModel commentViewModel)
         {
             var comment = mapper.Map<Comment>(commentViewModel);
 
@@ -46,6 +48,15 @@ namespace Htp.ITnews.Domain.Services
                     throw ex;
                 }
             }
+        }
+
+        public IQueryable<CommentViewModel> GetAll(Guid newsId)
+        {
+            var comments = unitOfWork.Repository<Comment>()
+                .FindByCondition(c => c.News.Id == newsId)
+                .OrderBy(c => c.Created);
+            var result = comments.ProjectTo<CommentViewModel>(mapper.ConfigurationProvider);
+            return result;
         }
     }
 }

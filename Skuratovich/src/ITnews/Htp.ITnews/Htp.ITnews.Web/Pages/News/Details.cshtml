@@ -1,5 +1,8 @@
 ﻿@page
 @using System.Globalization
+@using Microsoft.AspNetCore.Authorization
+@using Htp.ITnews.Web.Authorization.Requirements
+@inject IAuthorizationService AuthorizationService
 @model DetailsModel
 @{
     ViewData["Title"] = Model.NewsViewModel.Title;
@@ -46,16 +49,21 @@
         <a asp-page="./Index">Back to List</a>
         </div>
         <div class="container">
-        <div class="input-group">
-        <div class="input-group-prepend">
-        <span class="input-group-text">Message</span>
-        </div>
-        <textarea id="messageInput" class="form-control" aria-label="With textarea"></textarea>
-        </div>
-        <div class="input-group">
-        <button id="sendButton" type="button" class="btn btn-primary btn-lg btn-block">Send Message</button>
-        </div>
-        <div id="comments">
+        @if ((await AuthorizationService.AuthorizeAsync(User, Model.NewsViewModel, new EditRequirement())).Succeeded)
+        {
+            <div>
+            <div class="input-group">
+            <div class="input-group-prepend">
+            <span class="input-group-text">Message</span>
+            </div>
+            <textarea id="messageInput" class="form-control" aria-label="With textarea"></textarea>
+            </div>
+            <div class="input-group">
+            <button id="sendButton" type="button" class="btn btn-primary btn-lg btn-block">Send Message</button>
+            </div>
+            </div>
+        }
+        <div id="comments" class="layout">
         <header>
         <h2>Comments <span>X</span></h2>
         </header>

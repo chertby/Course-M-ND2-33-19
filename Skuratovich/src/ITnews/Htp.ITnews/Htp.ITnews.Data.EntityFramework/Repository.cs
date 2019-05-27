@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Htp.ITnews.Data.Contracts;
 using Htp.ITnews.Data.Contracts.Extensions;
@@ -46,6 +48,12 @@ namespace Htp.ITnews.Data.EntityFramework
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             var result = await dbSet.ToListAsync();
+            return result;
+        }
+
+        public IQueryable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> expression)
+        {
+            var result = dbSet.Where(expression);
             return result;
         }
 

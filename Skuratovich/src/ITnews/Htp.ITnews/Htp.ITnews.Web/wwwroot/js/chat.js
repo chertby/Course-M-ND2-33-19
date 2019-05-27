@@ -4,7 +4,10 @@ var connection = new signalR.HubConnectionBuilder()
     .build();
 
 //Disable send button until connection is established
-document.getElementById("sendButton").disabled = true;
+if (!!document.getElementById("sendButton"))
+{
+    document.getElementById("sendButton").disabled = true;
+}
 
 connection.on('ReceiveComment', addComment);
 connection.on('ReceiveComments', addComments);
@@ -14,13 +17,17 @@ connection.start().then(function(){
     connection.invoke("AddToGroup", newsId).catch(function (err) {
         return console.error(err.toString());
     });
-    document.getElementById("sendButton").disabled = false;
+    if (!!document.getElementById("sendButton"))
+    {
+        document.getElementById("sendButton").disabled = false;
+    }
 }).catch(function (err) {
     return console.error(err.toString());
 });
 
+if (!!document.getElementById("sendButton"))
+{
 document.getElementById("sendButton").addEventListener("click", function (event) {
-    //var name = document.getElementById("userInput").value;
     var newsId = document.getElementById("NewsViewModel_Id").value;
     var content = document.getElementById("messageInput").value;
     connection.invoke("SendComment", newsId, content).catch(function (err) {
@@ -28,18 +35,21 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     });
     event.preventDefault();
 });
+}
 
-function addComments(messages) {
-    if (!messages) return;s
-    messages.forEach(function (m) {
-        addComment(m.senderName, m.sentAt, m.text);
+function addComments(comments) {
+    if (!comments) return;
+    comments.forEach(function (c) {
+        //addComment(c.id, c.authorUserName, c.content, c.created);
+        addComment(c);
     });
 }
 
-function addComment(id, authorUserName, content, created) {
+//function addComment(id, authorUserName, content, created) {
+function addComment(c) {
     var authorSpan = document.createElement('span');
     authorSpan.className = 'user-info_nickname';
-    authorSpan.textContent = authorUserName;
+    authorSpan.textContent = c.authorUserName;
 
     var authorA = document.createElement('a');
     authorA.className = 'user-info';
@@ -47,16 +57,76 @@ function addComment(id, authorUserName, content, created) {
 
     var commentTime = document.createElement('time');
     commentTime.className = 'comment__date-time';
-    commentTime.textContent = moment(created).format('LLL');
+    commentTime.textContent = moment(c.created).format('LLL');
 
-    var likeButton = document.createElement('div');
+    
+    var hrefUse = document.createElement('use');
+    //hrefUse.setAttribute('xlink:href', 'https://localhost:5001/img/common-svg-sprite.svg#anchor');
+    //hrefUse.setAttribute('xlink:href', '#anchor');
+
+    var hrefPath = document.createElement('path');
+    hrefPath.setAttribute('d', 'M4 16v-8h-4v-4h4v-4h4v4h8v-4h4v4h4v4h-4v8h4v4h-4v4h-4v-4h-8v4h-4v-4h-4v-4h4zm4 0h8v-8h-8v8z');
+
+    var hrefSvg = document.createElement('svg');
+    hrefSvg.setAttribute('width', '12');
+    hrefSvg.setAttribute('height', '12');
+    //hrefSvg.appendChild(hrefUse);
+    hrefSvg.appendChild(hrefPath);
+
+    var hrefA = document.createElement('a');
+    hrefA.className = 'icon_comment-anchor';
+    hrefA.setAttribute('href', '#'+c.id);
+    hrefA.setAttribute('Title', 'Reference on comment');
+    //hrefA.appendChild(hrefSvg);
+    hrefA.textContent = 'ref';
+
+    var hrefLi = document.createElement('li');
+    hrefLi.className = 'inline-list inline-list_comment-nav';
+    hrefLi.appendChild(hrefA);
+
+    var editA = document.createElement('a');
+    editA.className = 'icon_comment-anchor';
+    editA.setAttribute('href', '#'+c.id);
+    editA.setAttribute('Title', 'Edit comment');
+    editA.textContent = 'edit';
+
+    var editLi = document.createElement('li');
+    editLi.className = 'inline-list inline-list_comment-nav';
+    editLi.appendChild(editA);
+
+    var deleteA = document.createElement('a');
+    deleteA.className = 'icon_comment-anchor';
+    deleteA.setAttribute('href', '#'+c.id);
+    deleteA.setAttribute('Title', 'Delete comment');
+    deleteA.textContent = 'delete';
+
+    var deleteLi = document.createElement('li');
+    deleteLi.className = 'inline-list inline-list_comment-nav';
+    deleteLi.appendChild(deleteA);
+
+    var actionUl = document.createElement('ul');
+    actionUl.className = 'inline-list inline-list_comment-nav';
+    actionUl.appendChild(hrefLi);
+    actionUl.appendChild(editLi);
+    actionUl.appendChild(deleteLi);
+
+    var likeButton = document.createElement('button');
     likeButton.className = 'btn comment__like';
+    likeButton.textContent = 'Like';
+    likeButton.setAttribute('data-action', 'like');
+    likeButton.setAttribute('type', 'button');
+    likeButton.disabled = false;
 
-    var dislikeButton = document.createElement('div');
+    var dislikeButton = document.createElement('button');
     dislikeButton.className = 'btn comment__dislike';
+    dislikeButton.textContent = 'Dislike';
+    dislikeButton.setAttribute('data-action', 'dislike');
+    dislikeButton.setAttribute('type', 'button');
+    dislikeButton.disabled = true;
 
     var commenLikeDiv = document.createElement('div');
     commenLikeDiv.className = 'comment__like';
+    commenLikeDiv.setAttribute('data-id', c.id);
     commenLikeDiv.appendChild(likeButton);
     commenLikeDiv.appendChild(dislikeButton);
 
@@ -64,26 +134,26 @@ function addComment(id, authorUserName, content, created) {
     commentHeaderDiv.className = 'comment__header';
     commentHeaderDiv.appendChild(authorA);
     commentHeaderDiv.appendChild(commentTime);
+    commentHeaderDiv.appendChild(actionUl);
+    commentHeaderDiv.appendChild(commenLikeDiv);
 
     var commentMessageDiv = document.createElement('div');
     commentMessageDiv.className = 'comment__message';
-    commentMessageDiv.textContent = content.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    commentMessageDiv.textContent = c.content.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
     var commenFooterDiv = document.createElement('div');
-    commentHeaderDiv.className = 'comment__footer';
+    commenFooterDiv.className = 'comment__footer';
 
     var commentDiv = document.createElement('div');
     commentDiv.className = 'comment';
-    commentDiv.setAttribute('id', id);
+    commentDiv.setAttribute('id', c.id);
     commentDiv.appendChild(commentHeaderDiv);
     commentDiv.appendChild(commentMessageDiv);
     commentDiv.appendChild(commenFooterDiv);
    
     var newComment = document.createElement('li');
-    newComment.setAttribute('rel', id);
+    newComment.setAttribute('rel', c.id);
     newComment.appendChild(commentDiv);
 
-    var commentsListUl = document.getElementById('commentsList');
-    commentsListUl.appendChild(newComment);
-    commentsListUl.scrollTop = commentsListUl.scrollHeight - commentsListUl.clientHeight;
+    $('#commentsList').prepend(newComment);
 }

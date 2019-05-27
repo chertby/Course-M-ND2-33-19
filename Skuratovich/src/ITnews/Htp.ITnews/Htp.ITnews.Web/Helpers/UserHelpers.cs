@@ -10,7 +10,8 @@ namespace Htp.ITnews.Web.Helpers
         {
             var claimsIdentity = (ClaimsIdentity)principal.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            return new Guid(claim.Value);
+
+            return (claim == null) ? new Guid() : new Guid(claim.Value);
         }
     }
 }
