@@ -18,6 +18,16 @@ for details on configuring this project to bundle and minify static web assets. 
     list-style: none;
 }
 
+.content-list__item {
+    position: relative;
+    box-sizing: border-box;
+    padding: 10px 0 14px;
+}
+
+.content-list__item_news {
+    padding: 20px 0;
+}
+
 .content-list_comments {
     overflow: hidden;
     margin: 20px 0 0;
@@ -38,7 +48,7 @@ for details on configuring this project to bundle and minify static web assets. 
     transition: background-color ease .3s;
 }
 
-.comment__date-time {
+.comment__date-time, .news__date-time {
     margin-left: 8px;
     color: #5f5f5f;
     font-size: 13px;

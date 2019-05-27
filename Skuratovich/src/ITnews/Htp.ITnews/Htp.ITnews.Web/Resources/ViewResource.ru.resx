@@ -42,4 +42,7 @@
     <data name="Delete" xml:space="preserve">
         <value>Удалить</value>
     </data>
+    <data name="Continue reading" xml:space="preserve">
+        <value>Читать далее</value>
+    </data>
 </root>

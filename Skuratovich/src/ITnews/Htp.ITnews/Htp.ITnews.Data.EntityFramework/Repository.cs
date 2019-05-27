@@ -51,6 +51,14 @@ namespace Htp.ITnews.Data.EntityFramework
             return result;
         }
 
+        public Task<IQueryable<TEntity>> GetAllAsync(Func<IIncludable<TEntity>, IIncludable> includes)
+        {
+            var result = dbSet
+                .IncludeMultiple(includes);
+
+            return Task.FromResult(result);
+        }
+
         public IQueryable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> expression)
         {
             var result = dbSet.Where(expression);

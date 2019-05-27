@@ -78,7 +78,7 @@ namespace Htp.ITnews.Web.Pages.News
 
             await newsService.EditAsync(NewsViewModel);
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("../Index");
         }
 
         public async Task<IActionResult> OnGetTags(string term)
@@ -90,6 +90,12 @@ namespace Htp.ITnews.Web.Pages.News
         private async Task PopulateLists()
         {
             Сategories = await newsService.GetСategoriesAsync();
+        }
+
+        public async Task<IActionResult> OnGetTest()
+        {
+            var test = await tagService.Test();
+            return new JsonResult(test);
         }
     }
 }

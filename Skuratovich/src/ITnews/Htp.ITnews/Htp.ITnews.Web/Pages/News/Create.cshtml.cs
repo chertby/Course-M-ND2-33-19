@@ -50,7 +50,7 @@ namespace Htp.ITnews.Web.Pages.News
 
             await newsService.AddAsync(NewsViewModel);
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("../Index");
         }
 
         public async Task<IActionResult> OnGetTags(string term)

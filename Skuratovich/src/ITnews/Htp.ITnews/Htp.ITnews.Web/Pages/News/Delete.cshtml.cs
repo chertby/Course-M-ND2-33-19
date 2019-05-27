@@ -71,7 +71,7 @@ namespace Htp.ITnews.Web.Pages.News
                 await newsService.DeleteAsync(NewsViewModel.Id);
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("../Index");
         }
     }
 }

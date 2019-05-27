@@ -1,93 +1,182 @@
 ﻿@page
-@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
-@functions{
-    public string GetAntiXsrfRequestToken()
-    {
-        return Xsrf.GetAndStoreTokens(Model.HttpContext).RequestToken;
-    }
-}
+@using System.Globalization
+@using Microsoft.AspNetCore.Authorization
+@using Htp.ITnews.Web.Authorization.Requirements
+@inject IAuthorizationService AuthorizationService
 @model IndexModel
 @{
-    ViewData["Title"] = "News";
+    ViewData["Title"] = Localizer.Text("News");
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<link rel="stylesheet" href="~/css/comment.css" />
 
-<div class="text-center">
-    <a href="#" id="firstname" data-title="Enter First Name">123</a>
-    @*<p class="editable-text-full card-text example" data-test="yep" data-id="123" data-propertyname="FirstName">Click this text to edit it.</p>*@
-    <form method="post"></form>
-</div>
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>@Localizer.Text("News")</h2>
+    </div>
+    <div class="row">
+        <div class="col-md-4 order-md-2 mb-4">
+            <div class="alert" hidden id="not-supported">
+                <strong>@Localizer.Text("Your browser is not supported.")</strong>
+            </div>
+            <div class="canvas-container">
+                <canvas id="canvas"></canvas>
+            </div>
+        </div>
+        <div class="col-md-8 order-md-1">
+            <div class="news">
+                <ul class="content-list">
+                    @foreach (var item in Model.News)
+                    {
+                        <li class="content-list__item content-list__item_news" id="@item.Id">
+                            <article>
+                                <header>
+                                    <a class="user-info">
+                                        <span class="user-info_nickname">@item.AuthorUserName</span>
+                                    </a>
+                                    <span class="news__date-time">@item.Created.ToLocalTime()</span>
+                                </header>
+                                <h3>
+                                    <a asp-page="./News/Details" asp-route-id="@item.Id">@item.Title</a>
+                                </h3>
+                                <div>
+                                    <div>
+                                        <p>@item.Description</p>
+                                    </div>
+                                    <a asp-page="./News/Details" asp-route-id="@item.Id">@Localizer.Text("Continue reading")</a>
+                                </div>
+                                <footer></footer>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-
-    @*<script src="https://www.appelsiini.net/download/jquery.jeditable.js"></script>
-            <script>
-        $(document).ready(function () {
-                    var oldValue = '';
-                    $('.editable-text-full').editable('Index?handler=SaveFirstName', {
-                        ajaxoptions: {
-                            headers: { "RequestVerificationToken": '@GetAntiXsrfRequestToken()' }},
-                                cssclass: 'jeditForm',
-                            tooltip: 'click to edit me...',
-                            width: 'none',
-                            height: 'none',
-                            onsubmit: function (settings, original) {
-                                oldValue = original.revert;
-                            },
-                            submitdata: function () {
-                                return {
-                                    id: $(this).data('id'),
-                                    PropertyName: $(this).data('propertyname')
-                                }
-                            },
-                            callback: function (value, settings) {
-                                var jsonData = $.parseJSON(value);
-                                if (jsonData.status) {
-                                    $(this).text(jsonData.value);
-                                }
-                                else {
-                                    $(this).text(oldValue);
-                                }
-                            }
-                        })
-                })</script>*@
-
-    <!-- x-editable (bootstrap version) -->
-    <link href="~/lib/bootstrap4-editable/css/bootstrap-editable.css" rel="stylesheet" />
-    <script src="~/lib/bootstrap4-editable/js/bootstrap-editable.min.js"></script>
-
-    <script>
-$(document).ready(function () {
-                //turn to inline mode
-                $.fn.editable.defaults.mode = 'inline';
-                $('#firstname').editable({
-                    ajaxOptions: {
-                        type: 'post',
-                        headers: { "RequestVerificationToken": '@GetAntiXsrfRequestToken()' }
-                    },
-                    type: 'text',
-                    pk: 1,
-                    url: 'Index?handler=UpdateValue',
-                    success: function (response, newValue) {
-                        if (response.success) {
-                            return {newValue: response.value};
-                        }
-                        else {
-                            return response.msg; //msg will be shown in editable form
-                        }
-                    },
-                    error: function(response, newValue) {
-                        if(response.status === 500) {
-                            return 'Service unavailable. Please try later.';
-                        } else {
-                            return response.responseText;
-                         }
+                            </article>
+                        </li>
                     }
-                });
-            });</script>
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+<h2>@Localizer.Text("News")</h2>
+<p>@Localizer.Text("Current culture") : @CultureInfo.CurrentCulture.DisplayName (@CultureInfo.CurrentCulture.NativeName)</p>
+
+@if (User.Identity.IsAuthenticated && (User.IsInRole("Administrator") || User.IsInRole("Writer")))
+{
+    <p>
+        <a asp-page="Create">@Localizer.Text("Create New")</a>
+    </p>
+}
+
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            @Localizer.Text("Find by name"): <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-page="./Index">@Localizer.Text("Back to full List")</a>
+        </p>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.News[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.News[0].CategoryTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.News[0].AuthorUserName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.News)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AuthorUserName)
+                </td>
+                <td>
+                    @if ((await AuthorizationService.AuthorizeAsync(User, item, new EditRequirement())).Succeeded)
+                    {
+                        <span><a asp-page="./News/Edit" asp-route-id="@item.Id">@Localizer.Text("Edit")</a> |</span>
+                    }
+                    <a asp-page="./News/Details" asp-route-id="@item.Id">@Localizer.Text("Details")</a>
+                    @if ((await AuthorizationService.AuthorizeAsync(User, item, new EditRequirement())).Succeeded)
+                    {
+                        <span> | <a asp-page="./News/Delete" asp-route-id="@item.Id">@Localizer.Text("Delete")</a></span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.News.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.News.HasNextPage ? "disabled" : "";
+}
+
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item @prevDisabled">
+            <a asp-page="./Index"
+               @*asp-route-sortOrder="@Model.CurrentSort" *@
+               asp-route-pageIndex="@(Model.News.PageIndex - 1)"
+               asp-route-currentFilter="@Model.CurrentFilter"
+               class="page-link" aria-disabled="true">
+                Previous
+            </a>
+        </li>
+        @*<li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>*@
+        <li class="page-item @nextDisabled">
+            <a asp-page="./Index"
+               @*asp-route-sortOrder="@Model.CurrentSort" *@
+               asp-route-pageIndex="@(Model.News.PageIndex + 1)"
+               asp-route-currentFilter="@Model.CurrentFilter"
+               class="page-link" aria-disabled="true">
+                Next
+            </a>
+        </li>
+    </ul>
+</nav>
+
+
+@* TODO: Delete, just test
+    http://ziyad.info/en/articles/19-Configuring_Client_Side_Validation *@
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js" integrity="sha256-CutOzxCRucUsn6C6TcEYsauvvYilEniTXldPa6/wu0k=" crossorigin="anonymous"></script>
+
+    @*wordloud2*@
+    <script src="~/lib/wordcloud2/wordcloud2.js"></script>
+    <script>jQuery(function ($) {
+            var $canvas = $('#canvas');
+
+            if (!WordCloud.isSupported) {
+                $('#not-supported').prop('hidden', false);
+                return;
+            }
+
+            var testlist = [['foo', 12], ['bar', 6]];
+
+            WordCloud($canvas[0], { list: testlist });
+        });</script>
 }

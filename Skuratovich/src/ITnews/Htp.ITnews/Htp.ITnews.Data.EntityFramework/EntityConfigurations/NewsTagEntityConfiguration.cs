@@ -11,6 +11,7 @@ namespace Htp.ITnews.Data.EntityFramework.EntityConfigurations
             builder.HasKey(x => new { x.NewsId, x.TagId });
             builder.HasOne(x => x.News).WithMany(x => x.NewsTags).HasForeignKey(x => x.NewsId);
             builder.HasOne(x => x.Tag).WithMany(x => x.NewsTags).HasForeignKey(x => x.TagId);
+            builder.Ignore(x => x.Id);
         }
     }
 }

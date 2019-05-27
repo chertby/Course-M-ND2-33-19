@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Htp.ITnews.Data.Contracts;
 using Htp.ITnews.Data.Contracts.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Htp.ITnews.Data.EntityFramework
 {

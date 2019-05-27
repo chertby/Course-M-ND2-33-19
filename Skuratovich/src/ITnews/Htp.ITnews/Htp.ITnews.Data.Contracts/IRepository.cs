@@ -12,6 +12,7 @@ namespace Htp.ITnews.Data.Contracts
         bool EntityExists(Guid id);
 
         Task<IEnumerable<TEntity>> GetAllAsync();
+        Task<IQueryable<TEntity>> GetAllAsync(Func<IIncludable<TEntity>, IIncludable> includes);
         Task<TEntity> GetAsync(Guid id);
         Task<TEntity> GetAsync(Guid id, Func<IIncludable<TEntity>, IIncludable> includes);
         Task<TEntity> AddAsync(TEntity entity);

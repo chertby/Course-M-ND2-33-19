@@ -7,5 +7,6 @@ namespace Htp.ITnews.Domain.Contracts
     public interface ITagService
     {
         Task<IEnumerable<TagViewModel>> GetTagsByTermAsync(string term);
+        Task<int> Test();
     }
 }
