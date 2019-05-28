@@ -10,6 +10,7 @@ namespace Htp.ITnews.Domain.Contracts
     public interface INewsService
     {
         IQueryable<NewsViewModel> GetAll();
+        IQueryable<NewsViewModel> GetAllByTag(Guid tagId);
         Task<NewsViewModel> GetAsync(Guid id);
         Task<NewsViewModel> AddAsync(NewsViewModel newsViewModel);
         Task<NewsViewModel> EditAsync(NewsViewModel newsViewModel);

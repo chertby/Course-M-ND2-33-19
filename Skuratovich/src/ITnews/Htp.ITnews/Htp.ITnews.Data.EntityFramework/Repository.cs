@@ -51,17 +51,28 @@ namespace Htp.ITnews.Data.EntityFramework
             return result;
         }
 
-        public Task<IQueryable<TEntity>> GetAllAsync(Func<IIncludable<TEntity>, IIncludable> includes)
+        public IQueryable<TEntity> GetAll(Func<IIncludable<TEntity>, IIncludable> includes)
         {
             var result = dbSet
                 .IncludeMultiple(includes);
 
-            return Task.FromResult(result);
+            return result;
         }
 
         public IQueryable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> expression)
         {
-            var result = dbSet.Where(expression);
+            var result = dbSet
+                .Where(expression);
+            return result;
+        }
+
+        public IQueryable<TEntity> FindByCondition(
+            Expression<Func<TEntity, bool>> expression, 
+            Func<IIncludable<TEntity>, IIncludable> includes)
+        {
+            var result = dbSet
+                .IncludeMultiple(includes)
+                .Where(expression);
             return result;
         }
 

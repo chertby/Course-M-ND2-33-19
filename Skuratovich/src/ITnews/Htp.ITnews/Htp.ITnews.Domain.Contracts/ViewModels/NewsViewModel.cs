@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Htp.ITnews.Domain.Contracts.ViewModels
@@ -23,6 +24,6 @@ namespace Htp.ITnews.Domain.Contracts.ViewModels
         [Display(Name = "Category")]
         public string CategoryTitle { get; set; }
         public string StringTags { get; set; }
-        public IEnumerable<TagViewModel> Tags { get; set; }
+        public IList<TagViewModel> Tags { get; set; }
     }
 }

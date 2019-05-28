@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -12,39 +13,47 @@ namespace Htp.ITnews.Domain.Services
 {
     public class TagService : ITagService
     {
-        private readonly ITagRepository tagRepository;
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
 
-        public TagService(ITagRepository tagRepository, IUnitOfWork unitOfWork, IMapper mapper)
+        public TagService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            this.tagRepository = tagRepository;
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+        }
+
+        public async Task<TagViewModel> GetAsync(Guid id)
+        {
+            var tag = await unitOfWork.Repository<Tag>()
+                .GetAsync(id, x => x);
+
+            var result = mapper.Map<TagViewModel>(tag);
+            return result;
         }
 
         public Task<IEnumerable<TagViewModel>> GetTagsByTermAsync(string term)
         {
             var tags = unitOfWork.Repository<Tag>()
                 .FindByCondition(t => t.Title.Contains(term))
+                .Take(10)
                 .ToList();
             var result = mapper.Map<IEnumerable<TagViewModel>>(tags);
             return Task.FromResult(result);
         }
 
-        public async Task<int> Test()
+        public async Task<IEnumerable<TagForCloudViewModel>> GetTagsForCloudAsync()
         {
-            var test = await unitOfWork.Repository<Tag>()
+            var tags = await unitOfWork.Repository<Tag>()
                 .GetAllAsync(x => x
                 .Include(t => t.NewsTags));
 
-            //test.GroupBy(t => t.Id).See
+            var result = tags
+                .Select(t => new TagForCloudViewModel() { Id = t.Id, Title = t.Title, Count = t.NewsTags.Count })
+                .Where(t => t.Count > 0)
+                .OrderByDescending(t => t.Count)
+                .ToArray();
 
-            return test.Count();
-
-            //unitOfWork.Repository<Tag>()
-            //var tags = unitOfWork.Repository<Tag>().GetAllAsync().In
-
+            return result;
         }
     }
 }

@@ -9,6 +9,7 @@
 $(document).ready(function () {
             $('#NewsViewModel_StringTags').tagEditor({
                 autocomplete: {
+                    minLength: 2,
                     delay: 0,
                     position: { collision: 'flip' },
                     source: 'Edit?handler=Tags'

@@ -74,7 +74,7 @@
 <form asp-page="./Index" method="get">
     <div class="form-actions no-color">
         <p>
-            @Localizer.Text("Find by name"): <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            @Localizer.Text("Find by title and description"): <input type="text" name="SearchString" value="@Model.CurrentFilter" />
             <input type="submit" value="Search" class="btn btn-default" /> |
             <a asp-page="./Index">@Localizer.Text("Back to full List")</a>
         </p>
@@ -167,7 +167,8 @@
 
     @*wordloud2*@
     <script src="~/lib/wordcloud2/wordcloud2.js"></script>
-    <script>jQuery(function ($) {
+    <script>
+jQuery(function ($) {
             var $canvas = $('#canvas');
 
             if (!WordCloud.isSupported) {
@@ -175,8 +176,29 @@
                 return;
             }
 
-            var testlist = [['foo', 12], ['bar', 6]];
+            var list = [];
 
-            WordCloud($canvas[0], { list: testlist });
-        });</script>
+            @*var tagsAPI = "https://localhost:5001/Index?handler=TagsForCloud";*@
+
+            var tagsAPI = "?handler=TagsForCloud";
+
+            $.getJSON(tagsAPI)
+                .done(function (data) {
+                    $.each(data, function (i, item) {
+                        list.push([item.title, item.count, item.id]);
+                    })
+                    WordCloud($canvas[0], {
+                        list: list,
+                        minSize: 8,
+                        weightFactor: 20,
+                        click: function(item) {
+                            alert(item[0] + ' ' + item[2]);
+                        }
+                    })
+                })
+                .fail(function () {
+                    console.log("error");
+                });
+
+                });</script>
 }

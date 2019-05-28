@@ -26,7 +26,6 @@ namespace Htp.ITnews.Infrastructure
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<INewsRepository, NewsRepository>();
-            services.AddScoped<ITagRepository, TagRepository>();
         }
 
         public static void AppDomainServices(this IServiceCollection services, IConfiguration configuration)

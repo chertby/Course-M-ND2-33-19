@@ -13,18 +13,21 @@ namespace Htp.ITnews.Web.Pages
     public class IndexModel : PageModel
     {
         private readonly INewsService newsService;
+        private readonly ITagService tagService;
+
         public string CurrentFilter { get; set; }
 
         public PaginatedList<NewsViewModel> News { get; set; }
 
-        public IndexModel(INewsService newsService)
+        public IndexModel(INewsService newsService, ITagService tagService)
         {
             this.newsService = newsService;
+            this.tagService = tagService;
         }
 
-        public async Task OnGetAsync(string currentFilter, string searchString, int? pageIndex)
+        public async Task OnGetAsync(string currentFilter, string searchString, int? pageIndex, string tagString)
         {
-            if (searchString != null)
+            if ((searchString != null) || (tagString != null))
             {
                 pageIndex = 1;
             }
@@ -35,7 +38,20 @@ namespace Htp.ITnews.Web.Pages
 
             CurrentFilter = searchString;
 
-            var newsViewModelIQ = newsService.GetAll();
+            //var newsViewModelIQ = newsService.GetAll();
+            //var newsViewModelIQ;
+
+            var newsViewModelIQ = ((!string.IsNullOrEmpty(tagString)) && Guid.TryParse(tagString, out Guid tagId)) ? newsService.GetAllByTag(tagId) : newsService.GetAll();
+
+            //if ((!string.IsNullOrEmpty(tagString)) && Guid.TryParse(tagString, out Guid tagId))
+            //{
+            //    var newsViewModelIQ = newsService.GetAllByTag(tagId);
+            //}
+            //else
+            //{
+            //    var newsViewModelIQ = newsService.GetAll();
+            //}
+
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -43,9 +59,16 @@ namespace Htp.ITnews.Web.Pages
                                        || s.Description.Contains(searchString));
             }
 
+
             int pageSize = 10;
             News = await PaginatedList<NewsViewModel>.CreateAsync(
                 newsViewModelIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
+        }
+
+        public async Task<IActionResult> OnGetTagsForCloudAsync()
+        {
+            var tags = await tagService.GetTagsForCloudAsync();
+            return new JsonResult(tags);
         }
 
     }

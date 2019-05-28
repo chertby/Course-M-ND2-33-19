@@ -16,6 +16,7 @@ namespace Htp.ITnews.Infrastructure.MappingProfiles
         private void MapTagToTagViewModel()
         {
             CreateMap<Tag, TagViewModel>()
+                .ForMember(dest => dest.Id, c => c.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Value, c => c.MapFrom(src => src.Title))
                 .ForMember(dest => dest.Label, c => c.MapFrom(src => src.Title))
                 .ForAllOtherMembers(c => c.Ignore());
@@ -24,6 +25,7 @@ namespace Htp.ITnews.Infrastructure.MappingProfiles
         private void MapNewsTagToTagViewModel()
         {
             CreateMap<NewsTag, TagViewModel>()
+                .ForMember(dest => dest.Id, c => c.MapFrom(src => src.TagId))
                 .ForMember(dest => dest.Value, c => c.MapFrom(src => src.Tag.Title))
                 .ForMember(dest => dest.Label, c => c.MapFrom(src => src.Tag.Title))
                 .ForAllOtherMembers(c => c.Ignore());

@@ -28,9 +28,37 @@ namespace Htp.ITnews.Domain.Services
             this.mapper = mapper;
         }
 
+        //public IQueryable<NewsViewModel> GetAll()
+        //{
+        //    var news = newsRepository.GetAll();
+
+        //    var result = news.ProjectTo<NewsViewModel>(mapper.ConfigurationProvider);
+        //    return result;
+        //}
+
         public IQueryable<NewsViewModel> GetAll()
         {
-            var news = newsRepository.GetAll();
+            var news = newsRepository.GetAll(x => x
+                .Include(n => n.Category)
+                .Include(n => n.Author)
+                .Include(n => n.UpdatedBy)
+                .Include(n => n.NewsTags)
+                    .ThenInclude(nt => nt.Tag));
+
+            var result = news.ProjectTo<NewsViewModel>(mapper.ConfigurationProvider);
+            return result;
+        }
+
+        public IQueryable<NewsViewModel> GetAllByTag(Guid tagId)
+        {
+            var news = newsRepository.FindByCondition(x => x.NewsTags.Any(nt => nt.TagId == tagId),
+                x => x
+                .Include(n => n.Category)
+                .Include(n => n.Author)
+                .Include(n => n.UpdatedBy)
+                .Include(n => n.NewsTags)
+                    .ThenInclude(nt => nt.Tag));
+
             var result = news.ProjectTo<NewsViewModel>(mapper.ConfigurationProvider);
             return result;
         }

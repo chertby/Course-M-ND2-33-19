@@ -91,11 +91,5 @@ namespace Htp.ITnews.Web.Pages.News
         {
             Сategories = await newsService.GetСategoriesAsync();
         }
-
-        public async Task<IActionResult> OnGetTest()
-        {
-            var test = await tagService.Test();
-            return new JsonResult(test);
-        }
     }
 }
