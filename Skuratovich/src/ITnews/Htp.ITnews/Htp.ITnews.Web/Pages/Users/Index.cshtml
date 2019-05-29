@@ -3,17 +3,128 @@
 @using Microsoft.AspNetCore.Authorization
 @using Htp.ITnews.Web.Authorization.Requirements
 @inject IAuthorizationService AuthorizationService
-@model DetailsModel
+@model IndexModel
 @{
     ViewData["Title"] = Model.UserViewModel.FirstName + " " + Model.UserViewModel.LastName;
+}
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Model.HttpContext).RequestToken;
+    }
 }
 
 
 <div>
-    @Model.UserViewModel.UserName
+    @Model.UserViewModel.UserName (@Model.News.Count())
+</div>
+
+<div class="form-group">
+    <label asp-for="UserViewModel.FirstName"></label>
+    @if ((await AuthorizationService.AuthorizeAsync(User, Model.UserViewModel, new EditRequirement())).Succeeded)
+    {
+        <a href="#" class="editable-text-full" data-pk="@Model.UserViewModel.Id" id="FirstName" data-title="Enter First Name">@Model.UserViewModel.FirstName</a>
+    }
+    else
+    {
+        @Html.DisplayFor(model => model.UserViewModel.FirstName)
+    }
+</div>
+<div class="form-group">
+    <label asp-for="UserViewModel.LastName"></label>
+    @if ((await AuthorizationService.AuthorizeAsync(User, Model.UserViewModel, new EditRequirement())).Succeeded)
+    {
+        <a href="#" class="editable-text-full" data-pk="@Model.UserViewModel.Id" id="LastName" data-title="Enter Last Name">@Model.UserViewModel.LastName</a>
+    }
+    else
+    {
+        @Html.DisplayFor(model => model.UserViewModel.FirstName)
+    }
 </div>
 
 
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.News[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.News[0].CategoryTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.News[0].AuthorUserName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.News)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AuthorUserName)
+                </td>
+                <td>
+                    @if ((await AuthorizationService.AuthorizeAsync(User, item, new EditRequirement())).Succeeded)
+                    {
+                        <span><a asp-page="../News/Edit" asp-route-id="@item.Id">@Localizer.Text("Edit")</a> |</span>
+                    }
+                    <a asp-page="../News/Details" asp-route-id="@item.Id">@Localizer.Text("Details")</a>
+                    @if ((await AuthorizationService.AuthorizeAsync(User, item, new EditRequirement())).Succeeded)
+                    {
+                        <span> | <a asp-page="../News/Delete" asp-route-id="@item.Id">@Localizer.Text("Delete")</a></span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+        @* x-editable (bootstrap version) *@
+        <link href="~/lib/bootstrap4-editable/css/bootstrap-editable.css" rel="stylesheet" />
+        <script src="~/lib/bootstrap4-editable/js/bootstrap-editable.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                //turn to inline mode
+                $.fn.editable.defaults.mode = 'inline';
+                $('.editable-text-full').editable({
+                    ajaxOptions: {
+                        type: 'post',
+                        headers: { "RequestVerificationToken": '@GetAntiXsrfRequestToken()', "id" : '@Model.UserViewModel.Id' }
+                    },
+                    type: 'text',
+                    pk: 1,
+                    url: 'Users/Index?handler=UpdateValue',
+                    success: function (response, newValue) {
+                        if (response.success) {
+                            return {newValue: response.value};
+                        }
+                        else {
+                            return response.msg; //msg will be shown in editable form
+                        }
+                    },
+                    error: function(response, newValue) {
+                        if(response.status === 500) {
+                            return 'Service unavailable. Please try later.';
+                        } else {
+                            return response.responseText;
+                         }
+                    }
+                });
+            });</script>
+    }
 }

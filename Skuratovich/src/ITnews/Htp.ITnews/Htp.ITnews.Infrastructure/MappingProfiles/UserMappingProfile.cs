@@ -32,6 +32,7 @@ namespace Htp.ITnews.Infrastructure.MappingProfiles
                 .ForMember(dest => dest.UserName, c => c.MapFrom(src => src.UserName))
                 .ForMember(dest => dest.FirstName, c => c.MapFrom(src => src.FirstName))
                 .ForMember(dest => dest.LastName, c => c.MapFrom(src => src.LastName))
+                .ForMember(dest => dest.News, c => c.MapFrom(src => src.News))
                 .ForAllOtherMembers(c => c.Ignore());
         }
 

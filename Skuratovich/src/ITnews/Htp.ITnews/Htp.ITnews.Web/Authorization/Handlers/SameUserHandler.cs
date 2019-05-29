@@ -1,19 +1,19 @@
 ﻿using System.Threading.Tasks;
-using Htp.ITnews.Domain.Contracts.ViewModels;
+using Htp.ITnews.Domain.Contracts;
 using Htp.ITnews.Web.Authorization.Requirements;
 using Htp.ITnews.Web.Helpers;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Htp.ITnews.Web.Authorization.Handlers
 {
-    public class SameUserHandler : AuthorizationHandler<EditRequirement, UserViewModel>
+    public class SameAuthorHandler : AuthorizationHandler<EditRequirement, IResource>
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
                                             EditRequirement requirement,
-                                            UserViewModel resource)
+                                            IResource resource)
         {
 
-            if (context.User.GetUserId() == resource.Id)
+            if (context.User.GetUserId() == resource.AuthorId)
             {
                 context.Succeed(requirement);
             }

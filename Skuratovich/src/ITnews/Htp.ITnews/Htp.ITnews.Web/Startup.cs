@@ -67,7 +67,8 @@ namespace Htp.ITnews.Web
             });
 
             services.AddSingleton<IAuthorizationHandler, SameAuthorHandler>();
-            //services.AddSingleton<IAuthorizationHandler, AdministratorHandler>();
+            services.AddSingleton<IAuthorizationHandler, AdministratorHandler>();
+            services.AddSingleton<IAuthorizationHandler, SameUserHandler>();
 
             services.AddMvc(config =>
             {

@@ -81,10 +81,10 @@ namespace Htp.ITnews.Web.Pages.News
             return RedirectToPage("../Index");
         }
 
-        public async Task<IActionResult> OnGetTags(string term)
+        public async Task<IActionResult> OnGetTagsAsync(string term)
         {
             var tags = await tagService.GetTagsByTermAsync(term);
-            return new JsonResult(tags);
+            return new JsonResult(tags.Select(t => new { Label = t.Title}));
         }
 
         private async Task PopulateLists()

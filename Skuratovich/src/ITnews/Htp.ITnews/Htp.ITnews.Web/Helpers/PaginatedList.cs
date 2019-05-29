@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Htp.ITnews.Domain.Contracts.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace Htp.ITnews.Web.Helpers
@@ -44,6 +45,11 @@ namespace Htp.ITnews.Web.Helpers
                 .Take(pageSize)
                 .ToListAsync();
             return new PaginatedList<T>(items, count, pageIndex, pageSize);
+        }
+
+        internal static Task<PaginatedList<NewsViewModel>> CreateAsync(IQueryable<NewsViewModel> queryable, object p, int pageSize)
+        {
+            throw new NotImplementedException();
         }
     }
 }
