@@ -9,6 +9,6 @@ namespace Htp.ITnews.Domain.Contracts
     {
         Task<TagViewModel> GetAsync(Guid id);
         Task<IEnumerable<TagViewModel>> GetTagsByTermAsync(string term);
-        Task<IEnumerable<TagForCloudViewModel>> GetTagsForCloudAsync();
+        IEnumerable<TagForCloudViewModel> GetTagsForCloud();
     }
 }

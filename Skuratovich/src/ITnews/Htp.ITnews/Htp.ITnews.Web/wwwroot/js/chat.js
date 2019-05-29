@@ -40,18 +40,17 @@ document.getElementById("sendButton").addEventListener("click", function (event)
 function addComments(comments) {
     if (!comments) return;
     comments.forEach(function (c) {
-        //addComment(c.id, c.authorUserName, c.content, c.created);
         addComment(c);
     });
 }
 
-//function addComment(id, authorUserName, content, created) {
 function addComment(c) {
     var authorSpan = document.createElement('span');
     authorSpan.className = 'user-info_nickname';
     authorSpan.textContent = c.authorUserName;
 
     var authorA = document.createElement('a');
+    authorA.setAttribute('href', '../Users?id='+c.authorId);
     authorA.className = 'user-info';
     authorA.appendChild(authorSpan);
 

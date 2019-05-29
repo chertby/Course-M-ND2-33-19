@@ -20,7 +20,7 @@
         </div>
         <div>
         <div>
-        <a><span>@Model.NewsViewModel.AuthorUserName</span></a>
+        <a asp-page="../Users/Index" asp-route-id="@Model.NewsViewModel.AuthorId"><span>@Model.NewsViewModel.AuthorUserName</span></a>
         <span>@Model.NewsViewModel.Created</span>
         </div>
         </div>
@@ -38,7 +38,7 @@
         @foreach (var item in Model.NewsViewModel.Tags)
         {
             <li class="nav-item">
-            <a class="nav-link btn btn-light" role="button" >@item.Label</a>
+                <a asp-page="../Index" asp-route-tagString="@item.Id" class="nav-link btn btn-light" role="button" >@item.Title</a>
             </li>
         }
         </ul>
@@ -46,7 +46,7 @@
         </div>
         <div>
         <a asp-page="./Edit" asp-route-id="@Model.NewsViewModel.Id">Edit</a> |
-        <a asp-page="./Index">Back to List</a>
+        <a asp-page="../Index">Back to List</a>
         </div>
         <div class="container">
         @if ((await AuthorizationService.AuthorizeAsync(User, Model.NewsViewModel, new EditRequirement())).Succeeded)

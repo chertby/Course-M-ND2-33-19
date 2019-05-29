@@ -36,6 +36,14 @@ namespace Htp.ITnews.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddAuthentication()
+                .AddGoogle(options =>
+                {
+                    options.ClientId = Configuration["Authentication:Google:ClientId"];
+                    options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+
+                });
+
             services.AddDataAccessServices(Configuration.GetConnectionString("DefaultConnection"));
             services.AppDomainServices(Configuration);
             services.ConfigureIdentity();
@@ -89,6 +97,7 @@ namespace Htp.ITnews.Web
                     options.Conventions.AllowAnonymousToPage("/Index");
                     options.Conventions.AllowAnonymousToPage("/News/Index");
                     options.Conventions.AllowAnonymousToPage("/News/Details");
+                    options.Conventions.AllowAnonymousToPage("/Users/Index");
                     options.Conventions.AllowAnonymousToPage("/Identity/Account/Login");
                     options.Conventions.AllowAnonymousToPage("/Identity/Account/Register");
                 });

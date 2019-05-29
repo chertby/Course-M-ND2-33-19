@@ -38,9 +38,6 @@ namespace Htp.ITnews.Web.Pages
 
             CurrentFilter = searchString;
 
-            //var newsViewModelIQ = newsService.GetAll();
-            //var newsViewModelIQ;
-
             var newsViewModelIQ = ((!string.IsNullOrEmpty(tagString)) && Guid.TryParse(tagString, out Guid tagId)) ? newsService.GetAllByTag(tagId) : newsService.GetAll();
 
             //if ((!string.IsNullOrEmpty(tagString)) && Guid.TryParse(tagString, out Guid tagId))
@@ -52,22 +49,20 @@ namespace Htp.ITnews.Web.Pages
             //    var newsViewModelIQ = newsService.GetAll();
             //}
 
-
             if (!string.IsNullOrEmpty(searchString))
             {
                 newsViewModelIQ = newsViewModelIQ.Where(s => s.Title.Contains(searchString)
                                        || s.Description.Contains(searchString));
             }
 
-
-            int pageSize = 10;
+            int pageSize = 5;
             News = await PaginatedList<NewsViewModel>.CreateAsync(
                 newsViewModelIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
         }
 
-        public async Task<IActionResult> OnGetTagsForCloudAsync()
+        public IActionResult OnGetTagsForCloud()
         {
-            var tags = await tagService.GetTagsForCloudAsync();
+            var tags = tagService.GetTagsForCloud();
             return new JsonResult(tags);
         }
 

@@ -41,10 +41,10 @@ namespace Htp.ITnews.Domain.Services
             return Task.FromResult(result);
         }
 
-        public async Task<IEnumerable<TagForCloudViewModel>> GetTagsForCloudAsync()
+        public IEnumerable<TagForCloudViewModel> GetTagsForCloud()
         {
-            var tags = await unitOfWork.Repository<Tag>()
-                .GetAllAsync(x => x
+            var tags = unitOfWork.Repository<Tag>()
+                .GetAll(x => x
                 .Include(t => t.NewsTags));
 
             var result = tags

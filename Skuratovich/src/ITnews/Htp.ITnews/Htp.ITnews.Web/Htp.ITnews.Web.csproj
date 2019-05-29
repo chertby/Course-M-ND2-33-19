@@ -34,6 +34,7 @@
     <Folder Include="wwwroot\files\img\" />
     <Folder Include="Hubs\" />
     <Folder Include="wwwroot\lib\wordcloud2\" />
+    <Folder Include="Pages\Users\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Resources\ViewResource.Designer.cs" />

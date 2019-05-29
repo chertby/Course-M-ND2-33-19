@@ -16,6 +16,23 @@
     </div>
     <div class="row">
         <div class="col-md-4 order-md-2 mb-4">
+            <div>
+                @if (User.Identity.IsAuthenticated && (User.IsInRole("Administrator") || User.IsInRole("Writer")))
+                {
+                <p>
+                    <a asp-page="News/Create">@Localizer.Text("Create New")</a>
+                </p>
+                }
+                <form asp-page="./Index" method="get">
+                    <div class="form-actions no-color">
+                        <p>
+                            @Localizer.Text("Find by title and description"): <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+                            <input type="submit" value="Search" class="btn btn-default" /> |
+                            <a asp-page="./Index">@Localizer.Text("Back to full List")</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
             <div class="alert" hidden id="not-supported">
                 <strong>@Localizer.Text("Your browser is not supported.")</strong>
             </div>
@@ -31,7 +48,7 @@
                         <li class="content-list__item content-list__item_news" id="@item.Id">
                             <article>
                                 <header>
-                                    <a class="user-info">
+                                    <a asp-page="./Users/Index" asp-route-id="@item.AuthorId" class="user-info">
                                         <span class="user-info_nickname">@item.AuthorUserName</span>
                                     </a>
                                     <span class="news__date-time">@item.Created.ToLocalTime()</span>
@@ -56,74 +73,8 @@
 
         </div>
 
-    </div>
+    </>
 </div>
-
-
-
-<h2>@Localizer.Text("News")</h2>
-<p>@Localizer.Text("Current culture") : @CultureInfo.CurrentCulture.DisplayName (@CultureInfo.CurrentCulture.NativeName)</p>
-
-@if (User.Identity.IsAuthenticated && (User.IsInRole("Administrator") || User.IsInRole("Writer")))
-{
-    <p>
-        <a asp-page="Create">@Localizer.Text("Create New")</a>
-    </p>
-}
-
-<form asp-page="./Index" method="get">
-    <div class="form-actions no-color">
-        <p>
-            @Localizer.Text("Find by title and description"): <input type="text" name="SearchString" value="@Model.CurrentFilter" />
-            <input type="submit" value="Search" class="btn btn-default" /> |
-            <a asp-page="./Index">@Localizer.Text("Back to full List")</a>
-        </p>
-    </div>
-</form>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.News[0].Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.News[0].CategoryTitle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.News[0].AuthorUserName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.News)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CategoryTitle)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AuthorUserName)
-                </td>
-                <td>
-                    @if ((await AuthorizationService.AuthorizeAsync(User, item, new EditRequirement())).Succeeded)
-                    {
-                        <span><a asp-page="./News/Edit" asp-route-id="@item.Id">@Localizer.Text("Edit")</a> |</span>
-                    }
-                    <a asp-page="./News/Details" asp-route-id="@item.Id">@Localizer.Text("Details")</a>
-                    @if ((await AuthorizationService.AuthorizeAsync(User, item, new EditRequirement())).Succeeded)
-                    {
-                        <span> | <a asp-page="./News/Delete" asp-route-id="@item.Id">@Localizer.Text("Delete")</a></span>
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
 
 @{
     var prevDisabled = !Model.News.HasPreviousPage ? "disabled" : "";
@@ -178,8 +129,6 @@ jQuery(function ($) {
 
             var list = [];
 
-            @*var tagsAPI = "https://localhost:5001/Index?handler=TagsForCloud";*@
-
             var tagsAPI = "?handler=TagsForCloud";
 
             $.getJSON(tagsAPI)
@@ -192,7 +141,7 @@ jQuery(function ($) {
                         minSize: 8,
                         weightFactor: 20,
                         click: function(item) {
-                            alert(item[0] + ' ' + item[2]);
+                            window.location = '?tagString=' + item[2];
                         }
                     })
                 })

@@ -54,7 +54,7 @@ namespace Htp.ITnews.Web.Pages.News
                 return new ForbidResult();
             }
 
-            NewsViewModel.StringTags = string.Join(",", NewsViewModel.Tags);
+            NewsViewModel.StringTags = string.Join(",", NewsViewModel.Tags.Select(t => t.Title));
 
             await PopulateLists();
             return Page();

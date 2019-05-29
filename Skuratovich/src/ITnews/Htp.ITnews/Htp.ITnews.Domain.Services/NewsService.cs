@@ -28,14 +28,6 @@ namespace Htp.ITnews.Domain.Services
             this.mapper = mapper;
         }
 
-        //public IQueryable<NewsViewModel> GetAll()
-        //{
-        //    var news = newsRepository.GetAll();
-
-        //    var result = news.ProjectTo<NewsViewModel>(mapper.ConfigurationProvider);
-        //    return result;
-        //}
-
         public IQueryable<NewsViewModel> GetAll()
         {
             var news = newsRepository.GetAll(x => x

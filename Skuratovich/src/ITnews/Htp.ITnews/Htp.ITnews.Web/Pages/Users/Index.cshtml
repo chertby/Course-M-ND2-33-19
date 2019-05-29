@@ -1,0 +1,19 @@
+﻿@page
+@using System.Globalization
+@using Microsoft.AspNetCore.Authorization
+@using Htp.ITnews.Web.Authorization.Requirements
+@inject IAuthorizationService AuthorizationService
+@model DetailsModel
+@{
+    ViewData["Title"] = Model.UserViewModel.FirstName + " " + Model.UserViewModel.LastName;
+}
+
+
+<div>
+    @Model.UserViewModel.UserName
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
