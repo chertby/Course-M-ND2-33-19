@@ -255,7 +255,7 @@ namespace Htp.ITnews.Domain.Services
             var news = await newsRepository.GetAsync(newsId);
             if (news == null)
             {
-                throw new InvalidOperationException($"UserId not found. No user with this id found {newsId}.");
+                throw new InvalidOperationException($"News not found. No news with this id found {newsId}.");
             }
 
             var newsTags = await newsRepository.GetTagsAsync(news);

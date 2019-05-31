@@ -15,5 +15,7 @@ namespace Htp.ITnews.Domain.Contracts.ViewModels
         public Guid UpdatedById { get; set; }
         public string UpdatedByUserName { get; set; }
         public DateTime Updated { get; set; }
+        public bool IsLiked { get; set; }
+        public int Likes { get; set; }
     }
 }

@@ -41,8 +41,15 @@ namespace Htp.ITnews.Web.Hubs
 
         public async Task LoadHistory(Guid newsId)
         {
-            var comments = commentService.GetAll(newsId);
+            var comments = await commentService.GetAllAsync(newsId, Context.User.GetUserId());
             await Clients.Caller.ReceiveComments(comments);
+        }
+
+        public async Task VoteAsync(Guid? id, string action)
+        {
+            // TODO: Add authorization
+
+            await commentService.Vote(id, Context.User.GetUserId(), action);
         }
     }
 }

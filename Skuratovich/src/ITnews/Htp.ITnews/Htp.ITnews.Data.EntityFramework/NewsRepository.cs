@@ -103,38 +103,5 @@ namespace Htp.ITnews.Data.EntityFramework
                 }
             }
         }
-
-        //public void Test(News news)
-        //{
-        //    var newsTags = dbContext.NewsTag;
-        //    var tags = dbContext.Tags;
-
-        //    var newsId = news.Id;
-
-        //    var query = from newsTag in newsTags
-        //                where newsTag.NewsId.Equals(newsId)
-        //                join tag in tags on newsTag.TagId equals tag.Id
-        //                select tag.Title;
-
-        //    //return await query.ToListAsync().WithCurrentCulture();
-
-        //    //var result = newsTags
-        //    //.Where(x => x.NewsId == newsId)
-        //    //.Join(tags, n => n.TagId, t => t.Id, (n, t) => t.Title);
-
-        //    //var result = await newsTags.FindAsync(newsId);
-
-        //    //await dbContext.Entry(result)
-        //    //.Reference(n => n.)
-        //    //.LoadAsync();
-
-
-        //    //result.Select();
-
-        //    //newsTags.Where(
-
-        //    //var result = dbSet.Where(t => t.Title.Contains(term)).Select(t => t.Title);
-
-        //}
     }
 }

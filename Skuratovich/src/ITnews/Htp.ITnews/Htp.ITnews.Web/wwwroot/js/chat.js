@@ -114,17 +114,19 @@ function addComment(c) {
     likeButton.textContent = 'Like';
     likeButton.setAttribute('data-action', 'like');
     likeButton.setAttribute('type', 'button');
-    likeButton.disabled = false;
+    likeButton.disabled = c.isLiked;
+    likeButton.addEventListener("click", comment_vote);
 
     var dislikeButton = document.createElement('button');
     dislikeButton.className = 'btn comment__dislike';
     dislikeButton.textContent = 'Dislike';
     dislikeButton.setAttribute('data-action', 'dislike');
     dislikeButton.setAttribute('type', 'button');
-    dislikeButton.disabled = true;
+    dislikeButton.disabled = !c.isLiked;
+    dislikeButton.addEventListener("click", comment_vote);
 
     var commenLikeDiv = document.createElement('div');
-    commenLikeDiv.className = 'comment__like';
+    commenLikeDiv.className = 'comment__like js-comment-vote';
     commenLikeDiv.setAttribute('data-id', c.id);
     commenLikeDiv.appendChild(likeButton);
     commenLikeDiv.appendChild(dislikeButton);
@@ -155,4 +157,39 @@ function addComment(c) {
     newComment.appendChild(commentDiv);
 
     $('#commentsList').prepend(newComment);
+}
+
+function onclickLike(event) {
+    alert('test');
+}
+
+function comment_vote(e) {
+    var target = $(e.target),
+        o = target.closest(".js-comment-vote"),
+        i = {
+            id: o.attr("data-id"),
+            action: target.attr("data-action")
+            };
+
+    var antiForgeryToken = $("input[name=__RequestVerificationToken]").val();
+
+    connection.invoke("VoteAsync", i.id, i.action).catch(function (err) {
+        return console.error(err.toString());
+    });
+
+    //$.ajaxSetup({
+    //    headers:{
+    //        'RequestVerificationToken': antiForgeryToken
+    //    }
+    //});
+
+    //var commentsAPI = "?handler=Vote";
+    //$.post(commentsAPI, i)
+    //    .done(function (data) {
+    //        alert('Handler: ' + i.action);
+    //    })
+    //    .fail(function () {
+    //        console.log("error");
+    //    });
+    
 }

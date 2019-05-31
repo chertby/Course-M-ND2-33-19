@@ -7,7 +7,9 @@ namespace Htp.ITnews.Domain.Contracts
 {
     public interface ICommentService
     {
-        IQueryable<CommentViewModel> GetAll(Guid newsId);
+        Task<IQueryable<CommentViewModel>> GetAllAsync(Guid newsId, Guid userId);
         Task<CommentViewModel> AddAsync(CommentViewModel commentViewModel);
+        Task<CommentViewModel> GetAsync(Guid id);
+        Task Vote(Guid? commentId, Guid? userId, string action);
     }
 }

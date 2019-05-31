@@ -40,5 +40,10 @@ namespace Htp.ITnews.Web.Pages.News
 
             return Page();
         }
+
+        public Task OnPostVote(Guid id, string action)
+        {
+            return Task.CompletedTask;
+        }
     }
 }

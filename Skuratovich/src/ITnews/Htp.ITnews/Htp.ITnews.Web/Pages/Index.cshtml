@@ -17,12 +17,6 @@
     <div class="row">
         <div class="col-md-4 order-md-2 mb-4">
             <div>
-                @if (User.Identity.IsAuthenticated && (User.IsInRole("Administrator") || User.IsInRole("Writer")))
-                {
-                <p>
-                    <a asp-page="News/Create">@Localizer.Text("Create New")</a>
-                </p>
-                }
                 <form asp-page="./Index" method="get">
                     <div class="form-actions no-color">
                         <p>
