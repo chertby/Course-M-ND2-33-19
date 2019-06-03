@@ -94,3 +94,20 @@ svg {
     vertical-align: baseline;
     cursor: pointer;
 }
+
+.voting-wjt__counter {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    font-weight: 700;
+    font-size: 13px;
+    color: #548eaa;
+    font-family: "-apple-system",BlinkMacSystemFont,Arial,sans-serif;
+}
+
+.voting-wjt__counter_positive {
+    color: #6c9007;
+}

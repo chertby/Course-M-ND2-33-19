@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Htp.ITnews.Domain.Contracts;
 using Htp.ITnews.Domain.Contracts.ViewModels;
 using Htp.ITnews.Web.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Htp.ITnews.Web.Hubs
@@ -25,6 +26,7 @@ namespace Htp.ITnews.Web.Hubs
             await LoadHistory(newsId);
         }
 
+        [Authorize]
         public async Task SendComment(Guid newsId, string content)
         {
             var comment = new CommentViewModel
@@ -45,11 +47,14 @@ namespace Htp.ITnews.Web.Hubs
             await Clients.Caller.ReceiveComments(comments);
         }
 
+        [Authorize]
         public async Task VoteAsync(Guid? id, string action)
         {
             // TODO: Add authorization
 
             await commentService.Vote(id, Context.User.GetUserId(), action);
+
+            await Clients.Caller.Vote(id.GetValueOrDefault(), action);
         }
     }
 }

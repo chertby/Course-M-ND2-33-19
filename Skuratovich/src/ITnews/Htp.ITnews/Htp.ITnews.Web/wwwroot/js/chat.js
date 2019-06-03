@@ -11,6 +11,7 @@ if (!!document.getElementById("sendButton"))
 
 connection.on('ReceiveComment', addComment);
 connection.on('ReceiveComments', addComments);
+connection.on('Vote', vote);
 
 connection.start().then(function(){
     var newsId = document.getElementById("NewsViewModel_Id").value;
@@ -117,6 +118,10 @@ function addComment(c) {
     likeButton.disabled = c.isLiked;
     likeButton.addEventListener("click", comment_vote);
 
+    var voteSpan = document.createElement('span');
+    voteSpan.className = 'voting-wjt__counter voting-wjt__counter_positive js-score';
+    voteSpan.textContent = c.likes;
+
     var dislikeButton = document.createElement('button');
     dislikeButton.className = 'btn comment__dislike';
     dislikeButton.textContent = 'Dislike';
@@ -128,7 +133,9 @@ function addComment(c) {
     var commenLikeDiv = document.createElement('div');
     commenLikeDiv.className = 'comment__like js-comment-vote';
     commenLikeDiv.setAttribute('data-id', c.id);
+    commenLikeDiv.setAttribute('data-news-target', c.newsId);
     commenLikeDiv.appendChild(likeButton);
+    commenLikeDiv.appendChild(voteSpan);
     commenLikeDiv.appendChild(dislikeButton);
 
     var commentHeaderDiv = document.createElement('div');
@@ -168,6 +175,7 @@ function comment_vote(e) {
         o = target.closest(".js-comment-vote"),
         i = {
             id: o.attr("data-id"),
+            newsId: o.attr("data-news-target"),
             action: target.attr("data-action")
             };
 
@@ -192,4 +200,29 @@ function comment_vote(e) {
     //        console.log("error");
     //    });
     
+}
+
+//function vote(comment) {
+//    if (!comment) return;
+//    var c = $('#commentsList').find('#' + comment.id);
+//    if (!c)
+//    {
+//        console('can not find comment with id=' + comment.id);
+//        return;
+//    }
+//}
+
+// TODO: add commentviewmodel
+
+function vote(id, action) {
+    if (!id) return;
+    var target = $('#commentsList').find('#' + id);
+    if (!target)
+    {
+        console('can not find comment with id=' + id);
+        return;
+    }
+    o = target.find('.js-comment-vote');
+    o.children('.comment__like').prop( "disabled", (action == 'like'));
+    o.children('.comment__dislike').prop( "disabled", !(action == 'like'));
 }

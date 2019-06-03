@@ -7,8 +7,8 @@ namespace Htp.ITnews.Web.Hubs
 {
     public interface IChatClient
     {
-        //Task ReceiveComment(Guid id, string authorUserName, string content, DateTime created, bool isAuthor);
         Task ReceiveComment(CommentViewModel comment);
         Task ReceiveComments(IQueryable<CommentViewModel> comments);
+        Task Vote(Guid id, string action);
     }
 }

@@ -9,6 +9,7 @@
 }
 
 <link rel="stylesheet" href="~/css/comment.css" />
+<link rel="stylesheet" href="~/css/rating.css" />
 
 <div class="container">
     <div class="py-5 text-center">
@@ -42,10 +43,16 @@
                         <li class="content-list__item content-list__item_news" id="@item.Id">
                             <article>
                                 <header>
-                                    <a asp-page="./Users/Index" asp-route-id="@item.AuthorId" class="user-info">
-                                        <span class="user-info_nickname">@item.AuthorUserName</span>
-                                    </a>
-                                    <span class="news__date-time">@item.Created.ToLocalTime()</span>
+                                    <p>
+                                        <a asp-page="./Users/Index" asp-route-id="@item.AuthorId" class="user-info">
+                                            <span class="user-info_nickname">@item.AuthorUserName</span>
+                                        </a>
+                                        <span class="news__date-time">@item.Created.ToLocalTime()</span>
+                                        <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+                                        <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+                                        <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+                                        <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+                                    </p>
                                 </header>
                                 <h3>
                                     <a asp-page="./News/Details" asp-route-id="@item.Id">@item.Title</a>
@@ -67,7 +74,7 @@
 
         </div>
 
-    </>
+    </div>
 </div>
 
 @{

@@ -82,13 +82,6 @@ namespace Htp.ITnews.Domain.Services
                 throw new ArgumentNullException(nameof(userId));
             }
 
-            var user = await unitOfWork.Repository<AppUser>().GetAsync(userId);
-
-            if (user == null)
-            {
-                throw new InvalidOperationException($"User not found. No user with this id found {userId}.");
-            }
-
             var result = commentRepository
                 .FindByCondition(c => c.News.Id == newsId, x => x
                     .Include(c => c.Likes))
