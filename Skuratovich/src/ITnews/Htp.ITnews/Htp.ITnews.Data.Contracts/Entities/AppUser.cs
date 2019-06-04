@@ -6,7 +6,7 @@ namespace Htp.ITnews.Data.Contracts.Entities
 {
     public class AppUser : IdentityUser<Guid>, IEntity
     {
-        public bool IsActive { get; set; }
+        public bool? IsActive { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public ICollection<News> News { get; set; }

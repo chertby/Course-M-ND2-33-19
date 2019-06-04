@@ -103,5 +103,31 @@ namespace Htp.ITnews.Data.EntityFramework
                 }
             }
         }
+
+        public async Task RateAsync(News news, AppUser user, int value)
+        {
+            if (news == null)
+            {
+                throw new ArgumentNullException(nameof(news));
+            }
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            var ratings = dbContext.Rating;
+
+            var rate = await ratings.FirstOrDefaultAsync(l => l.NewsId.Equals(news.Id) && l.AppUserId.Equals(user.Id));
+            if (rate != null)
+            {
+                ratings.Remove(rate);
+            }
+            if (value > 0)
+            {
+                rate = new Rating { NewsId = news.Id, AppUserId = user.Id, Value = value };
+                await ratings.AddAsync(rate);
+            }
+        }
+
     }
 }

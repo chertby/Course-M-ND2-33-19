@@ -15,11 +15,13 @@ namespace Htp.ITnews.Domain.Services
     {
         private readonly SignInManager<AppUser> signInManager;
         private readonly IMapper mapper;
+        private readonly UserManager<AppUser> userManager;
 
-        public SignInService(SignInManager<AppUser> signInManager, IMapper mapper)
+        public SignInService(SignInManager<AppUser> signInManager, IMapper mapper, UserManager<AppUser> userManager)
         {
             this.signInManager = signInManager;
             this.mapper = mapper;
+            this.userManager = userManager;
         }
 
         public async Task SignInAsync(UserViewModel userViewModel, bool isPersistent)
@@ -48,6 +50,13 @@ namespace Htp.ITnews.Domain.Services
 
         public async Task<SignInResult> PasswordSignInAsync(String userName, String password, Boolean isPersistent, Boolean lockoutOnFailure)
         {
+            var user = await userManager.FindByEmailAsync(userName);
+
+            if ((user.IsActive.HasValue && !user.IsActive.Value) || !user.IsActive.HasValue)
+            {
+                return SignInResult.LockedOut;
+            }
+
             var result = await signInManager.PasswordSignInAsync(userName, password, isPersistent, lockoutOnFailure);
             return result;
         }

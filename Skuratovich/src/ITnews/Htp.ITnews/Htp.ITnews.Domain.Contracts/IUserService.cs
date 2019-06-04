@@ -26,5 +26,8 @@ namespace Htp.ITnews.Domain.Contracts
         Task<IEnumerable<string>> GetRolesAsync(UserViewModel userViewModel);
         Task<IdentityResult> AddToRolesAsync(UserViewModel userViewModel, IEnumerable<string> roles);
         Task<IdentityResult> RemoveFromRolesAsync(UserViewModel userViewModel, IEnumerable<string> roles);
+        Task<IdentityResult> AddClaimAsync(UserViewModel userViewModel, Claim claim);
+        Task<IdentityResult> RemoveClaimAsync(UserViewModel userViewModel, Claim claim);
+        Task<IdentityResult> RemoveClaimAsync(UserViewModel userViewModel, Claim claim, Claim newClaim);
     }
 }

@@ -26,7 +26,7 @@ namespace Htp.ITnews.Web.Hubs
             await LoadHistory(newsId);
         }
 
-        [Authorize]
+        [Authorize(Policy = "RequireRole")]
         public async Task SendComment(Guid newsId, string content)
         {
             var comment = new CommentViewModel
@@ -38,7 +38,9 @@ namespace Htp.ITnews.Web.Hubs
 
             comment = await commentService.AddAsync(comment);
 
+            await Clients.Caller.ClearComment();
             await Clients.Group(newsId.ToString()).ReceiveComment(comment);
+
         }
 
         public async Task LoadHistory(Guid newsId)
@@ -47,12 +49,10 @@ namespace Htp.ITnews.Web.Hubs
             await Clients.Caller.ReceiveComments(comments);
         }
 
-        [Authorize]
+        [Authorize(Policy = "RequireRole")]
         public async Task VoteAsync(Guid? id, string action)
         {
-            // TODO: Add authorization
-
-            await commentService.Vote(id, Context.User.GetUserId(), action);
+            await commentService.VoteAsync(id, Context.User.GetUserId(), action);
 
             await Clients.Caller.Vote(id.GetValueOrDefault(), action);
         }

@@ -13,6 +13,8 @@ namespace Htp.ITnews.Data.Contracts
         Task AddToTagAsync(News news, string tagName);
         Task RemoveFromTagAsync(News news, string tagName);
 
+        Task RateAsync(News news, AppUser user, int value);
+
         IQueryable<News> GetAll();
     }
 }

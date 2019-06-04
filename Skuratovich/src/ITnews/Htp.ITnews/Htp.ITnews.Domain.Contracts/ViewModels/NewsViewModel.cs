@@ -25,5 +25,7 @@ namespace Htp.ITnews.Domain.Contracts.ViewModels
         public string CategoryTitle { get; set; }
         public string StringTags { get; set; }
         public IList<TagViewModel> Tags { get; set; }
+        public IList<RatingViewModel> Ratings { get; set; }
+        public decimal Rating { get; set; }
     }
 }

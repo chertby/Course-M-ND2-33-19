@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Htp.ITnews.Domain.Contracts;
@@ -68,11 +69,13 @@ namespace Htp.ITnews.Web.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var userViewModel = new UserViewModel { UserName = Input.Email, Email = Input.Email };
+                var userViewModel = new UserViewModel { UserName = Input.Email, Email = Input.Email, IsActive = true };
                 var result = await userService.CreateAsync(userViewModel, Input.Password);
                 if (result.Succeeded)
                 {
                     logger.LogInformation("User created a new account with password.");
+
+                    //userService.AddClaimAsync(userViewModel, new Claim(ClaimTypes.UserData, "active", ClaimValueTypes.String, "RemoteClaims");
 
                     var code = await userService.GenerateEmailConfirmationTokenAsync(userViewModel);
                     var callbackUrl = Url.Page(

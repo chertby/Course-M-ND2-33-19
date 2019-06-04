@@ -53,16 +53,6 @@ namespace Htp.ITnews.Domain.Services
             }
         }
 
-        //public IQueryable<CommentViewModel> GetAll(Guid newsId)
-        //{
-        //    var comments = commentRepository
-        //        .FindByCondition(c => c.News.Id == newsId, x => x
-        //            .Include(c => c.Likes))
-        //        .OrderBy(c => c.Created);
-        //    var result = comments.ProjectTo<CommentViewModel>(mapper.ConfigurationProvider);
-        //    return result;
-        //}
-
         public async Task<IQueryable<CommentViewModel>> GetAllAsync(Guid newsId, Guid userId)
         {
             if (newsId == null)
@@ -130,7 +120,7 @@ namespace Htp.ITnews.Domain.Services
             }
         }
 
-        public async Task Vote(Guid? commentId, Guid? userId, string action)
+        public async Task VoteAsync(Guid? commentId, Guid? userId, string action)
         {
             if (commentId == null)
             {

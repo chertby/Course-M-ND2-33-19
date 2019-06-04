@@ -151,5 +151,26 @@ namespace Htp.ITnews.Domain.Services
             var result = await userManager.RemoveFromRolesAsync(user, roles);
             return result;
         }
+
+        public async Task<IdentityResult> AddClaimAsync(UserViewModel userViewModel, Claim claim)
+        {
+            var user = await userManager.FindByIdAsync(userViewModel.Id.ToString());
+            var result = await userManager.AddClaimAsync(user, claim);
+            return result;
+        }
+
+        public async Task<IdentityResult> RemoveClaimAsync(UserViewModel userViewModel, Claim claim)
+        {
+            var user = await userManager.FindByIdAsync(userViewModel.Id.ToString());
+            var result = await userManager.RemoveClaimAsync(user, claim);
+            return result;
+        }
+
+        public async Task<IdentityResult> RemoveClaimAsync(UserViewModel userViewModel, Claim claim, Claim newClaim)
+        {
+            var user = await userManager.FindByIdAsync(userViewModel.Id.ToString());
+            var result = await userManager.ReplaceClaimAsync(user, claim, newClaim);
+            return result;
+        }
     }
 }

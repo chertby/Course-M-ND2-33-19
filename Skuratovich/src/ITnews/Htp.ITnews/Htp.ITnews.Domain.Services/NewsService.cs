@@ -68,6 +68,33 @@ namespace Htp.ITnews.Domain.Services
             return result;
         }
 
+        public NewsViewModel Get(Guid id, Guid userId)
+        {
+ 
+            //var rate = await unitOfWork.Repository<Rating>().FirstOrDefaultAsync(l => l.NewsId.Equals(id) && l.AppUserId.Equals(userId));
+
+            var news = newsRepository.FindByCondition(n => n.Id == id, x => x
+                    .Include(n => n.Category)
+                    .Include(n => n.Author)
+                    .Include(n => n.UpdatedBy)
+                    .Include(n => n.NewsTags)
+                        .ThenInclude(nt => nt.Tag)
+                    .Include(n => n.Ratings.Where(r => r.AppUserId == userId)));
+
+
+            //var news = await newsRepository.GetAsync(id, x => x
+                    //.Include(n => n.Category)
+                    //.Include(n => n.Author)
+                    //.Include(n => n.UpdatedBy)
+                    //.Include(n => n.NewsTags)
+                    //    .ThenInclude(nt => nt.Tag)
+                    //.Include(n => n.Ratings));
+
+            var result = mapper.Map<NewsViewModel>(news);
+            return result;
+        }
+
+
         public async Task<NewsViewModel> AddAsync(NewsViewModel newsViewModel)
         {
             var news = mapper.Map<News>(newsViewModel);
@@ -269,6 +296,49 @@ namespace Htp.ITnews.Domain.Services
             }
 
             await newsRepository.EditAsync(news);
+        }
+
+
+        public async Task RateAsync(Guid? newsId, Guid? userId, int value)
+        {
+            if (newsId == null)
+            {
+                throw new ArgumentNullException(nameof(newsId));
+            }
+
+            var news = await newsRepository.GetAsync(newsId.GetValueOrDefault());
+
+            if (news == null)
+            {
+                throw new InvalidOperationException($"News not found. No news with this id found {newsId}.");
+            }
+
+            if (userId == null)
+            {
+                throw new ArgumentNullException(nameof(userId));
+            }
+
+            var user = await unitOfWork.Repository<AppUser>().GetAsync(userId.GetValueOrDefault());
+
+            if (user == null)
+            {
+                throw new InvalidOperationException($"User not found. No user with this id found {userId}.");
+            }
+
+            using (var transaction = unitOfWork.BeginTransaction())
+            {
+                try
+                {
+                    await newsRepository.RateAsync(news, user, value);
+                    await unitOfWork.SaveChangesAsync();
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
         }
     }
 }

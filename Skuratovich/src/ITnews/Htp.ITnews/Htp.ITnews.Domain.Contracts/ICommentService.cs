@@ -10,6 +10,6 @@ namespace Htp.ITnews.Domain.Contracts
         Task<IQueryable<CommentViewModel>> GetAllAsync(Guid newsId, Guid userId);
         Task<CommentViewModel> AddAsync(CommentViewModel commentViewModel);
         Task<CommentViewModel> GetAsync(Guid id);
-        Task Vote(Guid? commentId, Guid? userId, string action);
+        Task VoteAsync(Guid? commentId, Guid? userId, string action);
     }
 }

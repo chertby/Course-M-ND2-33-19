@@ -25,8 +25,8 @@ namespace Htp.ITnews.Data.EntityFramework
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Category> Сategories { get; set; }
         public DbSet<Tag> Tags { get; set; }
-        public DbSet<NewsTag> NewsTag { get; set; }
-        public DbSet<Like> Like { get; set; }
+        public DbSet<NewsTag> NewsTags { get; set; }
+        public DbSet<Like> Likes { get; set; }
         public DbSet<Rating> Ratings { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

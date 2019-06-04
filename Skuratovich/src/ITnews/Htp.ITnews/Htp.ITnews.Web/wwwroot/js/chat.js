@@ -11,6 +11,7 @@ if (!!document.getElementById("sendButton"))
 
 connection.on('ReceiveComment', addComment);
 connection.on('ReceiveComments', addComments);
+connection.on('ClearComment', clearComment);
 connection.on('Vote', vote);
 
 connection.start().then(function(){
@@ -79,11 +80,11 @@ function addComment(c) {
     var likeI = document.createElement('i');
     likeI.className = 'fa fa-thumbs-up';
 
-    var likeA = document.createElement('a');
-    likeA.className = 'float-right btn text-white btn-info';
+    var likeA = document.createElement('button');
+    likeA.className = 'float-right btn text-white btn-info js-comment-like js-comment-btn';
     likeA.appendChild(likeI);
     likeA.setAttribute('data-action', 'like');
-    //likeA.setAttribute('type', 'button');
+    likeA.setAttribute('type', 'button');
     likeA.disabled = c.isLiked;
     likeA.addEventListener("click", comment_vote);
     //likeA.append(" Like");
@@ -91,11 +92,11 @@ function addComment(c) {
     var dislikeI = document.createElement('i');
     dislikeI.className = 'fa fa-thumbs-down';
 
-    var dislikeA = document.createElement('a');
-    dislikeA.className = 'float-right btn text-white btn-dark';
+    var dislikeA = document.createElement('button');
+    dislikeA.className = 'float-right btn text-white btn-dark js-comment-dislike js-comment-btn';
     dislikeA.appendChild(dislikeI);
     dislikeA.setAttribute('data-action', 'dislike');
-    //dislikeA.setAttribute('type', 'button');
+    dislikeA.setAttribute('type', 'button');
     dislikeA.disabled = !c.isLiked;
     dislikeA.addEventListener("click", comment_vote);
     //dislikeA.append(" Like");
@@ -105,7 +106,9 @@ function addComment(c) {
     buttonsP.appendChild(dislikeA);
 
     var textDiv = document.createElement('div');
-    textDiv.className = 'col-md-10';
+    textDiv.className = 'col-md-10 js-comment-vote';
+    textDiv.setAttribute('data-id', c.id);
+    textDiv.setAttribute('data-news-target', c.newsId);
     textDiv.appendChild(textP);
     textDiv.appendChild(clearfixDiv);
     textDiv.appendChild(commentP);
@@ -139,13 +142,12 @@ function onclickLike(event) {
 function comment_vote(e) {
     var target = $(e.target),
         o = target.closest(".js-comment-vote"),
+        b = target.closest(".js-comment-btn"),
         i = {
             id: o.attr("data-id"),
             newsId: o.attr("data-news-target"),
-            action: target.attr("data-action")
+            action: b.attr("data-action")
             };
-
-    var antiForgeryToken = $("input[name=__RequestVerificationToken]").val();
 
     connection.invoke("VoteAsync", i.id, i.action).catch(function (err) {
         return console.error(err.toString());
@@ -153,15 +155,12 @@ function comment_vote(e) {
 
 }
 
-//function vote(comment) {
-//    if (!comment) return;
-//    var c = $('#commentsList').find('#' + comment.id);
-//    if (!c)
-//    {
-//        console('can not find comment with id=' + comment.id);
-//        return;
-//    }
-//}
+function clearComment() {
+    if (!!document.getElementById("messageInput"))
+    {
+        document.getElementById("messageInput").value = "";
+    }
+}
 
 // TODO: add commentviewmodel
 
@@ -174,6 +173,6 @@ function vote(id, action) {
         return;
     }
     o = target.find('.js-comment-vote');
-    o.children('.comment__like').prop( "disabled", (action == 'like'));
-    o.children('.comment__dislike').prop( "disabled", !(action == 'like'));
+    o.find('.js-comment-like').prop( "disabled", (action == 'like'));
+    o.find('.js-comment-dislike').prop( "disabled", !(action == 'like'));
 }

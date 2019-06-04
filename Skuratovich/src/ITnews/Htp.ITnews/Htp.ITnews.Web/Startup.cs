@@ -55,13 +55,10 @@ namespace Htp.ITnews.Web
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("RequireAdministratorRole",
+                    //policy => policy.RequireRole("Administrator").RequireAssertion(context => context.User.GetUserId();
                     policy => policy.RequireRole("Administrator"));
-                //options.AddPolicy("EditDelete", policy =>
-                //{
-                //    //policy.RequireRole("Writer");
-                //    policy.Requirements.Add(new EditPermission());
-                //    //policy.Requirements.Add(new DeletePermission());
-                //});
+                options.AddPolicy("RequireRole",
+                    policy => policy.RequireRole("Administrator", "Writer", "Reader"));
                 options.AddPolicy("EditPolicy", policy =>
                     policy.Requirements.Add(new EditRequirement()));
             });

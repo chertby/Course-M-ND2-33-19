@@ -12,6 +12,7 @@ namespace Htp.ITnews.Domain.Contracts
         IQueryable<NewsViewModel> GetAll();
         IQueryable<NewsViewModel> GetAllByTag(Guid tagId);
         Task<NewsViewModel> GetAsync(Guid id);
+        NewsViewModel Get(Guid id, Guid userId);
         Task<NewsViewModel> AddAsync(NewsViewModel newsViewModel);
         Task<NewsViewModel> EditAsync(NewsViewModel newsViewModel);
         Task DeleteAsync(Guid id);
@@ -20,5 +21,7 @@ namespace Htp.ITnews.Domain.Contracts
 
         Task<IList<string>> GetTagsAsync(Guid newsId);
         Task AddToTagsAsync(Guid newsId, IEnumerable<string> tags);
+
+        Task RateAsync(Guid? newsId, Guid? userId, int value);
     }
 }
