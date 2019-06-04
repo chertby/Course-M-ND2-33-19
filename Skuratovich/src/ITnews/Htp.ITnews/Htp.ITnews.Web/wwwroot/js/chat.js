@@ -46,122 +46,88 @@ function addComments(comments) {
 }
 
 function addComment(c) {
-    var authorSpan = document.createElement('span');
-    authorSpan.className = 'user-info_nickname';
-    authorSpan.textContent = c.authorUserName;
+    var faceImg = document.createElement('img');
+    faceImg.className = 'img img-rounded img-fluid';
+    faceImg.setAttribute('src', '../img/def_face.jpg');
+
+    var faceP = document.createElement('p');
+    faceP.className = 'text-secondary text-center';
+    faceP.textContent = moment(c.created).format('LLL');;
+
+    var faceDiv = document.createElement('div');
+    faceDiv.className = 'col-md-2';
+    faceDiv.appendChild(faceImg);
+    faceDiv.appendChild(faceP);
+    
+    var authorStrong = document.createElement('strong');
+    authorStrong.textContent = c.authorUserName;
 
     var authorA = document.createElement('a');
     authorA.setAttribute('href', '../Users?id='+c.authorId);
-    authorA.className = 'user-info';
-    authorA.appendChild(authorSpan);
-
-    var commentTime = document.createElement('time');
-    commentTime.className = 'comment__date-time';
-    commentTime.textContent = moment(c.created).format('LLL');
-
+    authorA.className = 'float-left';
+    authorA.appendChild(authorStrong);
     
-    var hrefUse = document.createElement('use');
-    //hrefUse.setAttribute('xlink:href', 'https://localhost:5001/img/common-svg-sprite.svg#anchor');
-    //hrefUse.setAttribute('xlink:href', '#anchor');
+    var textP = document.createElement('p');
+    textP.appendChild(authorA);
 
-    var hrefPath = document.createElement('path');
-    hrefPath.setAttribute('d', 'M4 16v-8h-4v-4h4v-4h4v4h8v-4h4v4h4v4h-4v8h4v4h-4v4h-4v-4h-8v4h-4v-4h-4v-4h4zm4 0h8v-8h-8v8z');
+    var clearfixDiv = document.createElement('div');
+    clearfixDiv.className = 'clearfix';
+    
+    var commentP = document.createElement('p');
+    commentP.textContent = c.content.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-    var hrefSvg = document.createElement('svg');
-    hrefSvg.setAttribute('width', '12');
-    hrefSvg.setAttribute('height', '12');
-    //hrefSvg.appendChild(hrefUse);
-    hrefSvg.appendChild(hrefPath);
+    var likeI = document.createElement('i');
+    likeI.className = 'fa fa-thumbs-up';
 
-    var hrefA = document.createElement('a');
-    hrefA.className = 'icon_comment-anchor';
-    hrefA.setAttribute('href', '#'+c.id);
-    hrefA.setAttribute('Title', 'Reference on comment');
-    //hrefA.appendChild(hrefSvg);
-    hrefA.textContent = 'ref';
+    var likeA = document.createElement('a');
+    likeA.className = 'float-right btn text-white btn-info';
+    likeA.appendChild(likeI);
+    likeA.setAttribute('data-action', 'like');
+    //likeA.setAttribute('type', 'button');
+    likeA.disabled = c.isLiked;
+    likeA.addEventListener("click", comment_vote);
+    //likeA.append(" Like");
 
-    var hrefLi = document.createElement('li');
-    hrefLi.className = 'inline-list inline-list_comment-nav';
-    hrefLi.appendChild(hrefA);
+    var dislikeI = document.createElement('i');
+    dislikeI.className = 'fa fa-thumbs-down';
 
-    var editA = document.createElement('a');
-    editA.className = 'icon_comment-anchor';
-    editA.setAttribute('href', '#'+c.id);
-    editA.setAttribute('Title', 'Edit comment');
-    editA.textContent = 'edit';
+    var dislikeA = document.createElement('a');
+    dislikeA.className = 'float-right btn text-white btn-dark';
+    dislikeA.appendChild(dislikeI);
+    dislikeA.setAttribute('data-action', 'dislike');
+    //dislikeA.setAttribute('type', 'button');
+    dislikeA.disabled = !c.isLiked;
+    dislikeA.addEventListener("click", comment_vote);
+    //dislikeA.append(" Like");
 
-    var editLi = document.createElement('li');
-    editLi.className = 'inline-list inline-list_comment-nav';
-    editLi.appendChild(editA);
+    var buttonsP = document.createElement('p');
+    buttonsP.appendChild(likeA);
+    buttonsP.appendChild(dislikeA);
 
-    var deleteA = document.createElement('a');
-    deleteA.className = 'icon_comment-anchor';
-    deleteA.setAttribute('href', '#'+c.id);
-    deleteA.setAttribute('Title', 'Delete comment');
-    deleteA.textContent = 'delete';
+    var textDiv = document.createElement('div');
+    textDiv.className = 'col-md-10';
+    textDiv.appendChild(textP);
+    textDiv.appendChild(clearfixDiv);
+    textDiv.appendChild(commentP);
+    textDiv.appendChild(buttonsP);
 
-    var deleteLi = document.createElement('li');
-    deleteLi.className = 'inline-list inline-list_comment-nav';
-    deleteLi.appendChild(deleteA);
-
-    var actionUl = document.createElement('ul');
-    actionUl.className = 'inline-list inline-list_comment-nav';
-    actionUl.appendChild(hrefLi);
-    actionUl.appendChild(editLi);
-    actionUl.appendChild(deleteLi);
-
-    var likeButton = document.createElement('button');
-    likeButton.className = 'btn comment__like';
-    likeButton.textContent = 'Like';
-    likeButton.setAttribute('data-action', 'like');
-    likeButton.setAttribute('type', 'button');
-    likeButton.disabled = c.isLiked;
-    likeButton.addEventListener("click", comment_vote);
-
-    var voteSpan = document.createElement('span');
-    voteSpan.className = 'voting-wjt__counter voting-wjt__counter_positive js-score';
-    voteSpan.textContent = c.likes;
-
-    var dislikeButton = document.createElement('button');
-    dislikeButton.className = 'btn comment__dislike';
-    dislikeButton.textContent = 'Dislike';
-    dislikeButton.setAttribute('data-action', 'dislike');
-    dislikeButton.setAttribute('type', 'button');
-    dislikeButton.disabled = !c.isLiked;
-    dislikeButton.addEventListener("click", comment_vote);
-
-    var commenLikeDiv = document.createElement('div');
-    commenLikeDiv.className = 'comment__like js-comment-vote';
-    commenLikeDiv.setAttribute('data-id', c.id);
-    commenLikeDiv.setAttribute('data-news-target', c.newsId);
-    commenLikeDiv.appendChild(likeButton);
-    commenLikeDiv.appendChild(voteSpan);
-    commenLikeDiv.appendChild(dislikeButton);
-
-    var commentHeaderDiv = document.createElement('div');
-    commentHeaderDiv.className = 'comment__header';
-    commentHeaderDiv.appendChild(authorA);
-    commentHeaderDiv.appendChild(commentTime);
-    commentHeaderDiv.appendChild(actionUl);
-    commentHeaderDiv.appendChild(commenLikeDiv);
-
-    var commentMessageDiv = document.createElement('div');
-    commentMessageDiv.className = 'comment__message';
-    commentMessageDiv.textContent = c.content.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
-    var commenFooterDiv = document.createElement('div');
-    commenFooterDiv.className = 'comment__footer';
-
-    var commentDiv = document.createElement('div');
-    commentDiv.className = 'comment';
-    commentDiv.setAttribute('id', c.id);
-    commentDiv.appendChild(commentHeaderDiv);
-    commentDiv.appendChild(commentMessageDiv);
-    commentDiv.appendChild(commenFooterDiv);
+    var rowDiv = document.createElement('div');
+    rowDiv.className = 'row';
+    rowDiv.appendChild(faceDiv);
+    rowDiv.appendChild(textDiv);
+    
+    var cardBodyDiv = document.createElement('div');
+    cardBodyDiv.className = 'card-body';
+    cardBodyDiv.appendChild(rowDiv);
+    
+    var cardDiv = document.createElement('div');
+    cardDiv.className = 'card';
+    cardDiv.setAttribute('id', c.id);
+    cardDiv.appendChild(cardBodyDiv);
    
     var newComment = document.createElement('li');
     newComment.setAttribute('rel', c.id);
-    newComment.appendChild(commentDiv);
+    newComment.appendChild(cardDiv);
 
     $('#commentsList').prepend(newComment);
 }
@@ -185,21 +151,6 @@ function comment_vote(e) {
         return console.error(err.toString());
     });
 
-    //$.ajaxSetup({
-    //    headers:{
-    //        'RequestVerificationToken': antiForgeryToken
-    //    }
-    //});
-
-    //var commentsAPI = "?handler=Vote";
-    //$.post(commentsAPI, i)
-    //    .done(function (data) {
-    //        alert('Handler: ' + i.action);
-    //    })
-    //    .fail(function () {
-    //        console.log("error");
-    //    });
-    
 }
 
 //function vote(comment) {

@@ -111,3 +111,7 @@ svg {
 .voting-wjt__counter_positive {
     color: #6c9007;
 }
+
+p {
+    text-indent: 0;
+}

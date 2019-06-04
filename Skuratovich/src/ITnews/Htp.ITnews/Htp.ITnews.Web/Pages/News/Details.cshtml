@@ -59,17 +59,20 @@
         <div class="container">
         @if ((await AuthorizationService.AuthorizeAsync(User, Model.NewsViewModel, new EditRequirement())).Succeeded)
         {
-            <div>
-            <div class="input-group">
-            <div class="input-group-prepend">
-            <span class="input-group-text">Message</span>
-            </div>
-            <textarea id="messageInput" class="form-control" aria-label="With textarea"></textarea>
-            </div>
-            <div class="input-group">
-            <button id="sendButton" type="button" class="btn btn-primary btn-lg btn-block">Send Message</button>
+
+            <form action="#" method="post" class="form-horizontal" id="commentForm" role="form">
+            <div class="form-group">
+            <label for="email" class="col-sm-2 control-label">Comment</label>
+            <div class="col-sm-10">
+            <textarea class="form-control" name="addComment" id="messageInput" rows="5"></textarea>
             </div>
             </div>
+            <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+            <button class="btn btn-success btn-circle text-uppercase" type="submit" id="sendButton"><span class="glyphicon glyphicon-send"></span> Summit comment</button>
+            </div>
+            </div>
+            </form>
         }
         <div id="comments" class="layout">
         <header>
