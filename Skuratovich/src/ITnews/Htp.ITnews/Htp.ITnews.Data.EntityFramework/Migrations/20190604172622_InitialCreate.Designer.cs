@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Htp.ITnews.Data.EntityFramework.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190511102536_InitialCreate")]
+    [Migration("20190604172622_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,7 +35,7 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
 
                     b.Property<string>("FirstName");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 
@@ -91,27 +91,27 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("05c9a13f-946a-4ec0-9d8b-95f3a18ad961"),
+                            Id = new Guid("d931b938-261d-484b-8418-aa14e63583b7"),
                             Title = "Java"
                         },
                         new
                         {
-                            Id = new Guid("5090278b-c414-4856-8da2-3c845e68a1df"),
+                            Id = new Guid("5b60e7ec-14b3-43c0-8d9b-7a653e332f1f"),
                             Title = "C#"
                         },
                         new
                         {
-                            Id = new Guid("3b93c40a-07e1-4988-a563-70bce485086d"),
+                            Id = new Guid("7c205f37-99bd-44d3-898c-57d29ad0a9ba"),
                             Title = "C++"
                         },
                         new
                         {
-                            Id = new Guid("612efff5-3883-496f-ad5d-6dbd500f5efa"),
+                            Id = new Guid("35536e5b-dfde-468e-bcd2-40851a93a552"),
                             Title = "Algorithms"
                         },
                         new
                         {
-                            Id = new Guid("0fe2e7bd-556f-4fcf-a9c0-9ddbdd761b19"),
+                            Id = new Guid("7e9af847-bd0b-4e40-a838-1c3b2e2b65c6"),
                             Title = "Machine Learning"
                         });
                 });
@@ -159,7 +159,7 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
 
                     b.HasIndex("CommentId");
 
-                    b.ToTable("Like");
+                    b.ToTable("Likes");
                 });
 
             modelBuilder.Entity("Htp.ITnews.Data.Contracts.Entities.News", b =>
@@ -171,6 +171,8 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
 
                     b.Property<Guid>("CategoryId");
 
+                    b.Property<int>("CommentCount");
+
                     b.Property<string>("Content")
                         .IsRequired();
 
@@ -179,9 +181,11 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
                     b.Property<string>("Description")
                         .IsRequired();
 
-                    b.Property<int>("PostCount");
+                    b.Property<decimal>("Rating");
 
-                    b.Property<float>("Rating");
+                    b.Property<int>("RatingCount");
+
+                    b.Property<int>("RatingSum");
 
                     b.Property<string>("Title")
                         .IsRequired();
@@ -211,7 +215,7 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("NewsTag");
+                    b.ToTable("NewsTags");
                 });
 
             modelBuilder.Entity("Htp.ITnews.Data.Contracts.Entities.Rating", b =>
@@ -226,7 +230,7 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
 
                     b.HasIndex("NewsId");
 
-                    b.ToTable("Rating");
+                    b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("Htp.ITnews.Data.Contracts.Entities.Tag", b =>
@@ -246,17 +250,17 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7db4f65c-ff90-492f-ae41-8781c95ce890"),
+                            Id = new Guid("fb6449d0-1b21-4547-addc-eb3082de6b95"),
                             Title = "C"
                         },
                         new
                         {
-                            Id = new Guid("f0e59075-aa98-4ee7-abd8-e32ff862ca45"),
+                            Id = new Guid("3fbc3c4c-405a-4511-a613-a08aa4f11d14"),
                             Title = "C++"
                         },
                         new
                         {
-                            Id = new Guid("b5423bf7-3ee9-40c4-b9d7-45433081f70c"),
+                            Id = new Guid("75723417-6e91-42c8-858f-4c76bd6294de"),
                             Title = "C#"
                         });
                 });
@@ -286,22 +290,22 @@ namespace Htp.ITnews.Data.EntityFramework.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d5871ab0-8cab-4419-b200-843eeb090290"),
-                            ConcurrencyStamp = "c36b6d3d-1784-45c4-bcc7-cff7b92522af",
+                            Id = new Guid("81911ac6-b266-4776-83fc-ab57b9434df8"),
+                            ConcurrencyStamp = "fdbd1ebc-640a-4965-a041-bf2970bf5f4c",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = new Guid("c0f27d03-e207-4cbd-a181-c8bbf69b6165"),
-                            ConcurrencyStamp = "8966083c-0945-475d-9516-201900af7631",
+                            Id = new Guid("62fb1d8e-0a3d-471a-bcb8-a06deff1c352"),
+                            ConcurrencyStamp = "407aaf9a-ac72-4153-b8aa-af8c001c03cb",
                             Name = "Writer",
                             NormalizedName = "WRITER"
                         },
                         new
                         {
-                            Id = new Guid("6f0ffe9f-c359-40d7-8f4f-0502f2ff33ba"),
-                            ConcurrencyStamp = "24d1e940-dcdd-4882-8517-bd5245fd1d77",
+                            Id = new Guid("e6474039-ec84-4a03-a31b-f93821733281"),
+                            ConcurrencyStamp = "a55306a4-952e-41a9-9dea-90f447d3a73b",
                             Name = "Reader",
                             NormalizedName = "READER"
                         });

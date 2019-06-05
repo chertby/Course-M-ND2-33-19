@@ -14,6 +14,7 @@ namespace Htp.ITnews.Data.Contracts
         Task RemoveFromTagAsync(News news, string tagName);
 
         Task RateAsync(News news, AppUser user, int value);
+        Task<int> GetRatingAsync(News news, AppUser user);
 
         IQueryable<News> GetAll();
     }

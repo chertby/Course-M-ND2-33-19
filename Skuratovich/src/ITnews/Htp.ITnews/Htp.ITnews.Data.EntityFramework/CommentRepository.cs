@@ -23,7 +23,7 @@ namespace Htp.ITnews.Data.EntityFramework
                 throw new ArgumentNullException(nameof(user));
             }
 
-            var likes = dbContext.Like;
+            var likes = dbContext.Likes;
 
             var like = await likes.FirstOrDefaultAsync(l => l.CommentId.Equals(comment.Id) && l.AppUserId.Equals(user.Id));
             if (like == null)
@@ -44,7 +44,7 @@ namespace Htp.ITnews.Data.EntityFramework
                 throw new ArgumentNullException(nameof(user));
             }
 
-            var likes = dbContext.Like;
+            var likes = dbContext.Likes;
             var like = await likes.FirstOrDefaultAsync(l => l.CommentId.Equals(comment.Id) && l.AppUserId.Equals(user.Id));
             if (like != null)
             {

@@ -1,8 +1,11 @@
+@using Htp.ITnews.Web.Helpers;
 @inject ISignInService SignInService
 @{
     var hasExternalLogins = (await SignInService.GetExternalAuthenticationSchemesAsync()).Any();
+    var userId = User.GetUserId();
 }
 <ul class="nav nav-pills flex-column">
+    <li class="nav-item"><a class="nav-link" id="userData" asp-page="/Users/Index" asp-route-id="@userId" >User page</a></li>
     <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a></li>
     <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
     @if (hasExternalLogins)

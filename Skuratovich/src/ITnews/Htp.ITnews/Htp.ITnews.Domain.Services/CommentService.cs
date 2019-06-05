@@ -32,7 +32,9 @@ namespace Htp.ITnews.Domain.Services
             {
                 try
                 {
-                    comment.News = await unitOfWork.Repository<News>().GetAsync(commentViewModel.NewsId);
+                    var news = await unitOfWork.Repository<News>().GetAsync(commentViewModel.NewsId);
+                    ++news.CommentCount;
+                    comment.News = news;
                     comment.Author = await unitOfWork.Repository<AppUser>().GetAsync(commentViewModel.AuthorId);
                     comment.Created = DateTime.Now;
                     await unitOfWork.Repository<Comment>().AddAsync(comment);
@@ -89,7 +91,6 @@ namespace Htp.ITnews.Domain.Services
                     IsLiked = c.Likes.Any(l => l.AppUserId == userId),
                     Likes = c.Likes.Count });
 
-            //var result = comments.ProjectTo<CommentViewModel>(mapper.ConfigurationProvider);
             return result;
         }
 

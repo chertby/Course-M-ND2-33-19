@@ -14,8 +14,10 @@ namespace Htp.ITnews.Data.Contracts.Entities
         public AppUser UpdatedBy { get; set; }
         public DateTime Updated { get; set; }
         public Category Category { get; set; }
-        public float Rating { get; set; }
-        public int PostCount { get; set; }
+        public decimal Rating { get; set; }
+        public int RatingSum { get; set; }
+        public int RatingCount { get; set; }
+        public int CommentCount { get; set; }
         public ICollection<Comment> Comments { get; set; }
         public ICollection<Rating> Ratings { get; set; }
         public ICollection<NewsTag> NewsTags { get; set; }

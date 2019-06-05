@@ -40,7 +40,7 @@ namespace Htp.ITnews.Data.EntityFramework
 
         public async Task<IList<string>> GetTagsAsync(News news)
         {
-            var newsTags = dbContext.NewsTag;
+            var newsTags = dbContext.NewsTags;
             var tags = dbContext.Tags;
 
             var newsId = news.Id;
@@ -64,7 +64,7 @@ namespace Htp.ITnews.Data.EntityFramework
                 throw new ArgumentException("Value cannot be null or empty. Null or empty error message.", nameof(tagName));
             }
 
-            var newsTags = dbContext.NewsTag;
+            var newsTags = dbContext.NewsTags;
             var tags = dbContext.Tags;
 
             var tagEntity = await tags.SingleOrDefaultAsync(t => t.Title.ToUpper() == tagName.ToUpper());
@@ -88,7 +88,7 @@ namespace Htp.ITnews.Data.EntityFramework
             {
                 throw new ArgumentException("Value cannot be null or empty. Null or empty error message.", nameof(tagName));
             }
-            var newsTags = dbContext.NewsTag;
+            var newsTags = dbContext.NewsTags;
             var tags = dbContext.Tags;
 
             var tagEntity = await tags.SingleOrDefaultAsync(t => t.Title.ToUpper() == tagName.ToUpper());
@@ -115,17 +115,52 @@ namespace Htp.ITnews.Data.EntityFramework
                 throw new ArgumentNullException(nameof(user));
             }
 
-            var ratings = dbContext.Rating;
+            var ratings = dbContext.Ratings;
 
             var rate = await ratings.FirstOrDefaultAsync(l => l.NewsId.Equals(news.Id) && l.AppUserId.Equals(user.Id));
             if (rate != null)
             {
                 ratings.Remove(rate);
+                news.RatingSum -= rate.Value;
+                --news.RatingCount;
+                CountRating(news);
             }
             if (value > 0)
             {
                 rate = new Rating { NewsId = news.Id, AppUserId = user.Id, Value = value };
                 await ratings.AddAsync(rate);
+                news.RatingSum += rate.Value;
+                ++news.RatingCount;
+                CountRating(news);
+            }
+        }
+
+        public async Task<int> GetRatingAsync(News news, AppUser user)
+        {
+            if (news == null)
+            {
+                throw new ArgumentNullException(nameof(news));
+            }
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            var ratings = dbContext.Ratings;
+
+            var rate = await ratings.FirstOrDefaultAsync(l => l.NewsId.Equals(news.Id) && l.AppUserId.Equals(user.Id));
+            return rate == null ? 0 : rate.Value;
+        }
+
+        private void CountRating(News news)
+        {
+            if (news.RatingCount > 0)
+            {
+                news.Rating = (decimal) news.RatingSum / news.RatingCount;
+            }
+            else
+            {
+                news.Rating = 0;
             }
         }
 

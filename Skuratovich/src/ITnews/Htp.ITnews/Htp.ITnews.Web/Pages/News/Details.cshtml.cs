@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Htp.ITnews.Domain.Contracts;
 using Htp.ITnews.Domain.Contracts.ViewModels;
 using Htp.ITnews.Web.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -30,8 +31,7 @@ namespace Htp.ITnews.Web.Pages.News
                 return NotFound();
             }
 
-            //NewsViewModel = await newsService.GetAsync(id.GetValueOrDefault());
-            NewsViewModel = newsService.Get(id.GetValueOrDefault(), User.GetUserId());
+            NewsViewModel = await newsService.GetAsync(id.GetValueOrDefault(), User.GetUserId());
 
             if (NewsViewModel == null)
             {
@@ -43,6 +43,7 @@ namespace Htp.ITnews.Web.Pages.News
             return Page();
         }
 
+        [Authorize(Policy = "RequireRole")]
         public async Task<IActionResult> OnPostRateAsync(Guid id, int value)
         {
             await newsService.RateAsync(id, User.GetUserId(), value);

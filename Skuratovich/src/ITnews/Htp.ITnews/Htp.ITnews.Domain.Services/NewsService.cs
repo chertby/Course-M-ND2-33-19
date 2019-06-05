@@ -68,32 +68,27 @@ namespace Htp.ITnews.Domain.Services
             return result;
         }
 
-        public NewsViewModel Get(Guid id, Guid userId)
+        public async Task<NewsViewModel> GetAsync(Guid id, Guid userId)
         {
- 
-            //var rate = await unitOfWork.Repository<Rating>().FirstOrDefaultAsync(l => l.NewsId.Equals(id) && l.AppUserId.Equals(userId));
-
-            var news = newsRepository.FindByCondition(n => n.Id == id, x => x
+            var news = await newsRepository.GetAsync(id, x => x
                     .Include(n => n.Category)
                     .Include(n => n.Author)
                     .Include(n => n.UpdatedBy)
                     .Include(n => n.NewsTags)
-                        .ThenInclude(nt => nt.Tag)
-                    .Include(n => n.Ratings.Where(r => r.AppUserId == userId)));
-
-
-            //var news = await newsRepository.GetAsync(id, x => x
-                    //.Include(n => n.Category)
-                    //.Include(n => n.Author)
-                    //.Include(n => n.UpdatedBy)
-                    //.Include(n => n.NewsTags)
-                    //    .ThenInclude(nt => nt.Tag)
-                    //.Include(n => n.Ratings));
+                        .ThenInclude(nt => nt.Tag));
 
             var result = mapper.Map<NewsViewModel>(news);
+
+            var user = await unitOfWork.Repository<AppUser>().GetAsync(userId);
+
+            if (user != null)
+            {
+                var rating = await newsRepository.GetRatingAsync(news, user);
+                result.Rating = rating;
+            }
+
             return result;
         }
-
 
         public async Task<NewsViewModel> AddAsync(NewsViewModel newsViewModel)
         {
