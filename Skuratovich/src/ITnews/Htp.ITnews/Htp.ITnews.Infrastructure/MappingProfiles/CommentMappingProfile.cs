@@ -25,6 +25,7 @@ namespace Htp.ITnews.Infrastructure.MappingProfiles
                 .ForMember(dest => dest.UpdatedById, opt => opt.MapFrom(src => src.UpdatedBy == null ? new Guid() : src.UpdatedBy.Id))
                 .ForMember(dest => dest.UpdatedByUserName, opt => opt.MapFrom(src => src.UpdatedBy == null ? "" : src.UpdatedBy.UserName))
                 .ForMember(dest => dest.Updated, opt => opt.MapFrom(src => src.Updated))
+                .ForMember(dest => dest.LikesCount, opt => opt.MapFrom(src => src.LikesCount))
                 .ForAllOtherMembers(c => c.Ignore());
         }
 

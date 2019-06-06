@@ -82,6 +82,12 @@ namespace Htp.ITnews.Infrastructure
                 options.SignIn.RequireConfirmedEmail = true;
                 // https://docs.microsoft.com/en-us/aspnet/core/security/authentication/accconfirm?view=aspnetcore-2.2&tabs=visual-studio
             });
+
+            services.Configure<SecurityStampValidatorOptions>(options =>
+            {
+                // enables immediate logout, after updating the user's stat.
+                options.ValidationInterval = TimeSpan.Zero;
+            });
         }
 
         public static void ConfigureCookie(this IServiceCollection services)

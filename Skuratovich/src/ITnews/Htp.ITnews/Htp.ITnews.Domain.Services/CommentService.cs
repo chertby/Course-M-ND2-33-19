@@ -89,7 +89,7 @@ namespace Htp.ITnews.Domain.Services
                     UpdatedByUserName = c.UpdatedBy == null ? "" : c.UpdatedBy.UserName,
                     Updated = c.Updated,
                     IsLiked = c.Likes.Any(l => l.AppUserId == userId),
-                    Likes = c.Likes.Count });
+                    LikesCount = c.LikesCount });
 
             return result;
         }
@@ -121,14 +121,14 @@ namespace Htp.ITnews.Domain.Services
             }
         }
 
-        public async Task VoteAsync(Guid? commentId, Guid? userId, string action)
+        public async Task<CommentViewModel> VoteAsync(Guid? commentId, Guid? userId, string action)
         {
             if (commentId == null)
             {
                 throw new ArgumentNullException(nameof(commentId));
             }
 
-            var comment = await commentRepository.GetAsync(commentId.GetValueOrDefault());
+            var comment = await commentRepository.GetAsync(commentId.GetValueOrDefault(), x => x .Include(c => c.News));
 
             if (comment == null)
             {
@@ -171,6 +171,8 @@ namespace Htp.ITnews.Domain.Services
                         throw new ArgumentException("Invalid value", nameof(action));
                     }
                     transaction.Commit();
+                    var result = mapper.Map<CommentViewModel>(comment);
+                    return result;
                 }
                 catch (Exception ex)
                 {

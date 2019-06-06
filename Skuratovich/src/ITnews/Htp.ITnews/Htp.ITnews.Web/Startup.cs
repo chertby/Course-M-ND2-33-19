@@ -99,7 +99,7 @@ namespace Htp.ITnews.Web
                     options.Conventions.AllowAnonymousToPage("/Identity/Account/Login");
                     options.Conventions.AllowAnonymousToPage("/Identity/Account/Register");
                 });
-
+                
             services.AddSignalR();
         }
 

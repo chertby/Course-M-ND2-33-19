@@ -29,5 +29,6 @@ namespace Htp.ITnews.Domain.Contracts
         Task<IdentityResult> AddClaimAsync(UserViewModel userViewModel, Claim claim);
         Task<IdentityResult> RemoveClaimAsync(UserViewModel userViewModel, Claim claim);
         Task<IdentityResult> RemoveClaimAsync(UserViewModel userViewModel, Claim claim, Claim newClaim);
+        Task<IdentityResult> UpdateSecurityStampAsync(UserViewModel userViewModel);
     }
 }

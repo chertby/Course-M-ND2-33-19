@@ -172,5 +172,12 @@ namespace Htp.ITnews.Domain.Services
             var result = await userManager.ReplaceClaimAsync(user, claim, newClaim);
             return result;
         }
+
+        public async Task<IdentityResult> UpdateSecurityStampAsync(UserViewModel userViewModel)
+        {
+            var user = await userManager.FindByIdAsync(userViewModel.Id.ToString());
+            var result = await userManager.UpdateSecurityStampAsync(user);
+            return result;
+        }
     }
 }

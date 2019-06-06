@@ -11,5 +11,6 @@ namespace Htp.ITnews.Web.Hubs
         Task ReceiveComments(IQueryable<CommentViewModel> comments);
         Task Vote(Guid id, string action);
         Task ClearComment();
+        Task UpdateLike(Guid id, int count);
     }
 }

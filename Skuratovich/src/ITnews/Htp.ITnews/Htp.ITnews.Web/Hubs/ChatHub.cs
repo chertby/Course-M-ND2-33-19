@@ -52,7 +52,12 @@ namespace Htp.ITnews.Web.Hubs
         [Authorize(Policy = "RequireRole")]
         public async Task VoteAsync(Guid? id, string action)
         {
-            await commentService.VoteAsync(id, Context.User.GetUserId(), action);
+            var comment = await commentService.VoteAsync(id, Context.User.GetUserId(), action);
+
+            if (comment != null)
+            {
+                await Clients.Group(comment.NewsId.ToString()).UpdateLike(comment.Id, comment.LikesCount);
+            }
 
             await Clients.Caller.Vote(id.GetValueOrDefault(), action);
         }

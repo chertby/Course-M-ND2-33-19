@@ -28,6 +28,7 @@ namespace Htp.ITnews.Data.EntityFramework
             var like = await likes.FirstOrDefaultAsync(l => l.CommentId.Equals(comment.Id) && l.AppUserId.Equals(user.Id));
             if (like == null)
             {
+                ++comment.LikesCount;
                 like = new Like { CommentId = comment.Id, AppUserId = user.Id };
                 await likes.AddAsync(like);
             }
@@ -48,6 +49,7 @@ namespace Htp.ITnews.Data.EntityFramework
             var like = await likes.FirstOrDefaultAsync(l => l.CommentId.Equals(comment.Id) && l.AppUserId.Equals(user.Id));
             if (like != null)
             {
+                --comment.LikesCount;
                 likes.Remove(like);
             }
         }

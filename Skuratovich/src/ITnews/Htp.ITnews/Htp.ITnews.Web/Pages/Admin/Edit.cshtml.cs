@@ -53,6 +53,26 @@ namespace Htp.ITnews.Web.Pages.Admin
                 return Page();
             }
 
+            var user = await userService.FindByIdAsync(UserViewModel.Id);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{UserViewModel.Id}'.");
+            }
+
+            if (UserViewModel.IsActive != user.IsActive)
+            {
+                user.IsActive = UserViewModel.IsActive;
+
+                await userService.UpdateAsync(user);
+
+                if (!user.IsActive)
+                {
+                    await userService.UpdateSecurityStampAsync(user);
+                }
+            }
+
+
+
             var userRoles = await userService.GetRolesAsync(UserViewModel);
             var addedRoles = roles.Except(userRoles);
             var removedRoles = userRoles.Except(roles);

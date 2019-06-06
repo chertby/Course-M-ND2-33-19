@@ -13,6 +13,7 @@ connection.on('ReceiveComment', addComment);
 connection.on('ReceiveComments', addComments);
 connection.on('ClearComment', clearComment);
 connection.on('Vote', vote);
+connection.on('UpdateLike', updateLike);
 
 connection.start().then(function(){
     var newsId = document.getElementById("NewsViewModel_Id").value;
@@ -87,7 +88,15 @@ function addComment(c) {
     likeA.setAttribute('type', 'button');
     likeA.disabled = c.isLiked;
     likeA.addEventListener("click", comment_vote);
-    //likeA.append(" Like");
+
+    var countI = document.createElement('i');
+    countI.className = 'fa fa-heart js-comment-heart';
+    countI.append(" " + c.likesCount);
+
+    var countA = document.createElement('button');
+    countA.className = 'float-right btn text-white btn-danger js-comment-btn';
+    countA.appendChild(countI);
+    countA.disabled = true;
 
     var dislikeI = document.createElement('i');
     dislikeI.className = 'fa fa-thumbs-down';
@@ -99,10 +108,10 @@ function addComment(c) {
     dislikeA.setAttribute('type', 'button');
     dislikeA.disabled = !c.isLiked;
     dislikeA.addEventListener("click", comment_vote);
-    //dislikeA.append(" Like");
 
     var buttonsP = document.createElement('p');
     buttonsP.appendChild(likeA);
+    buttonsP.appendChild(countA);
     buttonsP.appendChild(dislikeA);
 
     var textDiv = document.createElement('div');
@@ -175,4 +184,15 @@ function vote(id, action) {
     o = target.find('.js-comment-vote');
     o.find('.js-comment-like').prop( "disabled", (action == 'like'));
     o.find('.js-comment-dislike').prop( "disabled", !(action == 'like'));
+}
+
+function updateLike(id, count) {
+    if (!id) return;
+    var target = $('#commentsList').find('#' + id);
+    if (!target)
+    {
+        console('can not find comment with id=' + id);
+        return;
+    }
+    o = target.find('.js-comment-heart').prop( "textContent", " " + count);
 }
