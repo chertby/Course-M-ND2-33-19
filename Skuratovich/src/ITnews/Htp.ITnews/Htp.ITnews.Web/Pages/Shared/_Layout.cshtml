@@ -9,15 +9,61 @@
     <title>@ViewData["Title"] - ITnews</title>
 
     @*<environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
-              crossorigin="anonymous"
-              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
-    </environment>*@
+            <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        </environment>
+        <environment exclude="Development">
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+                  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+                  asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+                  crossorigin="anonymous"
+                  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
+        </environment>*@
+
+    @{
+        if (string.IsNullOrEmpty(theme))
+        {
+            theme = "cosmo";
+        }
+        switch (theme)
+        {
+            case "default":
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
+                      asp-fallback-href="~/lib/bootstrap/dist/css/default/bootstrap.min.css" asp-suppress-fallback-integrity="true"
+                      asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+                      integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY="
+                      crossorigin="anonymous" />
+                    break;
+                case "cerulean":
+                    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/cerulean/bootstrap.min.css" rel="stylesheet"
+                          asp-fallback-href="~/lib/bootstrap/dist/css/cerulean/bootstrap.min.css" asp-suppress-fallback-integrity="true"
+                          asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+                          integrity="sha384-C++cugH8+Uf86JbNOnQoBweHHAe/wVKN/mb0lTybu/NZ9sEYbd+BbbYtNpWYAsNP"
+                          crossorigin="anonymous" />
+                    break;
+                case "cosmo":
+                    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/cosmo/bootstrap.min.css" rel="stylesheet"
+                          asp-fallback-href="~/lib/bootstrap/dist/css/cosmo/bootstrap.min.css" asp-suppress-fallback-integrity="true"
+                          asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+                          integrity="sha384-uhut8PejFZO8994oEgm/ZfAv0mW1/b83nczZzSwElbeILxwkN491YQXsCFTE6+nx"
+                          crossorigin="anonymous" />
+                    break;
+                case "darkly":
+                    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/darkly/bootstrap.min.css" rel="stylesheet"
+                          asp-fallback-href="~/lib/bootstrap/dist/css/darkly/bootstrap.min.css" asp-suppress-fallback-integrity="true"
+                          asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+                          integrity="sha384-w+8Gqjk9Cuo6XH9HKHG5t5I1VR4YBNdPt/29vwgfZR485eoEJZ8rJRbm3TR32P6k"
+                          crossorigin="anonymous" />
+                    break;
+                default:
+                    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/cosmo/bootstrap.min.css" rel="stylesheet"
+                          asp-fallback-href="~/lib/bootstrap/dist/css/cosmo/bootstrap.min.css" asp-suppress-fallback-integrity="true"
+                          asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+                          integrity="sha384-uhut8PejFZO8994oEgm/ZfAv0mW1/b83nczZzSwElbeILxwkN491YQXsCFTE6+nx"
+                          crossorigin="anonymous" />
+                    break;
+            }
+    }
+
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -32,6 +78,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
                     <partial name="_LanguagePartial" />
+                    @*<partial name="_ThemePartial" />*@
                     <ul class="navbar-nav flex-grow-1">
                         @*<li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-page="/News/Index">News</a>
@@ -48,6 +95,15 @@
                                 <a class="nav-link text-dark" asp-area="" asp-page="/Admin/Index">Admin page</a>
                             </li>
                         }
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdownTheme" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Theme</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownTheme">
+                                <li><a class="dropdown-item theme @(theme == "default" ? "active" : "")" data-theme="default" href="#">Default</a></li>
+                                <li><a class="dropdown-item theme @(theme == "cerulean" ? "active" : "")" data-theme="cerulean" href="#">Cerulean</a></li>
+                                <li><a class="dropdown-item theme @(theme == "cosmo" ? "active" : "")" data-theme="cosmo" href="#">Cosmo</a></li>
+                                <li><a class="dropdown-item theme @(theme == "darkly" ? "active" : "")" data-theme="darkly" href="#">Darkly</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -82,6 +138,7 @@
                 crossorigin="anonymous"
                 integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"></script>
     </environment>
+    <script src="~/js/js.cookie.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
