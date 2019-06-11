@@ -22,7 +22,12 @@ namespace Htp.ITnews.Web.Utilities
         /// <returns>ProviderCultureResult depends on path {culture} route parameter, or default culture</returns>
         public Task<ProviderCultureResult> DetermineProviderCultureResult(HttpContext httpContext)
         {
-            var defaultCulture = "en";
+            //var defaultCulture = "en";
+
+            httpContext.Request.Cookies.TryGetValue("<ITnews>.CultureName", out string defaultCulture);
+
+            if (string.IsNullOrEmpty(defaultCulture))
+                defaultCulture = "en";
 
             var path = httpContext.Request.Path;
 

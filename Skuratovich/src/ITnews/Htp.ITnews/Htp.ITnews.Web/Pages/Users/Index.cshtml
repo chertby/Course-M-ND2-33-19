@@ -16,10 +16,6 @@
 }
 
 <div>
-    <div>
-        @Model.UserViewModel.UserName (@Model.News.Count())
-    </div>
-
     <div class="form-group">
         <label asp-for="UserViewModel.FirstName"></label>
         @if ((await AuthorizationService.AuthorizeAsync(User, Model.UserViewModel, new EditRequirement())).Succeeded)
@@ -44,6 +40,7 @@
     </div>
 </div>
 <div>
+    <span>@Localizer.Text("News") (@Model.News.Count())</span>
     @if (User.Identity.IsAuthenticated && (User.IsInRole("Administrator") || User.IsInRole("Writer")))
     {
         <p>

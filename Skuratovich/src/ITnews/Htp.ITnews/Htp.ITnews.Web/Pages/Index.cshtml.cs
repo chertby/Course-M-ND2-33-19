@@ -16,6 +16,7 @@ namespace Htp.ITnews.Web.Pages
         private readonly ITagService tagService;
 
         public string CurrentFilter { get; set; }
+        public bool CurrentOrder { get; set; }
 
         public PaginatedList<NewsViewModel> News { get; set; }
 
@@ -25,7 +26,7 @@ namespace Htp.ITnews.Web.Pages
             this.tagService = tagService;
         }
 
-        public async Task OnGetAsync(string currentFilter, string searchString, int? pageIndex, string tagString)
+        public async Task OnGetAsync(string currentFilter, string searchString, int? pageIndex, string tagString, string orderBy)
         {
             if ((searchString != null) || (tagString != null))
             {
@@ -53,6 +54,25 @@ namespace Htp.ITnews.Web.Pages
             {
                 newsViewModelIQ = newsViewModelIQ.Where(s => s.Title.Contains(searchString)
                                        || s.Description.Contains(searchString));
+            }
+
+            if (string.IsNullOrEmpty(orderBy))
+            {
+                newsViewModelIQ = newsViewModelIQ.OrderByDescending(n => n.Created);
+                CurrentOrder = true;
+            }
+            else
+            {
+                if (orderBy == "created")
+                {
+                    newsViewModelIQ = newsViewModelIQ.OrderByDescending(n => n.Created);
+                    CurrentOrder = true;
+                }
+                else
+                {
+                    newsViewModelIQ = newsViewModelIQ.OrderByDescending(n => n.Rating);
+                    CurrentOrder = false;
+                }
             }
 
             int pageSize = 5;

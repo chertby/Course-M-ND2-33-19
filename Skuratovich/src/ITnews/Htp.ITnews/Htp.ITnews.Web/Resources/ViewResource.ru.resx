@@ -45,4 +45,7 @@
     <data name="Continue reading" xml:space="preserve">
         <value>Читать далее</value>
     </data>
+    <data name="Comments" xml:space="preserve">
+        <value>Коментарии</value>
+    </data>
 </root>

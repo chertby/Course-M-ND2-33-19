@@ -4,8 +4,16 @@
 
 @inject IOptions<RequestLocalizationOptions> LocOps
 
+
 @{
-    var requestCulture = CultureInfo.CurrentCulture;
+    Context.Request.Cookies.TryGetValue("<ITnews>.CultureName", out string cultureName);
+
+    if (string.IsNullOrEmpty(cultureName))
+    {
+        cultureName = CultureInfo.CurrentCulture.Name;
+    }
+
+    var requestCulture = new CultureInfo(cultureName);
 
     var supportedCultures = LocOps.Value.SupportedUICultures
 
@@ -15,7 +23,8 @@
             Text = $"{c.DisplayName}"
         }).ToList();
 
-    var routeData = new Dictionary<string, string>();
+    var routeData = new Dictionary<string, string>
+    ();
 
     foreach (var r in ViewContext.RouteData.Values)
     {
@@ -41,8 +50,9 @@
                 // replace {culture} value with the one from the list
                 routeData["culture"] = culture.Value;
 
-                <a class="dropdown-item small"
-                   asp-all-route-data="@routeData">
+                <a class="dropdown-item small culture"
+                   asp-all-route-data="@routeData"
+                   data-culture="@culture.Value">
                     @culture.Text
                 </a>
             }

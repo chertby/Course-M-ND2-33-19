@@ -5,7 +5,7 @@
     ViewData["Title"] = Localizer.Text("Edit user");
 }
 
-<h2>@Localizer.Text("Edit user")</h2>
+<h2>@Localizer.Text("Edit user") - @Model.UserViewModel.UserName</h2>
 <hr />
 
 <div class="row">
@@ -14,7 +14,7 @@
             <input type="hidden" asp-for="UserViewModel.Id" />
             <div class="form-group">
                 <label asp-for="UserViewModel.IsActive" class="control-label"></label>
-                <input asp-for="UserViewModel.IsActive" class="form-control" />
+                <input asp-for="UserViewModel.IsActive" />
             </div>
             <hr />
             <div class="form-group">

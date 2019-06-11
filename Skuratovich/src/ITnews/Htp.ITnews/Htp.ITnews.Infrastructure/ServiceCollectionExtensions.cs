@@ -1,10 +1,13 @@
 ﻿using System;
 using System.IO;
 using AutoMapper;
+using FluentValidation;
 using Htp.ITnews.Data.Contracts;
 using Htp.ITnews.Data.Contracts.Entities;
 using Htp.ITnews.Data.EntityFramework;
 using Htp.ITnews.Domain.Contracts;
+using Htp.ITnews.Domain.Contracts.Validators;
+using Htp.ITnews.Domain.Contracts.ViewModels;
 using Htp.ITnews.Domain.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -109,6 +112,9 @@ namespace Htp.ITnews.Infrastructure
             services.AddAutoMapper(typeof(ServiceCollectionExtensions).Assembly);
         }
 
-        //FluentValidation.AspNetCore
+        public static void AddCustomFluentValidation(this IServiceCollection services)
+        {
+            services.AddTransient<IValidator<NewsViewModel>, NewsViewModelValidator>();
+        }
     }
 }

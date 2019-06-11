@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 using Htp.ITnews.Web.Authorization.Requirements;
 using Htp.ITnews.Web.Authorization.Handlers;
 using Htp.ITnews.Web.Hubs;
+using FluentValidation.AspNetCore;
 
 namespace Htp.ITnews.Web
 {
@@ -98,9 +99,11 @@ namespace Htp.ITnews.Web
                     options.Conventions.AllowAnonymousToPage("/Users/Index");
                     options.Conventions.AllowAnonymousToPage("/Identity/Account/Login");
                     options.Conventions.AllowAnonymousToPage("/Identity/Account/Register");
-                });
+                })
+                .AddFluentValidation();
                 
             services.AddSignalR();
+            services.AddCustomFluentValidation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

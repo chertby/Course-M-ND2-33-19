@@ -22,12 +22,22 @@
         <div class="col-md-4 order-md-2 mb-4">
             <div>
                 <form asp-page="./Index" method="get">
-                    <div class="form-actions no-color">
-                        <p>
-                            @Localizer.Text("Find by title and description"): <input type="text" name="SearchString" value="@Model.CurrentFilter" />
-                            <input type="submit" value="Search" class="btn btn-default" /> |
-                            <a asp-page="./Index">@Localizer.Text("Back to full List")</a>
-                        </p>
+                    <div class="form-actions no-color row">
+
+                        <div class="col-md-8 mb-4">
+                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="SearchString" value="@Model.CurrentFilter">
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Search">Search</button>
+                        </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="orderBy" id="inlineRadio1" value="created" checked="@Model.CurrentOrder">
+                        <label class="form-check-label" for="inlineRadio1">Order by created</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="orderBy" id="inlineRadio2" value="rating">
+                        <label class="form-check-label" for="inlineRadio2">Order by rating</label>
+                    </div>
                     </div>
                 </form>
             </div>
@@ -118,7 +128,8 @@
 
     @*wordloud2*@
     <script src="~/lib/wordcloud2/wordcloud2.js"></script>
-    <script>jQuery(function ($) {
+    <script>
+jQuery(function ($) {
             var $canvas = $('#canvas');
 
             if (!WordCloud.isSupported) {
@@ -148,6 +159,10 @@
                     console.log("error");
                 });
 
+            $('input[type=search]').on('search', function () {
+
+                window.location.href = '?searchString=';
+            });
         });</script>
 
     <script src="~/lib/bootstrap-star-rating/js/star-rating.js" type="text/javascript"></script>
