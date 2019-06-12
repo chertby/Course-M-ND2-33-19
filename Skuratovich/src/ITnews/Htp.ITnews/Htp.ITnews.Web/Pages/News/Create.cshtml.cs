@@ -70,7 +70,7 @@ namespace Htp.ITnews.Web.Pages.News
             var filePath = "/files/img/" + uploadedFile.FileName;
 
             var filename = appEnvironment.WebRootPath + filePath;
-            var fileUrl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}{filePath}";
+            var fileUrl = filePath;
 
             using (var fileStream = new FileStream(filename, FileMode.Create))
             {

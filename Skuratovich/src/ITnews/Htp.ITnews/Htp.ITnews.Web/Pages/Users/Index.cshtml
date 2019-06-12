@@ -20,7 +20,7 @@
         <label asp-for="UserViewModel.FirstName"></label>
         @if ((await AuthorizationService.AuthorizeAsync(User, Model.UserViewModel, new EditRequirement())).Succeeded)
         {
-            <a href="#" class="editable-text-full" data-pk="@Model.UserViewModel.Id" id="FirstName" data-title="Enter First Name">@Model.UserViewModel.FirstName</a>
+            <a href="#" class="editable-text-full" data-pk="@Model.UserViewModel.Id" id="FirstName" data-title=@Localizer["Enter First Name"]>@Model.UserViewModel.FirstName</a>
         }
         else
         {
@@ -31,7 +31,7 @@
         <label asp-for="UserViewModel.LastName"></label>
         @if ((await AuthorizationService.AuthorizeAsync(User, Model.UserViewModel, new EditRequirement())).Succeeded)
         {
-            <a href="#" class="editable-text-full" data-pk="@Model.UserViewModel.Id" id="LastName" data-title="Enter Last Name">@Model.UserViewModel.LastName</a>
+            <a href="#" class="editable-text-full" data-pk="@Model.UserViewModel.Id" id="LastName" data-title=@Localizer["Enter Last Name"]>@Model.UserViewModel.LastName</a>
         }
         else
         {
@@ -40,11 +40,11 @@
     </div>
 </div>
 <div>
-    <span>@Localizer.Text("News") (@Model.News.Count())</span>
+    <span>@Localizer["News"] (@Model.News.Count())</span>
     @if (User.Identity.IsAuthenticated && (User.IsInRole("Administrator") || User.IsInRole("Writer")))
     {
         <p>
-            <a asp-page="../News/Create">@Localizer.Text("Create New")</a>
+            <a asp-page="../News/Create">@Localizer["Create New"]</a>
         </p>
     }
 </div>
@@ -69,7 +69,7 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Title)
+                        <a asp-page="../News/Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Title)</a>
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.CategoryTitle)
@@ -80,12 +80,8 @@
                     <td>
                         @if ((await AuthorizationService.AuthorizeAsync(User, item, new EditRequirement())).Succeeded)
                         {
-                            <span><a asp-page="../News/Edit" asp-route-id="@item.Id">@Localizer.Text("Edit")</a> |</span>
-                        }
-                        <a asp-page="../News/Details" asp-route-id="@item.Id">@Localizer.Text("Details")</a>
-                        @if ((await AuthorizationService.AuthorizeAsync(User, item, new EditRequirement())).Succeeded)
-                        {
-                            <span> | <a asp-page="../News/Delete" asp-route-id="@item.Id">@Localizer.Text("Delete")</a></span>
+                            <span><a asp-page="../News/Edit" asp-route-id="@item.Id">@Localizer["Edit"]</a> |</span>
+                            <a asp-page="../News/Delete" asp-route-id="@item.Id">@Localizer["Delete"]</a>
                         }
                     </td>
                 </tr>
@@ -105,7 +101,7 @@
                    asp-route-id="@Model.UserViewModel.Id"
                    asp-route-pageIndex="@(Model.News.PageIndex - 1)"
                    class="page-link" aria-disabled="true">
-                    Previous
+                    @Localizer["Previous"]
                 </a>
             </li>
             <li class="page-item @nextDisabled">
@@ -113,7 +109,7 @@
                    asp-route-id="@Model.UserViewModel.Id"
                    asp-route-pageIndex="@(Model.News.PageIndex + 1)"
                    class="page-link" aria-disabled="true">
-                    Next
+                    @Localizer["Next"]
                 </a>
             </li>
         </ul>

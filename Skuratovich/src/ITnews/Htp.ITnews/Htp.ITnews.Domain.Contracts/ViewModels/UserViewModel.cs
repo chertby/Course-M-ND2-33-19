@@ -7,6 +7,7 @@ namespace Htp.ITnews.Domain.Contracts.ViewModels
 {
     public class UserViewModel : IdentityUser<Guid>, IViewModel
     {
+        [Display(Name = "Is active")]
         public bool IsActive { get; set; }
         [PersonalData]
         [Display(Name = "First name")]

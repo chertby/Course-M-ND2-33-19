@@ -22,7 +22,7 @@
     @{
         if (string.IsNullOrEmpty(theme))
         {
-            theme = "cosmo";
+            theme = "default";
         }
         switch (theme)
         {
@@ -77,28 +77,18 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
-                    <partial name="_LanguagePartial" />
-                    @*<partial name="_ThemePartial" />*@
                     <ul class="navbar-nav flex-grow-1">
-                        @*<li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/News/Index">News</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                            </li>*@
                         @if ((User.Identity.IsAuthenticated) && (User.IsInRole("Administrator")))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Admin/Index">Admin page</a>
-                            </li>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Admin/Index">@Localizer["Admin page"]</a>
+
+</li>
                         }
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdownTheme" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Theme</a>
+                            <a class="nav-link dropdown-toggle" id="navbarDropdownTheme" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@Localizer["Theme"]</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownTheme">
-                                <li><a class="dropdown-item theme @(theme == "default" ? "active" : "")" data-theme="default" href="#">Default</a></li>
+                                <li><a class="dropdown-item theme @(theme == "default" ? "active" : "")" data-theme="default" href="#">@Localizer["Default"]</a></li>
                                 <li><a class="dropdown-item theme @(theme == "cerulean" ? "active" : "")" data-theme="cerulean" href="#">Cerulean</a></li>
                                 <li><a class="dropdown-item theme @(theme == "cosmo" ? "active" : "")" data-theme="cosmo" href="#">Cosmo</a></li>
                                 <li><a class="dropdown-item theme @(theme == "darkly" ? "active" : "")" data-theme="darkly" href="#">Darkly</a></li>
@@ -118,7 +108,14 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2019 - ITnews - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; @System.DateTime.Now.Year - ITnews - <a asp-area="" asp-page="/Privacy">@Localizer["Privacy"]</a></p>
+                </div>
+                <div class="col-md-6 text-right">
+                    @await Html.PartialAsync("_SelectLanguagePartial")
+                </div>
+            </div>
         </div>
     </footer>
 

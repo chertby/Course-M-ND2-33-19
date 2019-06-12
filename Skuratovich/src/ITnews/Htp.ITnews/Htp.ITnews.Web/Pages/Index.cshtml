@@ -5,7 +5,7 @@
 @inject IAuthorizationService AuthorizationService
 @model IndexModel
 @{
-    ViewData["Title"] = Localizer.Text("News");
+    ViewData["Title"] = Localizer["News"];
 }
 
 <link rel="stylesheet" href="~/css/comment.css" />
@@ -16,7 +16,7 @@
 
 <div class="container">
     <div class="py-5 text-center">
-        <h2>@Localizer.Text("News")</h2>
+        <h2>@Localizer["News"]</h2>
     </div>
     <div class="row">
         <div class="col-md-4 order-md-2 mb-4">
@@ -25,24 +25,24 @@
                     <div class="form-actions no-color row">
 
                         <div class="col-md-8 mb-4">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="SearchString" value="@Model.CurrentFilter">
+                            <input class="form-control mr-sm-2" type="search" placeholder=@Localizer["Search"] aria-label="Search" name="SearchString" value="@Model.CurrentFilter">
                         </div>
                         <div class="col-md-4 mb-4">
-                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Search">Search</button>
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Search">@Localizer["Search"]</button>
                         </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="orderBy" id="inlineRadio1" value="created" checked="@Model.CurrentOrder">
-                        <label class="form-check-label" for="inlineRadio1">Order by created</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="orderBy" id="inlineRadio2" value="rating">
-                        <label class="form-check-label" for="inlineRadio2">Order by rating</label>
-                    </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="orderBy" id="inlineRadio1" value="created" checked="@Model.CurrentOrder">
+                            <label class="form-check-label" for="inlineRadio1">Order by created</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="orderBy" id="inlineRadio2" value="rating">
+                            <label class="form-check-label" for="inlineRadio2">Order by rating</label>
+                        </div>
                     </div>
                 </form>
             </div>
             <div class="alert" hidden id="not-supported">
-                <strong>@Localizer.Text("Your browser is not supported.")</strong>
+                <strong>@Localizer["Your browser is not supported."]</strong>
             </div>
             <div class="canvas-container">
                 <canvas id="canvas"></canvas>
@@ -70,7 +70,7 @@
                                     <div>
                                         <p>@item.Description</p>
                                     </div>
-                                    <a asp-page="./News/Details" asp-route-id="@item.Id">@Localizer.Text("Continue reading")</a>
+                                    <a asp-page="./News/Details" asp-route-id="@item.Id">@Localizer["Continue reading"]</a>
                                 </div>
                                 <footer></footer>
 
@@ -100,19 +100,16 @@
                asp-route-pageIndex="@(Model.News.PageIndex - 1)"
                asp-route-currentFilter="@Model.CurrentFilter"
                class="page-link" aria-disabled="true">
-                Previous
+                @Localizer["Previous"]
             </a>
         </li>
-        @*<li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>*@
         <li class="page-item @nextDisabled">
             <a asp-page="./Index"
                @*asp-route-sortOrder="@Model.CurrentSort" *@
                asp-route-pageIndex="@(Model.News.PageIndex + 1)"
                asp-route-currentFilter="@Model.CurrentFilter"
                class="page-link" aria-disabled="true">
-                Next
+                 @Localizer["Next"]
             </a>
         </li>
     </ul>
@@ -128,8 +125,7 @@
 
     @*wordloud2*@
     <script src="~/lib/wordcloud2/wordcloud2.js"></script>
-    <script>
-jQuery(function ($) {
+    <script>jQuery(function ($) {
             var $canvas = $('#canvas');
 
             if (!WordCloud.isSupported) {

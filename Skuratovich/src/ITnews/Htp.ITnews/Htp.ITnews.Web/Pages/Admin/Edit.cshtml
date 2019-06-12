@@ -1,11 +1,10 @@
 ﻿@page
-@using System.Globalization
 @model EditModel
 @{
-    ViewData["Title"] = Localizer.Text("Edit user");
+    ViewData["Title"] = Localizer["Edit user"];
 }
 
-<h2>@Localizer.Text("Edit user") - @Model.UserViewModel.UserName</h2>
+<h2>@Localizer["Edit user"] - @Model.UserViewModel.UserName</h2>
 <hr />
 
 <div class="row">
@@ -21,16 +20,16 @@
                 @foreach (RoleViewModel role in Model.Roles)
         {
             <input type="checkbox" name="roles" value="@role.Name"
-                   @(Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") />@role.Name <br />
+                   @(Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") />@Localizer[role.Name] <br />
     }
             </div>
-            <button type="submit" class="btn btn-primary">@Localizer.Text("Save")</button>
+            <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="Index">@Localizer.Text("Back to List")</a>
+    <a asp-page="Index">@Localizer["Back to List"]</a>
 </div>
 
 @section Scripts {

@@ -7,8 +7,3 @@ $('.theme').on('click', function () {
     Cookies.set('<ITnews>.Theme', $(this).data('theme'), { expires: 1 });
     location.reload();
 });
-
-$('.culture').on('click', function () {
-    Cookies.set('<ITnews>.CultureName', $(this).data('culture'), { expires: 1 });
-    location.reload();
-});

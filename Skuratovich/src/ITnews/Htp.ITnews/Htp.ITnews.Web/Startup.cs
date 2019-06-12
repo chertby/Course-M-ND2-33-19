@@ -15,6 +15,8 @@ using Htp.ITnews.Web.Authorization.Requirements;
 using Htp.ITnews.Web.Authorization.Handlers;
 using Htp.ITnews.Web.Hubs;
 using FluentValidation.AspNetCore;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace Htp.ITnews.Web
 {
@@ -56,7 +58,6 @@ namespace Htp.ITnews.Web
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("RequireAdministratorRole",
-                    //policy => policy.RequireRole("Administrator").RequireAssertion(context => context.User.GetUserId();
                     policy => policy.RequireRole("Administrator"));
                 options.AddPolicy("RequireRole",
                     policy => policy.RequireRole("Administrator", "Writer", "Reader"));
@@ -68,27 +69,30 @@ namespace Htp.ITnews.Web
             services.AddSingleton<IAuthorizationHandler, AdministratorHandler>();
             services.AddSingleton<IAuthorizationHandler, SameUserHandler>();
 
-            services.AddMvc(config =>
+            // Add the localization services to the services container
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+            services.AddMvc(options =>
             {
                 var policy = new AuthorizationPolicyBuilder()
                          .RequireAuthenticatedUser()
                          .Build();
-                config.Filters.Add(new AuthorizeFilter(policy));
+                options.Filters.Add(new AuthorizeFilter(policy));
             })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddViewLocalization(options => options.ResourcesPath = "Resources")
                 .AddModelBindingMessagesLocalizer(services)
-                .AddDataAnnotationsLocalization(o =>
+                // Add support for localizing strings in data annotations (e.g. validation messages) via the
+                // IStringLocalizer abstractions.
+                .AddDataAnnotationsLocalization(options =>
                 {
                     var type = typeof(ViewResource);
                     var assemblyName = new AssemblyName(type.GetTypeInfo().Assembly.FullName);
                     var factory = services.BuildServiceProvider().GetService<IStringLocalizerFactory>();
                     var localizer = factory.Create("ViewResource", assemblyName.Name);
-                    o.DataAnnotationLocalizerProvider = (t, f) => localizer;
+                    options.DataAnnotationLocalizerProvider = (t, f) => localizer;
                 })
-                .AddRazorPagesOptions(options => {
-                    options.Conventions.Add(new CultureTemplateRouteModelConvention());
-                })
+                // Add support for finding localized views, based on file name suffix, e.g. Index.fr.cshtml
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddRazorPagesOptions(options =>
                 {
                     //options.Conventions.AddPageRoute("/News", "");
@@ -96,8 +100,9 @@ namespace Htp.ITnews.Web
                     options.Conventions.AllowAnonymousToPage("/Index");
                     options.Conventions.AllowAnonymousToPage("/News/Index");
                     options.Conventions.AllowAnonymousToPage("/News/Details");
-                    options.Conventions.AllowAnonymousToPage("/Users/Index");
+                    //options.Conventions.AllowAnonymousToPage("/Users/Index");
                     options.Conventions.AllowAnonymousToPage("/Identity/Account/Login");
+                    options.Conventions.AllowAnonymousToPage("/Identity/Account/ConfirmEmail");
                     options.Conventions.AllowAnonymousToPage("/Identity/Account/Register");
                 })
                 .AddFluentValidation();
@@ -121,8 +126,11 @@ namespace Htp.ITnews.Web
                 app.UseHsts();
             }
 
-            app.UseRequestLocalization();
-            app.UseHttpsRedirection();
+            var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(locOptions.Value);
+
+            //app.UseRequestLocalization();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 

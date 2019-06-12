@@ -29,6 +29,7 @@ namespace Htp.ITnews.Web.Areas.Identity.Pages.Account.Manage
             this.emailSender = emailSender;
         }
 
+        [Display(Name = "Username")]
         public string Username { get; set; }
 
         public bool IsEmailConfirmed { get; set; }
@@ -53,6 +54,7 @@ namespace Htp.ITnews.Web.Areas.Identity.Pages.Account.Manage
 
             [Required]
             [EmailAddress]
+            [Display(Name = "Email")]
             public string Email { get; set; }
 
             [Phone]

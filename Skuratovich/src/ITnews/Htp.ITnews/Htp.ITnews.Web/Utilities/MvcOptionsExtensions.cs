@@ -17,18 +17,17 @@ namespace Htp.ITnews.Web.Utilities
         public static IMvcBuilder AddModelBindingMessagesLocalizer
             (this IMvcBuilder mvc, IServiceCollection services)
         {
-            return mvc.AddMvcOptions(o =>
+            return mvc.AddMvcOptions(options =>
             {
                 var type = typeof(ViewResource);
                 var assemblyName = new AssemblyName(type.GetTypeInfo().Assembly.FullName);
                 var factory = services.BuildServiceProvider().GetService<IStringLocalizerFactory>();
                 var localizer = factory.Create("ViewResource", assemblyName.Name);
 
-                o.ModelBindingMessageProvider
-                    .SetAttemptedValueIsInvalidAccessor((x, y) => localizer["'{0}' is not valid value for '{0}' field", x, y]);
+                //options.ModelBindingMessageProvider
+                //options.ModelBindingMessageProvider
+                    //.SetAttemptedValueIsInvalidAccessor((x, y) => localizer["'{0}' is not valid value for '{0}' field", x, y]);
 
-                o.ModelBindingMessageProvider
-                    .SetValueMustBeANumberAccessor((x) => localizer["'{0}' must be a number", x]);
             });
         }
     }

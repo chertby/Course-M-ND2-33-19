@@ -38,12 +38,20 @@
     <Folder Include="Hubs\" />
     <Folder Include="wwwroot\lib\wordcloud2\" />
     <Folder Include="Pages\Users\" />
+    <Folder Include="Resources\Pages\" />
+    <Folder Include="Resources\Pages\Shared\" />
+    <Folder Include="Resources\Areas\" />
+    <Folder Include="Resources\Areas\Identity\" />
+    <Folder Include="Resources\Pages\News\" />
+    <Folder Include="Resources\Pages\Admin\" />
+    <Folder Include="Resources\Pages\Users\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Resources\ViewResource.Designer.cs" />
     <Compile Remove="Authorization\Requirements\EditPermission.cs" />
     <Compile Remove="Authorization\Requirements\Operations.cs" />
     <Compile Remove="Authorization\PermissionHandler.cs" />
+    <Compile Remove="Utilities\MvcOptionsExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\lib\jquery-tageditor\.DS_Store" />

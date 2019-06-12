@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Htp.ITnews.Domain.Contracts;
 using Htp.ITnews.Domain.Contracts.ViewModels;
 using Htp.ITnews.Web.Helpers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -39,16 +41,16 @@ namespace Htp.ITnews.Web.Pages
 
             CurrentFilter = searchString;
 
-            var newsViewModelIQ = ((!string.IsNullOrEmpty(tagString)) && Guid.TryParse(tagString, out Guid tagId)) ? newsService.GetAllByTag(tagId) : newsService.GetAll();
+            IQueryable<NewsViewModel> newsViewModelIQ;
 
-            //if ((!string.IsNullOrEmpty(tagString)) && Guid.TryParse(tagString, out Guid tagId))
-            //{
-            //    var newsViewModelIQ = newsService.GetAllByTag(tagId);
-            //}
-            //else
-            //{
-            //    var newsViewModelIQ = newsService.GetAll();
-            //}
+            if ((!string.IsNullOrEmpty(tagString)) && Guid.TryParse(tagString, out Guid tagId))
+            {
+                newsViewModelIQ = newsService.GetAllByTag(tagId);
+            }
+            else
+            {
+                newsViewModelIQ = newsService.GetAll();
+            }
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -84,6 +86,17 @@ namespace Htp.ITnews.Web.Pages
         {
             var tags = tagService.GetTagsForCloud();
             return new JsonResult(tags);
+        }
+
+        public IActionResult OnPostSetLanguage(string culture, string returnUrl)
+        {
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+            );
+
+            return LocalRedirect(returnUrl);
         }
 
     }

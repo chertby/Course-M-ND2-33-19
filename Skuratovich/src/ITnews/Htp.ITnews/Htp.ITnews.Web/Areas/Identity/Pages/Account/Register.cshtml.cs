@@ -75,7 +75,7 @@ namespace Htp.ITnews.Web.Areas.Identity.Pages.Account
                 {
                     logger.LogInformation("User created a new account with password.");
 
-                    //userService.AddClaimAsync(userViewModel, new Claim(ClaimTypes.UserData, "active", ClaimValueTypes.String, "RemoteClaims");
+                    await userService.AddToRolesAsync(userViewModel, new string[] { "Reader" });
 
                     var code = await userService.GenerateEmailConfirmationTokenAsync(userViewModel);
                     var callbackUrl = Url.Page(

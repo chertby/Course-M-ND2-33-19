@@ -2,7 +2,9 @@
 @using Htp.ITnews.Web
 @using Htp.ITnews.Domain.Contracts.ViewModels
 @using Htp.ITnews.Domain.Contracts
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
 @namespace Htp.ITnews.Web.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-@inject Utilities.CultureLocalizer Localizer
+@inject IViewLocalizer Localizer

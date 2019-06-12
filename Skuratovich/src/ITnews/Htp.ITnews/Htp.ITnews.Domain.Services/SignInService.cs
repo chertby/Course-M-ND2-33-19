@@ -52,7 +52,7 @@ namespace Htp.ITnews.Domain.Services
         {
             var user = await userManager.FindByEmailAsync(userName);
 
-            if ((user.IsActive.HasValue && !user.IsActive.Value) || !user.IsActive.HasValue)
+            if ((user != null) && ((user.IsActive.HasValue && !user.IsActive.Value) || !user.IsActive.HasValue))
             {
                 return SignInResult.LockedOut;
             }

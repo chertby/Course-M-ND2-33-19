@@ -98,9 +98,15 @@ namespace Htp.ITnews.Domain.Services
             {
                 try
                 {
+                    var author = await unitOfWork.Repository<AppUser>().GetAsync(newsViewModel.AuthorId);
+                    var created = DateTime.Now;
+
                     news.Category = await unitOfWork.Repository<Category>().GetAsync(newsViewModel.CategoryId);
-                    news.Author = await unitOfWork.Repository<AppUser>().GetAsync(newsViewModel.AuthorId);
-                    news.Created = DateTime.Now;
+                    news.Author = author;
+                    news.Created = created;
+                    news.UpdatedBy = author;
+                    news.Updated = created;
+
                     await newsRepository.AddAsync(news);
 
                     await unitOfWork.SaveChangesAsync();

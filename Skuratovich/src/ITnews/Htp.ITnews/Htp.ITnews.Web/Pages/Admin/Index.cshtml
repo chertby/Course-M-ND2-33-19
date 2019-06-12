@@ -5,21 +5,31 @@
 @inject IAuthorizationService AuthorizationService
 @model IndexModel
 @{
-    ViewData["Title"] = Localizer.Text("Admin page");
+    ViewData["Title"] = Localizer["Admin page"];
 }
 
-<h2>@Localizer.Text("Users")</h2>
+<h2>@Localizer["Users"]</h2>
 
 <table class="table">
-    @foreach (var user in Model.Users)
-    {
+    <thead>
         <tr>
-            <td>@user.Email</td>
+            <th>
+                @Localizer["UserName"]
+            </th>
+            <th>
+                @Localizer[Html.DisplayNameFor(model => model.Users[0].IsActive)]
+            </th>
+        </tr>
+        </thead>
+    @foreach (var user in Model.Users)
+        {
+        <tr>
+            <td><a asp-page="./Edit" asp-route-id="@user.Id">@user.UserName</a></td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@user.Id">@Localizer.Text("Edit")</a>
+                @user.IsActive
             </td>
         </tr>
-    }
+}
 </table>
 
 @section Scripts{

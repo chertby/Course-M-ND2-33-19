@@ -2,7 +2,7 @@
 @using System.Globalization
 @model EditModel
 @{
-    ViewData["Title"] = Localizer.Text("Edit news");
+    ViewData["Title"] = Localizer["Edit news"];
 }
 
 <h1>Edit</h1>
@@ -33,7 +33,7 @@
                 <label asp-for="NewsViewModel.CategoryTitle"></label>
                 <div>
                     <select asp-for="NewsViewModel.CategoryId" asp-items="Model.Сategories" class="form-control">
-                        <option>--none--</option>
+                        @*<option>@Localizer["--none--"]</option>*@
                     </select>
                     <span asp-validation-for="NewsViewModel.CategoryId" class="text-danger"></span>
                 </div>
@@ -51,7 +51,7 @@
 </div>
 
 <div>
-    <a asp-page="Index">Back to List</a>
+    <a asp-page="Index">@Localizer["Back to List"]</a>
 </div>
 
 @section Scripts {

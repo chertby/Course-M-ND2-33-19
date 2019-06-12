@@ -31,11 +31,11 @@ namespace Htp.ITnews.Web.Utilities
                 options.SupportedUICultures = cultures.OrderBy(x => x.EnglishName).ToList();
 
                 // add RouteValueRequestCultureProvider to the beginning of the providers list. 
-                options.RequestCultureProviders.Insert(0,
-                    new RouteValueRequestCultureProvider(cultures));
+                //options.RequestCultureProviders.Insert(0,
+                    //new RouteValueRequestCultureProvider(cultures));
             });
 
-            services.AddSingleton<CultureLocalizer>();
+            //services.AddSingleton<CultureLocalizer>();
         }
     }
 }
