@@ -17,10 +17,13 @@ namespace Htp.ITnews.Domain.Contracts.Validators
                 .NotEmpty()
                 .WithMessage("The 'Content' is required")
                 .MinimumLength(5)
-                .MaximumLength(1024);
+                .MaximumLength(10000);
 
             RuleFor(x => x.Description)
                 .NotEmpty();
+
+            RuleFor(x => x.CategoryId)
+                .NotNull();
         }
     }
 }

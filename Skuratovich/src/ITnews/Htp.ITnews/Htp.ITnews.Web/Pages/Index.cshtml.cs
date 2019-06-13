@@ -60,14 +60,14 @@ namespace Htp.ITnews.Web.Pages
 
             if (string.IsNullOrEmpty(orderBy))
             {
-                newsViewModelIQ = newsViewModelIQ.OrderByDescending(n => n.Created);
+                newsViewModelIQ = newsViewModelIQ.OrderByDescending(n => n.Updated);
                 CurrentOrder = true;
             }
             else
             {
-                if (orderBy == "created")
+                if (orderBy == "updated")
                 {
-                    newsViewModelIQ = newsViewModelIQ.OrderByDescending(n => n.Created);
+                    newsViewModelIQ = newsViewModelIQ.OrderByDescending(n => n.Updated);
                     CurrentOrder = true;
                 }
                 else

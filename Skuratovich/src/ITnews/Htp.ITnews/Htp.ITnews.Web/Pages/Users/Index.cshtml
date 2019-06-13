@@ -53,13 +53,16 @@
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.News[0].Title)
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["TitleSortParm"]" asp-route-id="@Model.UserViewModel.Id" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Localizer["Title"]</a>
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.News[0].CategoryTitle)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.News[0].AuthorUserName)
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-id="@Model.UserViewModel.Id" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Localizer["Created"]</a>
                 </th>
                 <th></th>
             </tr>
@@ -76,6 +79,9 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.AuthorUserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Created)
                     </td>
                     <td>
                         @if ((await AuthorizationService.AuthorizeAsync(User, item, new EditRequirement())).Succeeded)

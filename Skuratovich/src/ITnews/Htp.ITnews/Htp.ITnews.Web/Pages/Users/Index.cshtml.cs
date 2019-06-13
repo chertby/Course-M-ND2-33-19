@@ -33,23 +33,7 @@ namespace Htp.ITnews.Web.Pages.Users
         public PaginatedList<NewsViewModel> News { get; set; }
         public UserViewModel UserViewModel { get; set; }
 
-        //[BindProperty]
-        //public InputModel Input { get; set; }
-
-        //public class InputModel
-        //{
-        //    [Required]
-        //    [DataType(DataType.Text)]
-        //    [Display(Name = "First name")]
-        //    public string FirstName { get; set; }
-
-        //    [Required]
-        //    [DataType(DataType.Text)]
-        //    [Display(Name = "Last name")]
-        //    public string LastName { get; set; }
-        //}
-
-        public async Task<IActionResult> OnGetAsync(Guid? id, int? pageIndex)
+        public async Task<IActionResult> OnGetAsync(Guid? id, string sortOrder, int? pageIndex)
         {
             if (id == null)
             {
@@ -62,18 +46,33 @@ namespace Htp.ITnews.Web.Pages.Users
                 return NotFound($"Unable to load user with ID '{id.ToString()}'.");
             }
 
+
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["TitleSortParm"] = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+
             var newsViewModelIQ = newsService.GetAll().Where(x => x.AuthorId == id.GetValueOrDefault());
 
-            int pageSize = 5;
+            switch (sortOrder)
+            {
+                case "title_desc":
+                    newsViewModelIQ = newsViewModelIQ.OrderByDescending(s => s.Title);
+                    break;
+                case "Date":
+                    newsViewModelIQ = newsViewModelIQ.OrderBy(s => s.Created);
+                    break;
+                case "date_desc":
+                    newsViewModelIQ = newsViewModelIQ.OrderByDescending(s => s.Created);
+                    break;
+                default:
+                    newsViewModelIQ = newsViewModelIQ.OrderBy(s => s.Title);
+                    break;
+            }
+
+            int pageSize = 3;
             News = await PaginatedList<NewsViewModel>.CreateAsync(
                 newsViewModelIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
-
-            //Input = new InputModel
-            //{
-            //    FirstName = UserViewModel.FirstName,
-            //    LastName = UserViewModel.LastName
-            //};
-
+                
             return Page();
         }
 

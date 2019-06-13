@@ -75,13 +75,25 @@
     <data name="Is active" xml:space="preserve">
         <value>Активный</value>
     </data>
-    <data name="RequiredAttribute" xml:space="preserve">
-        <value>{0} не может быть пустым</value>
-    </data>
-    <data name="The {0} field is required." xml:space="preserve">
-        <value>{0} не может быть пустым.</value>
-    </data>
     <data name="Username" xml:space="preserve">
         <value>Имя пользователя</value>
+    </data>
+    <data name="A value is required." xml:space="preserve">
+        <value>Обязательное значение.</value>
+    </data>
+    <data name="The field is required." xml:space="preserve">
+        <value>Обязательное поле.</value>
+    </data>
+    <data name="The {0} field is required." xml:space="preserve">
+        <value>{0} обзятальеное поле.</value>
+    </data>
+    <data name="Description" xml:space="preserve">
+        <value>Описание</value>
+    </data>
+    <data name="Content" xml:space="preserve">
+        <value>Содержание</value>
+    </data>
+    <data name="Create" xml:space="preserve">
+        <value>Создать</value>
     </data>
 </root>

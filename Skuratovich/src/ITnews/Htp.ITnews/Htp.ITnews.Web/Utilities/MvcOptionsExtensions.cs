@@ -24,6 +24,8 @@ namespace Htp.ITnews.Web.Utilities
                 var factory = services.BuildServiceProvider().GetService<IStringLocalizerFactory>();
                 var localizer = factory.Create("ViewResource", assemblyName.Name);
 
+                options.ModelBindingMessageProvider.SetMissingKeyOrValueAccessor(() => localizer["A value is required."]);
+
                 //options.ModelBindingMessageProvider
                 //options.ModelBindingMessageProvider
                     //.SetAttemptedValueIsInvalidAccessor((x, y) => localizer["'{0}' is not valid value for '{0}' field", x, y]);

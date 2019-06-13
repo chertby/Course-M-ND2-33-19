@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+    <data name="Edit" xml:space="preserve">
+        <value>Редактировать</value>
+    </data>
+    <data name="Back to List" xml:space="preserve">
+        <value>Вернуться к списку</value>
+    </data>
+    <data name="Comments ({0})" xml:space="preserve">
+        <value>Комментарии ({0})</value>
+    </data>
+    <data name="Summit comment" xml:space="preserve">
+        <value>Отправить комментарий</value>
+    </data>
+</root>

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Htp.ITnews.Infrastructure;
-using Htp.ITnews.Web.Utilities;
 using Htp.ITnews.Web.Resources;
 using System.Reflection;
 using Microsoft.Extensions.Localization;
@@ -17,6 +16,7 @@ using Htp.ITnews.Web.Hubs;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Htp.ITnews.Web.Utilities;
 
 namespace Htp.ITnews.Web
 {
@@ -57,10 +57,10 @@ namespace Htp.ITnews.Web
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("RequireAdministratorRole",
-                    policy => policy.RequireRole("Administrator"));
-                options.AddPolicy("RequireRole",
-                    policy => policy.RequireRole("Administrator", "Writer", "Reader"));
+                options.AddPolicy("RequireAdministratorRole", policy =>
+                    policy.RequireRole("Administrator"));
+                options.AddPolicy("RequireRole", policy =>
+                    policy.RequireRole("Administrator", "Writer", "Reader"));
                 options.AddPolicy("EditPolicy", policy =>
                     policy.Requirements.Add(new EditRequirement()));
             });
@@ -78,9 +78,17 @@ namespace Htp.ITnews.Web
                          .RequireAuthenticatedUser()
                          .Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
+
+                var type = typeof(ViewResource);
+                var assemblyName = new AssemblyName(type.GetTypeInfo().Assembly.FullName);
+                var factory = services.BuildServiceProvider().GetService<IStringLocalizerFactory>();
+                var localizer = factory.Create("ViewResource", assemblyName.Name);
+
+                options.ModelBindingMessageProvider.SetMissingKeyOrValueAccessor(() => localizer["A value is required."]);
+                options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor((x) => localizer["The {0} field is required.", x]);
             })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddModelBindingMessagesLocalizer(services)
+                //.AddModelBindingMessagesLocalizer(services)
                 // Add support for localizing strings in data annotations (e.g. validation messages) via the
                 // IStringLocalizer abstractions.
                 .AddDataAnnotationsLocalization(options =>

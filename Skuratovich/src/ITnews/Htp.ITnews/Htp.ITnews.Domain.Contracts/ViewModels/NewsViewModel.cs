@@ -9,7 +9,9 @@ namespace Htp.ITnews.Domain.Contracts.ViewModels
         public Guid Id { get; set; }
         [Display(Name = "Title")]
         public string Title { get; set; }
+        [Display(Name = "Description")]
         public string Description { get; set; }
+        [Display(Name = "Content")]
         public string Content { get; set; }
         public Guid AuthorId { get; set; }
         [Display(Name = "Author")]

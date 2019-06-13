@@ -30,14 +30,6 @@
                         <div class="col-md-4 mb-4">
                             <button class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Search">@Localizer["Search"]</button>
                         </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="orderBy" id="inlineRadio1" value="created" checked="@Model.CurrentOrder">
-                            <label class="form-check-label" for="inlineRadio1">Order by created</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="orderBy" id="inlineRadio2" value="rating">
-                            <label class="form-check-label" for="inlineRadio2">Order by rating</label>
-                        </div>
                     </div>
                 </form>
             </div>
@@ -60,7 +52,7 @@
                                         <a asp-page="./Users/Index" asp-route-id="@item.AuthorId" class="user-info">
                                             <span class="user-info_nickname">@item.AuthorUserName</span>
                                         </a>
-                                        <input data-ajax="true" id="input-rating-@item.Id" value="@item.Rating" type="text" class="rating" data-theme="krajee-fa" data-display-only="true" data-min=0 data-max=5 data-step=0.1 data-size="sm" title="">
+                                        <input data-ajax="true" id="input-rating-@item.Id" value="@item.Rating" type="text" class="rating" data-theme="krajee-fa" data-language="@CultureInfo.CurrentCulture.Name" data-display-only="true" data-min=0 data-max=5 data-step=0.1 data-size="xs" title="">
                                     </p>
                                 </header>
                                 <h3>
@@ -146,7 +138,8 @@
                         list: list,
                         minSize: 8,
                         weightFactor: 20,
-                        click: function (item) {
+                        shuffle: false,
+                            click: function(item) {
                             window.location = '?tagString=' + item[2];
                         }
                     })
@@ -163,4 +156,5 @@
 
     <script src="~/lib/bootstrap-star-rating/js/star-rating.js" type="text/javascript"></script>
     <script src="~/lib/bootstrap-star-rating/themes/krajee-fa/theme.js" type="text/javascript"></script>
+    <script src="~/lib/bootstrap-star-rating/js/locales/ru.js" type="text/javascript"></script>
 }

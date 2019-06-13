@@ -1,17 +1,6 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
-.layout {
-    position: relative;
-    display: table;
-    min-width: 1024px;
-    width: 100%;
-    height: 100%;
-    border-spacing: 0;
-    border-collapse: collapse;
-    background: #fff;
-}
-
 .content-list {
     margin: 0;
     padding: 0;

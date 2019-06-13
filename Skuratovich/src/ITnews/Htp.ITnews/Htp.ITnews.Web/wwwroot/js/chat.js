@@ -40,14 +40,14 @@ document.getElementById("sendButton").addEventListener("click", function (event)
 });
 }
 
-function addComments(comments) {
+function addComments(comments, isInRole) {
     if (!comments) return;
     comments.forEach(function (c) {
-        addComment(c);
+        addComment(c, isInRole);
     });
 }
 
-function addComment(c) {
+function addComment(c, isInRole) {
     var faceImg = document.createElement('img');
     faceImg.className = 'img img-rounded img-fluid';
     faceImg.setAttribute('src', '../img/def_face.jpg');
@@ -110,9 +110,13 @@ function addComment(c) {
     dislikeA.addEventListener("click", comment_vote);
 
     var buttonsP = document.createElement('p');
-    buttonsP.appendChild(likeA);
+    if (isInRole) {
+        buttonsP.appendChild(likeA);
+    }
     buttonsP.appendChild(countA);
-    buttonsP.appendChild(dislikeA);
+    if (isInRole) {
+        buttonsP.appendChild(dislikeA);
+    }
 
     var textDiv = document.createElement('div');
     textDiv.className = 'col-md-10 js-comment-vote';

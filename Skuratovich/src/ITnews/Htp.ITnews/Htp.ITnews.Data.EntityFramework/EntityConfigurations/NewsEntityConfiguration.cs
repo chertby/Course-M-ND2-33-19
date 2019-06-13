@@ -13,7 +13,7 @@ namespace Htp.ITnews.Data.EntityFramework.EntityConfigurations
             builder.Property(x => x.Description).IsRequired();
             builder.Property(x => x.Content).IsRequired();
             builder.HasOne(x => x.Category).WithMany(x => x.News).IsRequired();
-            //builder.HasMany(x => x.Comments).WithOne(x => x.News).OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(x => x.Comments).WithOne(x => x.News).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -206,10 +206,52 @@ namespace Htp.ITnews.Domain.Services
             {
                 try
                 {
-                    var news = await newsRepository.GetAsync(id);
+                    var news = await newsRepository.GetAsync(id, x => x
+                        .Include(n => n.Category)
+                        .Include(n => n.Author)
+                        .Include(n => n.UpdatedBy)
+                        .Include(n => n.NewsTags)
+                            .ThenInclude(nt => nt.Tag));
+
+                    var appUserReporitory = unitOfWork.Repository<AppUser>();
+                    if (news.Author != null)
+                    {
+                        var author = await appUserReporitory.GetAsync(news.Author.Id);
+                        author.News.Remove(news);
+                        await appUserReporitory.EditAsync(author);
+                    }
+                    if (news.UpdatedBy != null)
+                    {
+                        var updatedBy = await appUserReporitory.GetAsync(news.UpdatedBy.Id);
+                        updatedBy.UpdatedNews.Remove(news);
+                        await appUserReporitory.EditAsync(updatedBy);
+                    }
+                    var categoryDbSet = unitOfWork.Repository<Category>();
+                    if (news.Category != null)
+                    {
+                        var category = await categoryDbSet.GetAsync(news.Category.Id);
+                        category.News.Remove(news);
+                        await categoryDbSet.EditAsync(category);
+                    }
+
+                    var newsTags = await GetTagsAsync(news.Id);
+                    await RemoveFromTagsAsync(news.Id, newsTags);
+
+                    var commentDbSet = unitOfWork.Repository<Comment>();
+                    var comments = commentDbSet
+                        .FindByCondition(c => c.News.Id == news.Id, x => x
+                            .Include(c => c.Likes));
+
+                    if (comments != null)
+                    {
+                        foreach (var comment in comments)
+                        {
+                            await commentDbSet.DeleteAsync(comment);
+                        }
+                    }
 
                     await newsRepository.DeleteAsync(news);
-                    var x = await unitOfWork.SaveChangesAsync();
+                    await unitOfWork.SaveChangesAsync();
                     transaction.Commit();
                 }
                 catch (Exception ex)

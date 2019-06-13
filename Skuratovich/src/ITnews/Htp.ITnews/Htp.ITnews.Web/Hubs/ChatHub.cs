@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Htp.ITnews.Domain.Contracts;
 using Htp.ITnews.Domain.Contracts.ViewModels;
+using Htp.ITnews.Web.Authorization.Requirements;
 using Htp.ITnews.Web.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
@@ -11,10 +12,12 @@ namespace Htp.ITnews.Web.Hubs
     public class ChatHub : Hub<IChatClient>
     {
         private readonly ICommentService commentService;
+        private readonly IAuthorizationService authorizationService;
 
-        public ChatHub(ICommentService commentService)
+        public ChatHub(ICommentService commentService, IAuthorizationService authorizationService)
         {
             this.commentService = commentService;
+            this.authorizationService = authorizationService;
         }
 
         public async Task AddToGroup(Guid newsId)
@@ -38,15 +41,21 @@ namespace Htp.ITnews.Web.Hubs
 
             comment = await commentService.AddAsync(comment);
 
+            var isAuthorized = await authorizationService.AuthorizeAsync(Context.User, "RequireRole");
+            var isInRoles = isAuthorized.Succeeded;
+
             await Clients.Caller.ClearComment();
-            await Clients.Group(newsId.ToString()).ReceiveComment(comment);
+            await Clients.Group(newsId.ToString()).ReceiveComment(comment, isInRoles);
 
         }
 
         public async Task LoadHistory(Guid newsId)
         {
+            var isAuthorized = await authorizationService.AuthorizeAsync(Context.User, "RequireRole");
+            var isInRoles = isAuthorized.Succeeded;
+
             var comments = await commentService.GetAllAsync(newsId, Context.User.GetUserId());
-            await Clients.Caller.ReceiveComments(comments);
+            await Clients.Caller.ReceiveComments(comments, isInRoles);
         }
 
         [Authorize(Policy = "RequireRole")]

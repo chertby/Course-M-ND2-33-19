@@ -24,4 +24,10 @@
     <data name="Theme" xml:space="preserve">
         <value>Тема</value>
     </data>
+    <data name="Top news" xml:space="preserve">
+        <value>Важные новости</value>
+    </data>
+    <data name="Last news" xml:space="preserve">
+        <value>Последние новости</value>
+    </data>
 </root>
