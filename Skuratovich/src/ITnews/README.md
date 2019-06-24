@@ -1,5 +1,3 @@
-#ITnews 
-
 **ITnews** is a themed website that allows authorized users to create and edit news, set ratings, comment on the news.
 Admin page allows to manage users: assign roles, block the user.
 
