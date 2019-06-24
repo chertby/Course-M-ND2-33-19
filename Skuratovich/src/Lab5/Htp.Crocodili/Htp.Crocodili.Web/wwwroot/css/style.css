@@ -1,0 +1,12 @@
+canvas {
+    background: #fff;
+    display: block;
+    margin: 10px auto 10px;
+    border-radius: 5px;
+    border: 2px solid black;
+    cursor: url(../img/cursor.png), crosshair;
+}
+
+.red {
+    background: #fc4c4f;
+}
