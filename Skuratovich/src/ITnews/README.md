@@ -1,0 +1,1 @@
+ITnews is a themed website for creating and publishing news. During the project, a website was developed that allows authorized users to create and edit news, set ratings, comment on the news. An admin panel was also developed for user management.v
