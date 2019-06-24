@@ -1,0 +1,19 @@
+﻿@page
+@model LogoutModel
+@{
+    ViewData["Title"] = Localizer["Log out"];
+}
+
+<header>
+    <h1>@ViewData["Title"]</h1>
+    <p>@Localizer["You have successfully logged out of the application."]</p>
+</header>
+
+@section Scripts{
+    <script>
+        function logout(){
+            location.href = "@Url.Page("../Index")";
+        }
+        setTimeout(logout, 1000)
+    </script>
+}

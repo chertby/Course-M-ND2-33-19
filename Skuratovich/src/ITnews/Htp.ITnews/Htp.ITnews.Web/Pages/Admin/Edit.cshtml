@@ -1,0 +1,37 @@
+﻿@page
+@model EditModel
+@{
+    ViewData["Title"] = Localizer["Edit user"];
+}
+
+<h2>@Localizer["Edit user"] - @Model.UserViewModel.UserName</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="UserViewModel.Id" />
+            <div class="form-group">
+                <label asp-for="UserViewModel.IsActive" class="control-label"></label>
+                <input asp-for="UserViewModel.IsActive" />
+            </div>
+            <hr />
+            <div class="form-group">
+                @foreach (RoleViewModel role in Model.Roles)
+        {
+            <input type="checkbox" name="roles" value="@role.Name"
+                   @(Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") />@Localizer[role.Name] <br />
+    }
+            </div>
+            <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">@Localizer["Back to List"]</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

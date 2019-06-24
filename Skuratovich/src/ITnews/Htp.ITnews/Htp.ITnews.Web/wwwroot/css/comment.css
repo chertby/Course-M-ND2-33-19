@@ -1,0 +1,106 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+.content-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.content-list__item {
+    position: relative;
+    box-sizing: border-box;
+    padding: 10px 0 14px;
+}
+
+.content-list__item_news {
+    padding: 20px 0;
+}
+
+.content-list_comments {
+    overflow: hidden;
+    margin: 20px 0 0;
+    margin-left: -20px;
+    padding-left: 20px;
+}
+
+.comment {
+    position: relative;
+    font-family: "-apple-system",BlinkMacSystemFont,Arial,sans-serif;
+}
+
+.comment__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 8px;
+    transition: background-color ease .3s;
+}
+
+.comment__date-time, .news__date-time {
+    margin-left: 8px;
+    color: #5f5f5f;
+    font-size: 13px;
+}
+
+.comment__message {
+    padding-right: 10px;
+    color: #111;
+    font-size: 15px;
+    line-height: 1.46;
+    overflow: hidden;
+    font-family: "-apple-system",BlinkMacSystemFont,Arial,sans-serif;
+}
+
+svg {
+    fill: currentColor;
+    stroke: inherit;
+}
+
+.inline-list_comment-nav {
+    margin-left: 8px;
+}
+
+.inline-bricks, .inline-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.inline-list__item_comment-nav {
+    margin: 0 4px 0 0;
+    line-height: 0;
+}
+
+.icon_comment-edit, .icon_comment-anchor, .icon_comment-bookmark, .icon_comment-branch, .icon_comment-arrow-up, .icon_comment-arrow-down {
+    color: #aac7d6;
+    padding: 0 8px;
+    line-height: 0;
+    display: inline-block;
+    vertical-align: baseline;
+    cursor: pointer;
+}
+
+.voting-wjt__counter {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    font-weight: 700;
+    font-size: 13px;
+    color: #548eaa;
+    font-family: "-apple-system",BlinkMacSystemFont,Arial,sans-serif;
+}
+
+.voting-wjt__counter_positive {
+    color: #6c9007;
+}
+
+p {
+    text-indent: 0;
+}

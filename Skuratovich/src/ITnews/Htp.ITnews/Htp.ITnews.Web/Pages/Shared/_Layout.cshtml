@@ -1,0 +1,138 @@
+﻿@{
+    Context.Request.Cookies.TryGetValue("<ITnews>.Theme", out string theme);
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ITnews</title>
+
+    @{
+        if (string.IsNullOrEmpty(theme))
+        {
+            theme = "default";
+        }
+        switch (theme)
+        {
+            case "default":
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
+                      asp-fallback-href="~/lib/bootstrap/dist/css/default/bootstrap.min.css" asp-suppress-fallback-integrity="true"
+                      asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+                      integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY="
+                      crossorigin="anonymous" />
+                break;
+            case "cerulean":
+                <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/cerulean/bootstrap.min.css" rel="stylesheet"
+                      asp-fallback-href="~/lib/bootstrap/dist/css/cerulean/bootstrap.min.css" asp-suppress-fallback-integrity="true"
+                      asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+                      integrity="sha384-C++cugH8+Uf86JbNOnQoBweHHAe/wVKN/mb0lTybu/NZ9sEYbd+BbbYtNpWYAsNP"
+                      crossorigin="anonymous" />
+                break;
+            case "cosmo":
+                <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/cosmo/bootstrap.min.css" rel="stylesheet"
+                      asp-fallback-href="~/lib/bootstrap/dist/css/cosmo/bootstrap.min.css" asp-suppress-fallback-integrity="true"
+                      asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+                      integrity="sha384-uhut8PejFZO8994oEgm/ZfAv0mW1/b83nczZzSwElbeILxwkN491YQXsCFTE6+nx"
+                      crossorigin="anonymous" />
+                break;
+            case "darkly":
+                <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/darkly/bootstrap.min.css" rel="stylesheet"
+                      asp-fallback-href="~/lib/bootstrap/dist/css/darkly/bootstrap.min.css" asp-suppress-fallback-integrity="true"
+                      asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+                      integrity="sha384-w+8Gqjk9Cuo6XH9HKHG5t5I1VR4YBNdPt/29vwgfZR485eoEJZ8rJRbm3TR32P6k"
+                      crossorigin="anonymous" />
+                break;
+            default:
+                <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/cosmo/bootstrap.min.css" rel="stylesheet"
+                      asp-fallback-href="~/lib/bootstrap/dist/css/cosmo/bootstrap.min.css" asp-suppress-fallback-integrity="true"
+                      asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+                      integrity="sha384-uhut8PejFZO8994oEgm/ZfAv0mW1/b83nczZzSwElbeILxwkN491YQXsCFTE6+nx"
+                      crossorigin="anonymous" />
+                break;
+        }
+    }
+
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-page="/Index">ITnews</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <partial name="_LoginPartial" />
+                    <ul class="navbar-nav flex-grow-1">
+                        @if ((User.Identity.IsAuthenticated) && (User.IsInRole("Administrator")))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Admin/Index">@Localizer["Admin page"]</a>
+
+                            </li>
+                        }
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Index" asp-route-orderBy="rating">@Localizer["Top news"]</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Index" asp-route-orderBy="updated">@Localizer["Last news"]</a>
+                            </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdownTheme" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@Localizer["Theme"]</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownTheme">
+                                <li><a class="dropdown-item theme @(theme == "default" ? "active" : "")" data-theme="default" href="#">@Localizer["Default"]</a></li>
+                                <li><a class="dropdown-item theme @(theme == "cerulean" ? "active" : "")" data-theme="cerulean" href="#">Cerulean</a></li>
+                                <li><a class="dropdown-item theme @(theme == "cosmo" ? "active" : "")" data-theme="cosmo" href="#">Cosmo</a></li>
+                                <li><a class="dropdown-item theme @(theme == "darkly" ? "active" : "")" data-theme="darkly" href="#">Darkly</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <partial name="_CookieConsentPartial" />
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; @System.DateTime.Now.Year - ITnews - <a asp-area="" asp-page="/Privacy">@Localizer["Privacy"]</a></p>
+                </div>
+                <div class="col-md-6 text-right">
+                    @await Html.PartialAsync("_SelectLanguagePartial")
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"></script>
+    </environment>
+    <script src="~/js/js.cookie.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

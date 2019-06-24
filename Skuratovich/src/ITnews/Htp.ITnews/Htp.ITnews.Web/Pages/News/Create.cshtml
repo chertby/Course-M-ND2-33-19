@@ -1,0 +1,62 @@
+﻿@page
+@using System.Globalization
+@model CreateModel
+@{
+    ViewData["Title"] = Localizer["Create news"];
+}
+
+<h1>Create</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NewsViewModel.Title" class="control-label"></label>
+                <input asp-for="NewsViewModel.Title" class="form-control" />
+                <span asp-validation-for="NewsViewModel.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NewsViewModel.Description" class="control-label"></label>
+                <textarea asp-for="NewsViewModel.Description" class="form-control"></textarea>
+                <span asp-validation-for="NewsViewModel.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NewsViewModel.Content" class="control-label"></label>
+                <textarea asp-for="NewsViewModel.Content" class="form-control"></textarea>
+                <span asp-validation-for="NewsViewModel.Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NewsViewModel.CategoryTitle" class="control-label"></label>
+                <div>
+                    <select asp-for="NewsViewModel.CategoryId" asp-items="Model.Сategories" class="form-control">
+                        <option>--none--</option>
+                    </select>
+                    <span asp-validation-for="NewsViewModel.CategoryId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div style="margin:0 0 1.2em">
+                <textarea asp-for="NewsViewModel.StringTags"></textarea>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="@Localizer["Create"]" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">@Localizer["Back to List"]</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        await Html.RenderPartialAsync("_TagEditorScriptsPartial");
+        await Html.RenderPartialAsync("_MdScriptsPartial");
+    }
+
+}

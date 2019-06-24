@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Forgot your password?" xml:space="preserve">
+        <value>Забыли пароль?</value>
+    </data>
+    <data name="Log in" xml:space="preserve">
+        <value>Вход</value>
+    </data>
+    <data name="Log in using your {0} account" xml:space="preserve">
+        <value>Войдите, использую свою учетную запись {0}</value>
+    </data>
+    <data name="Register as a new user?" xml:space="preserve">
+        <value>Зарегистрироваться как новый пользователь?</value>
+    </data>
+    <data name="There are no external authentication services configured. See &lt;a href=&quot;http://go.microsoft.com/fwlink/?LinkID=532715&quot;&gt;this article&lt;/a&gt; for details on setting up this ASP.NET application to support logging in via external services." xml:space="preserve">
+        <value>Аутентификация через сторонние сервисы не настроена. Более подробную информацию по настройки аутентификации через сторонние сервисы смотрите &lt;a href="http://go.microsoft.com/fwlink/?LinkID=532715"&gt;по ссылке&lt;/a&gt;.</value>
+    </data>
+    <data name="Use a local account to log in." xml:space="preserve">
+        <value>Используйте локальную учетную запись для входа.</value>
+    </data>
+    <data name="Use another service to log in." xml:space="preserve">
+        <value>Используйте сторонний сервис для входа.</value>
+    </data>
+</root>

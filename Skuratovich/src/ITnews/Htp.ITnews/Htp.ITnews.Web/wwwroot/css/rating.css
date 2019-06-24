@@ -1,0 +1,11 @@
+﻿.card-inner {
+    margin-left: 4rem;
+}
+
+.ribbon::before {
+    content: "\e082";
+    background-color: #FFBA10;
+    border-color: black;
+    border-style: dotted;
+}
+
