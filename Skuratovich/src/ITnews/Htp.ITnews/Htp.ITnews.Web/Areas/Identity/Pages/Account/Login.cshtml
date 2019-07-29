@@ -1,11 +1,13 @@
 ﻿@page
+@using Microsoft.Extensions.Localization;
 @model LoginModel
+@inject IStringLocalizer SLocalizer
 
 @{
     ViewData["Title"] = Localizer["Log in"];
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1>@ViewData["Title"] -  @SLocalizer["The {0} field is required."]</h1>
 <div class="row">
     <div class="col-md-4">
         <section>
@@ -57,7 +59,7 @@
                     <div>
                         <p>
                             @Localizer["There are no external authentication services configured. See <a href=\"https://go.microsoft.com/fwlink/?LinkID=532715\">this article</a> " +
-                                             "for details on setting up this ASP.NET application to support logging in via external services."]
+                                                  "for details on setting up this ASP.NET application to support logging in via external services."]
                         </p>
                     </div>
                 }

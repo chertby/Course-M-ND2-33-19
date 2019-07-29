@@ -96,4 +96,7 @@
     <data name="Create" xml:space="preserve">
         <value>Создать</value>
     </data>
+    <data name="User name" xml:space="preserve">
+        <value>Имя пользователя</value>
+    </data>
 </root>

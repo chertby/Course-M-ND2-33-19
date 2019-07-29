@@ -33,4 +33,7 @@
     <data name="Use another service to log in." xml:space="preserve">
         <value>Используйте сторонний сервис для входа.</value>
     </data>
+    <data name="The {0} field is required." xml:space="preserve">
+        <value>"The {0} фывфывфывфы фывфывфы."</value>
+    </data>
 </root>

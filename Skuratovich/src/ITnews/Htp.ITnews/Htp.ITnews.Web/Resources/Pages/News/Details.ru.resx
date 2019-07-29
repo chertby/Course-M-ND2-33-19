@@ -21,6 +21,9 @@
     <data name="Comments ({0})" xml:space="preserve">
         <value>Комментарии ({0})</value>
     </data>
+    <data name="Comments" xml:space="preserve">
+        <value>Комментарии</value>
+    </data>
     <data name="Summit comment" xml:space="preserve">
         <value>Отправить комментарий</value>
     </data>

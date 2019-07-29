@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Htp.ITnews.Infrastructure;
-using Htp.ITnews.Web.Resources;
+using Htp.ITnews.Web;
 using System.Reflection;
 using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -85,10 +85,13 @@ namespace Htp.ITnews.Web
                 var localizer = factory.Create("ViewResource", assemblyName.Name);
 
                 options.ModelBindingMessageProvider.SetMissingKeyOrValueAccessor(() => localizer["A value is required."]);
-                options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor((x) => localizer["The {0} field is required.", x]);
+                //options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor((x) => localizer["The {0} field is required.", x]);
+                options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor((x) => "ываываываыва");
+                options.ModelBindingMessageProvider.SetMissingBindRequiredValueAccessor((x) => "фывфывфыв - asdasdasdasd");
+                options.ModelBindingMessageProvider.SetValueIsInvalidAccessor((x) => "фывфывфыв - asdasdasdasd");
+                options.ModelBindingMessageProvider.SetUnknownValueIsInvalidAccessor((x) => "фывфывфыв - asdasdasdasd");
             })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                //.AddModelBindingMessagesLocalizer(services)
                 // Add support for localizing strings in data annotations (e.g. validation messages) via the
                 // IStringLocalizer abstractions.
                 .AddDataAnnotationsLocalization(options =>
@@ -103,18 +106,18 @@ namespace Htp.ITnews.Web
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddRazorPagesOptions(options =>
                 {
-                    //options.Conventions.AddPageRoute("/News", "");
                     options.Conventions.AuthorizeFolder("/Admin", "RequireAdministratorRole");
                     options.Conventions.AllowAnonymousToPage("/Index");
                     options.Conventions.AllowAnonymousToPage("/News/Index");
                     options.Conventions.AllowAnonymousToPage("/News/Details");
-                    //options.Conventions.AllowAnonymousToPage("/Users/Index");
                     options.Conventions.AllowAnonymousToPage("/Identity/Account/Login");
                     options.Conventions.AllowAnonymousToPage("/Identity/Account/ConfirmEmail");
                     options.Conventions.AllowAnonymousToPage("/Identity/Account/Register");
                 })
                 .AddFluentValidation();
-                
+
+            services.AddScoped<IStringLocalizer>(x => x.GetRequiredService<IStringLocalizer<ViewResource>>());    
+
             services.AddSignalR();
             services.AddCustomFluentValidation();
         }
@@ -137,7 +140,6 @@ namespace Htp.ITnews.Web
             var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
             app.UseRequestLocalization(locOptions.Value);
 
-            //app.UseRequestLocalization();
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

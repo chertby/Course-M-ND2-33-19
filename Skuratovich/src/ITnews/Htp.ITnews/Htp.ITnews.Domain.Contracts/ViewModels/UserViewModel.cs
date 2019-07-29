@@ -16,6 +16,9 @@ namespace Htp.ITnews.Domain.Contracts.ViewModels
         [Display(Name = "Last name")]
         public string LastName { get; set; }
 
+        [Display(Name = "User name")]
+        public new string UserName { get ; set; }
+
         public IEnumerable<NewsViewModel> News { get; set; }
     }
 }

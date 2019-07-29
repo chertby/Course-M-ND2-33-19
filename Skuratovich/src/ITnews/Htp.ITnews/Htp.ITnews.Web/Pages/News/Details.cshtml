@@ -86,7 +86,8 @@
         </div>
     }
     <div id="comments" class="col-md-12">
-        <h2>@Localizer["Comments ({0})", Model.NewsViewModel.CommentCount]</h2>
+        @*<h2>@Localizer["Comments ({0})", Model.NewsViewModel.CommentCount]</h2>*@
+        <h2>@Localizer["Comments", Model.NewsViewModel.CommentCount]</h2>
         <ul class="content-list content-list_comments" id="commentsList"></ul>
     </div>
 </div>

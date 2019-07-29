@@ -1,4 +1,4 @@
-﻿namespace Htp.ITnews.Web.Resources
+﻿namespace Htp.ITnews.Web
 {
     public class ViewResource
     {
